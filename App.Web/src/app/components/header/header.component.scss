@@ -1,0 +1,18 @@
+:host {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: var(--app-header-height);
+  background: var(--app-bg-white);
+  display: flex;
+
+  header {
+    flex: 1;
+    display: flex;
+    padding: 1rem;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+  }
+}

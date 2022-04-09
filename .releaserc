@@ -1,0 +1,13 @@
+{
+  "branches": [
+    {
+      "name": "next",
+      "prerelease": true
+    },
+    "prod"
+  ],
+  "plugins": [
+    "@semantic-release/exec"
+  ]
+}
+

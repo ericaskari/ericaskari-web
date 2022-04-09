@@ -1,0 +1,99 @@
+version: "3.8"
+
+services:
+  ed-postgres:
+    container_name: ed-postgres
+    image: postgres:14.1
+    restart: "no"
+    networks:
+      - ed-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ed-postgres:/var/lib/postgresql/data
+    env_file:
+      - .docker.env
+  ed-minio:
+    container_name: ed-minio
+    image: minio/minio
+    restart: "no"
+    networks:
+      - ed-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ed-minio:/data
+    command: "server --address 0.0.0.0:9000 /data"
+    env_file:
+      - .docker.env
+  ed-mailhog:
+    container_name: ed-mailhog
+    image: mailhog/mailhog:v1.0.1
+    restart: "no"
+    networks:
+      - ed-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+  ed-proxy:
+    container_name: ed-proxy
+    build:
+      dockerfile: ./assets/development/Dockerfile
+      target: Proxy
+      context: ./
+    restart: "no"
+    networks:
+      - ed-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "443:443"
+volumes:
+  ed-postgres:
+  ed-minio:
+  ed-pgadmin4:
+networks:
+  ed-network:
+
+
+
+
+  #  ed-backend:
+  #    container_name: ed-backend
+  #    build:
+  #      dockerfile: ./assets/development/Dockerfile
+  #      target: Backend
+  #      context: ./
+  #    volumes:
+  #      - source: ./App.Api/src
+  #        target: /app/App.Api/src
+  #        type: bind
+  #        read_only: true
+  #        consistency: cached
+  #    restart: on-failure
+  #    networks:
+  #      - ed-network
+  #    environment:
+  #      NODE_OPTIONS: --max_old_space_size=4096
+  #
+  #
+  #  ed-frontend:
+  #    container_name: ed-frontend
+  #    build:
+  #      dockerfile: ./assets/development/Dockerfile
+  #      target: Frontend
+  #      context: ./
+  #    volumes:
+  #      - source: ./App.Web/src
+  #        target: /app/App.Web/src
+  #        type: bind
+  #        read_only: true
+  #        consistency: cached
+  #    restart: on-failure
+  #    networks:
+  #      - ed-network
+  #    environment:
+  #      NODE_OPTIONS: --max_old_space_size=4096
+

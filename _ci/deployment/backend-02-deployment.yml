@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-ericaskari-backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: deployment-ericaskari-backend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: deployment-ericaskari-backend
+    spec:
+      containers:
+        - image: 438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:1.43.3-0
+          name: container-ericaskari-backend
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: VERSION
+              value: "CUSTOM_VERSION"
+      imagePullSecrets:
+        - name: regcred

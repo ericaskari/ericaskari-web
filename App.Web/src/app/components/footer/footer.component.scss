@@ -1,0 +1,13 @@
+:host {
+  height: var(--app-header-height);
+  display: flex;
+
+  footer {
+    flex: 1;
+    display: flex;
+    padding: 1rem;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+  }
+}
