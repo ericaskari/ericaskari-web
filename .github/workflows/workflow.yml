@@ -5,13 +5,7 @@ on:
   pull_request:
     branches: [ actions ]
 jobs:
-#  build:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Build the Docker image
-#        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
-  reusable_workflow_job:
+  Build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -24,7 +18,8 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
-      - uses: ./.github/steps/generate-dev-version
+      - uses: ./.github/workflows/generate-dev-version
+      - uses: ./.github/workflows/generate-prod-version
       - name: debug
         shell: bash
         run: echo $(cat .DEV_VERSION)

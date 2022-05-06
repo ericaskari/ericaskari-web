@@ -1,0 +1,18 @@
+inputs:
+#  name:
+#    description: 'Your name'
+#    required: false
+#    default: 'No name provided'
+name: STEP_GENERATE_PROD_RELEASE_VERSION
+description: STEP_GENERATE_PROD_RELEASE_VERSION
+runs:
+  using: "composite"
+  steps:
+    - run: chmod +x ./_ci/scripts/STEP_GENERATE_PROD_RELEASE_VERSION.sh
+      shell: bash
+    - run: ./_ci/scripts/STEP_GENERATE_PROD_RELEASE_VERSION.sh
+      shell: bash
+    - run: echo $(cat .PROD_PULL_VERSION)
+      shell: bash
+    - run: echo $(cat .PROD_PUSH_VERSION)
+      shell: bash
