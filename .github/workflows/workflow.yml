@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: GENERATE_DEV_RELEASE_VERSION
-        uses: ./.github/steps/generate-dev-version
+      - uses: ./.github/steps/generate-dev-version
       - name: debug
         shell: bash
         run: echo $(cat .DEV_VERSION)
