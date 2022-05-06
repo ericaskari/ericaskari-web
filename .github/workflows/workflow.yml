@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: ./.github/steps/configure-aws-cli
       - uses: ./.github/steps/generate-dev-version
       - name: debug
         shell: bash
