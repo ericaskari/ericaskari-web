@@ -8,18 +8,30 @@ jobs:
   Build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
+      - uses: actions/checkout@v3                                         # PULL_SOURCE_CODE
+      - uses: actions/setup-python@v3                                     # CONFIGURE_AWS_CLI
         with:
           python-version: "3.8"
-      - uses: aws-actions/setup-sam@v2
-      - uses: aws-actions/configure-aws-credentials@v1
+      - uses: aws-actions/setup-sam@v2                                    # CONFIGURE_AWS_CLI
+      - uses: aws-actions/configure-aws-credentials@v1                    # CONFIGURE_AWS_CLI
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
       - uses: ./.github/workflows/generate-dev-version
       - uses: ./.github/workflows/generate-prod-version
+      - uses: actions/setup-node@v3                                       # INSTALL_NODEJS
+        with:
+          node-version: 16
       - name: debug
         shell: bash
         run: echo $(cat .DEV_VERSION)
+      - name: Install dependencies
+        shell: bash
+        run: npm install
+      - name: Test
+        shell: bash
+        run: npx nx run-many --target=test --all
+      - name: Build
+        shell: bash
+        run: npx nx run-many --target=build --all
