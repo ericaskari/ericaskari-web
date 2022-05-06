@@ -11,7 +11,7 @@ runs:
     - run: |
         echo STEP: SCRIPT_CONFIGURE_AWS_CLI
         unzip -q _ci/.aws/awscliv2.zip
-        ./aws/install
+        ./aws/install --update
         rm -rf .aws
         mkdir $HOME/.aws
         cp ./_ci/.aws/config $HOME/.aws/config
