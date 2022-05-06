@@ -5,15 +5,14 @@ on:
   pull_request:
     branches: [ actions ]
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+#  build:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Build the Docker image
+#        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
   reusable_workflow_job:
     runs-on: ubuntu-latest
-    environment: production
     steps:
       - uses: actions/checkout@v3
       - name: GENERATE_DEV_RELEASE_VERSION
