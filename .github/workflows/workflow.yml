@@ -16,6 +16,6 @@ jobs:
     environment: production
     steps:
       - name: GENERATE_DEV_RELEASE_VERSION
-        uses: ./.github/steps/generate-dev-version.yml
+        uses: ./.github/steps/generate-dev-version
 #        with:
 #          username: ${{ inputs.username }}

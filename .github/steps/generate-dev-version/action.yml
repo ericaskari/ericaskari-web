@@ -1,0 +1,14 @@
+inputs:
+  name:
+    description: 'Your name'
+    required: false
+    default: 'No name provided'
+name: GENERATE_DEV_RELEASE_VERSION
+description: GENERATE_DEV_RELEASE_VERSION
+runs:
+  using: "composite"
+  steps:
+    - run: echo Hello ${{ inputs.name }}.
+      shell: bash
+    - run: echo "Nice to meet you!"
+      shell: pwsh
