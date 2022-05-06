@@ -15,7 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: GENERATE_DEV_RELEASE_VERSION
       - uses: ./.github/steps/generate-dev-version
       - name: debug
         shell: bash
