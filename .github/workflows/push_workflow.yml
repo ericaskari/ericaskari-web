@@ -113,7 +113,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: _dist
-          path: .
+          path: _dist
       - name: Debug
         shell: bash
         run: ls -la
