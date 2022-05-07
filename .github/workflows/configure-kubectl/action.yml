@@ -1,8 +1,8 @@
-#inputs:
-#  name:
-#    description: 'Your name'
-#    required: false
-#    default: 'No name provided'
+inputs:
+  KUBE_CONFIG_BASE64:
+    description: 'KUBE_CONFIG_BASE64'
+    required: true
+    default: 'KUBE_CONFIG_BASE64'
 name: ConfigureKubectl
 description: ConfigureKubectl
 runs:
@@ -20,5 +20,5 @@ runs:
       shell: bash
     - run: mkdir /.kube && touch /.kube/config
       shell: bash
-    - run: echo $KUBE_CONFIG | base64 --decode > /.kube/config
+    - run: echo ${{ secrets.KUBE_CONFIG }} | base64 --decode > /.kube/config
       shell: bash
