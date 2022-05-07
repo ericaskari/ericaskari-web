@@ -18,5 +18,5 @@ runs:
       shell: bash
     - run: kubectl version --client
       shell: bash
-    - run: echo $KUBE_CONFIG | base64 --decode > ~/.kube/config
+    - run: echo $KUBE_CONFIG | base64 --decode > /.kube/config
       shell: bash
