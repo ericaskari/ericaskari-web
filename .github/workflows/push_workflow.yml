@@ -1,7 +1,7 @@
 name: Docker Image Build
 on:
   push:
-    branches: [ actions ]
+    branches: [ dev, main ]
 jobs:
 #  GenerateVersion:
 #    runs-on: self-hosted
