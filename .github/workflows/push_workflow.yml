@@ -22,7 +22,6 @@ jobs:
         run: echo $(cat .DEV_VERSION)
       # - uses: ./.github/workflows/generate-prod-version                   # OUTPUTS: .PROD_PULL_VERSION   .PROD_PUSH_VERSION
       - uses: actions/cache@v3
-        id: restore-build
         with:
           path: |
             .DEV_VERSION
@@ -48,7 +47,6 @@ jobs:
         shell: bash
         run: npx nx run-many --target=build --all
       - uses: actions/cache@v3
-        id: restore-build
         with:
           path: |
             .DEV_VERSION
@@ -78,7 +76,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
       - uses: actions/cache@v3
-        id: restore-build
         with:
           path: |
             _dist
@@ -97,7 +94,6 @@ jobs:
           docker push "$TAG"
           echo "$(cat .DEV_VERSION)"           > ./.VERSION
       - uses: actions/cache@v3
-        id: restore-build
         with:
           path: |
             .VERSION
