@@ -1,0 +1,16 @@
+#inputs:
+#  name:
+#    description: 'Your name'
+#    required: false
+#    default: 'No name provided'
+name: GENERATE_DEV_RELEASE_VERSION
+description: GENERATE_DEV_RELEASE_VERSION
+runs:
+  using: "composite"
+  steps:
+    - run: chmod +x ./_ci/scripts/STEP_GENERATE_DEV_RELEASE_VERSION.sh
+      shell: bash
+    - run: ./_ci/scripts/STEP_GENERATE_DEV_RELEASE_VERSION.sh
+      shell: bash
+    - run: echo $(cat .DEV_VERSION)
+      shell: bash

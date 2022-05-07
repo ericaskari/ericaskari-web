@@ -1,0 +1,232 @@
+name: Docker Image Build
+on:
+  push:
+    branches: [ actions ]
+jobs:
+#  GenerateVersion:
+#    runs-on: self-hosted
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: ./.github/workflows/configure-kubectl
+#        with:
+#          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+#      - run: kubectl get all
+#        shell: bash
+
+  GenerateVersion:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3                                     # CONFIGURE_AWS_CLI
+        with:
+          python-version: "3.8"
+      - uses: aws-actions/setup-sam@v2                                    # CONFIGURE_AWS_CLI
+      - uses: aws-actions/configure-aws-credentials@v1                    # CONFIGURE_AWS_CLI
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+      - uses: actions/setup-node@v3                                       # INSTALL_NODEJS
+        with:
+          node-version: 16
+      - uses: ./.github/workflows/generate-dev-version                    # OUTPUTS: .DEV_VERSION
+      - name: debug
+        shell: bash
+        run: echo $(cat .DEV_VERSION)
+      # - uses: ./.github/workflows/generate-prod-version                   # OUTPUTS: .PROD_PULL_VERSION   .PROD_PUSH_VERSION
+      - uses: actions/cache@v3
+        with:
+          path: |
+            .DEV_VERSION
+          key: ${{ github.sha }}
+
+  BuildAndTest:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3                                         # PULL_SOURCE_CODE
+      - uses: actions/setup-node@v3                                       # INSTALL_NODEJS
+        with:
+          node-version: 16
+      - name: Install dependencies
+        shell: bash
+        run: npm install
+      - name: Test
+        shell: bash
+        run: npx nx run-many --target=test --all
+      - name: Build
+        shell: bash
+        run: npx nx run-many --target=build --all
+      - uses: actions/cache@v3
+        with:
+          path: |
+            .DEV_VERSION
+          key: ${{ github.sha }}
+      - name: debug
+        shell: bash
+        run: echo $(cat .DEV_VERSION)
+      - name: Cache Built project
+        uses: actions/cache@v3
+        with:
+          path: |
+            _dist
+            .DEV_VERSION
+          key: ${{ github.sha }}
+
+
+  BuildAndPushFrontendImage:
+    needs: [GenerateVersion, BuildAndTest]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3                                     # CONFIGURE_AWS_CLI
+        with:
+          python-version: "3.8"
+      - uses: aws-actions/setup-sam@v2                                    # CONFIGURE_AWS_CLI
+      - uses: aws-actions/configure-aws-credentials@v1                    # CONFIGURE_AWS_CLI
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+      - uses: actions/cache@v3
+        with:
+          path: |
+            _dist
+            .DEV_VERSION
+          key: ${{ github.sha }}
+      - name: Login
+        shell: bash
+        run: docker login -u AWS -p $(aws ecr get-login-password --region eu-west-1) 438380764554.dkr.ecr.eu-west-1.amazonaws.com
+
+      - name: Build And Push
+        shell: bash
+        run: |
+          TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:$(cat .DEV_VERSION)"
+          echo $TAG
+          docker build -f ./_ci/Frontend.Dockerfile --tag "$TAG" .
+          docker push "$TAG"
+          echo "$(cat .DEV_VERSION)"           > ./.VERSION
+      - uses: actions/cache@v3
+        with:
+          path: |
+            .VERSION
+          key: ${{ github.sha }}
+
+
+  BuildAndPushBackendImage:
+    needs: [GenerateVersion, BuildAndTest]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3                                     # CONFIGURE_AWS_CLI
+        with:
+          python-version: "3.8"
+      - uses: aws-actions/setup-sam@v2                                    # CONFIGURE_AWS_CLI
+      - uses: aws-actions/configure-aws-credentials@v1                    # CONFIGURE_AWS_CLI
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+      - uses: actions/cache@v3
+        with:
+          path: |
+            _dist
+            .DEV_VERSION
+          key: ${{ github.sha }}
+      - name: Login
+        shell: bash
+        run: docker login -u AWS -p $(aws ecr get-login-password --region eu-west-1) 438380764554.dkr.ecr.eu-west-1.amazonaws.com
+      - name: Build And Push
+        shell: bash
+        run: |
+          TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:$(cat .DEV_VERSION)"
+          echo $TAG
+          docker build -f ./_ci/Backend.Dockerfile --tag "$TAG" .
+          docker push "$TAG"
+          echo "$(cat .DEV_VERSION)"           > ./.VERSION
+      - uses: actions/cache@v3
+        with:
+          path: |
+            .VERSION
+          key: ${{ github.sha }}
+
+  DeployToTest:
+    runs-on: self-hosted
+    needs: [BuildAndPushFrontendImage, BuildAndPushBackendImage]
+    environment: development
+    env:
+      BE_DOMAIN: ${{ secrets.BE_DOMAIN }}
+      FE_DOMAIN_ONE: ${{ secrets.FE_DOMAIN_ONE }}
+      FE_DOMAIN_TWO: ${{ secrets.FE_DOMAIN_TWO }}
+      NAMESPACE: ${{ secrets.NAMESPACE }}
+    steps:
+      - uses: actions/checkout@v3                                         # PULL_SOURCE_CODE
+      - uses: actions/setup-python@v3                                     # CONFIGURE_AWS_CLI
+        with:
+          python-version: "3.8"
+      - uses: aws-actions/setup-sam@v2                                    # CONFIGURE_AWS_CLI
+      - uses: aws-actions/configure-aws-credentials@v1                    # CONFIGURE_AWS_CLI
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+      - uses: ./.github/workflows/configure-kubectl                    # CONFIGURE_KUBECTL
+        with:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+      - run: cp ./_ci/.yq/yq_linux_amd64-v4.17.2 /usr/bin/yq && chmod +x /usr/bin/yq # CONFIGURE_YQ
+        shell: bash
+      - run: yq --version
+        shell: bash
+      - uses: actions/cache@v3
+        with:
+          path: |
+            .VERSION
+          key: ${{ github.sha }}
+      - run: cat .VERSION
+        shell: bash
+      - run: kubectl get all
+        shell: bash
+      - run: chmod +x ./_ci/scripts/STEP_DEPLOYMENT.sh
+        shell: bash
+      - run: ./_ci/scripts/STEP_DEPLOYMENT.sh
+        shell: bash
+
+  DeployToProd:
+    runs-on: self-hosted
+    needs: [BuildAndPushFrontendImage, BuildAndPushBackendImage]
+    environment: production
+    env:
+      BE_DOMAIN: ${{ secrets.BE_DOMAIN }}
+      FE_DOMAIN_ONE: ${{ secrets.FE_DOMAIN_ONE }}
+      FE_DOMAIN_TWO: ${{ secrets.FE_DOMAIN_TWO }}
+      NAMESPACE: ${{ secrets.NAMESPACE }}
+    steps:
+      - uses: actions/checkout@v3                                         # PULL_SOURCE_CODE
+      - uses: actions/setup-python@v3                                     # CONFIGURE_AWS_CLI
+        with:
+          python-version: "3.8"
+      - uses: aws-actions/setup-sam@v2                                    # CONFIGURE_AWS_CLI
+      - uses: aws-actions/configure-aws-credentials@v1                    # CONFIGURE_AWS_CLI
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+      - uses: ./.github/workflows/configure-kubectl                    # CONFIGURE_KUBECTL
+        with:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+      - run: cp ./_ci/.yq/yq_linux_amd64-v4.17.2 /usr/bin/yq && chmod +x /usr/bin/yq # CONFIGURE_YQ
+        shell: bash
+      - run: yq --version
+        shell: bash
+      - uses: actions/cache@v3
+        with:
+          path: |
+            .VERSION
+          key: ${{ github.sha }}
+      - run: cat .VERSION
+        shell: bash
+      - run: kubectl get all
+        shell: bash
+      - run: chmod +x ./_ci/scripts/STEP_DEPLOYMENT.sh
+        shell: bash
+      - run: ./_ci/scripts/STEP_DEPLOYMENT.sh
+        shell: bash
