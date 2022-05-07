@@ -20,5 +20,5 @@ runs:
       shell: bash
     - run: mkdir -p /.kube && touch /.kube/config
       shell: bash
-    - run: echo ${{ inputs.KUBE_CONFIG }} | base64 --decode > /.kube/config
+    - run: echo "${{ inputs.KUBE_CONFIG }}" | base64 --decode > /.kube/config
       shell: bash
