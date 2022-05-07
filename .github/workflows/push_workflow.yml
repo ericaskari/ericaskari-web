@@ -27,10 +27,7 @@ jobs:
             .DEV_VERSION
           key: ${{ github.sha }}
 
-
-
   BuildAndTest:
-    needs: [GenerateVersion]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3                                         # PULL_SOURCE_CODE
@@ -61,8 +58,10 @@ jobs:
             _dist
             .DEV_VERSION
           key: ${{ github.sha }}
+
+
   STEP_BUILD_PUSH_DEV_DOCKER_FE:
-    needs: [BuildAndTest]
+    needs: [GenerateVersion, BuildAndTest]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -99,8 +98,9 @@ jobs:
             .VERSION
           key: ${{ github.sha }}
 
+
   STEP_BUILD_PUSH_DEV_DOCKER_BE:
-    needs: [BuildAndTest]
+    needs: [GenerateVersion, BuildAndTest]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
