@@ -20,20 +20,16 @@ jobs:
       - uses: actions/setup-node@v3                                       # INSTALL_NODEJS
         with:
           node-version: 16
+      - name: Upload DEV_VERSION
+        uses: actions/upload-artifact@v3
+        with:
+          name: DEV_VERSION
+          path: .DEV_VERSION
       - uses: ./.github/workflows/generate-dev-version                    # OUTPUTS: .DEV_VERSION
       - name: debug
         shell: bash
         run: |
           echo DEV_VERSION: $(cat .DEV_VERSION)
-      - uses: actions/cache@v3                                            # CONFIGURE_AWS_CLI
-        with:
-          path: |
-            _dist
-            .VERSION
-            .DEV_VERSION
-            .PROD_PULL_VERSION
-            .PROD_PUSH_VERSION
-          key: ${{ runner.os }}-build-id-${{ github.head_ref }}-${{ github.sha }}
   GenerateProdVersion:
     runs-on: self-hosted
     if: github.ref_name == 'main'
@@ -57,15 +53,16 @@ jobs:
         run: |
           echo PROD_PULL_VERSION: $(cat .PROD_PULL_VERSION)
           echo PROD_PUSH_VERSION: $(cat .PROD_PUSH_VERSION)
-      - uses: actions/cache@v3
+      - name: Upload PROD_PULL_VERSION
+        uses: actions/upload-artifact@v3
         with:
-          path: |
-            _dist
-            .VERSION
-            .DEV_VERSION
-            .PROD_PULL_VERSION
-            .PROD_PUSH_VERSION
-          key: ${{ runner.os }}-build-id-${{ github.head_ref }}-${{ github.sha }}
+          name: PROD_PULL_VERSION
+          path: .PROD_PULL_VERSION
+      - name: Upload PROD_PUSH_VERSION
+        uses: actions/upload-artifact@v3
+        with:
+          name: PROD_PUSH_VERSION
+          path: .PROD_PUSH_VERSION
 
   BuildAndTest:
     runs-on: self-hosted
@@ -83,16 +80,11 @@ jobs:
       - name: Build
         shell: bash
         run: npx nx run-many --target=build --all
-      - name: Cache Built project
-        uses: actions/cache@v3
+      - name: Upload _dist
+        uses: actions/upload-artifact@v3
         with:
-          path: |
-            _dist
-            .VERSION
-            .DEV_VERSION
-            .PROD_PULL_VERSION
-            .PROD_PUSH_VERSION
-          key: ${{ runner.os }}-build-id-${{ github.head_ref }}-${{ github.sha }}
+          name: _dist
+          path: _dist
 
   BuildAndPushDevImages:
     needs: [GenerateDevVersion, BuildAndTest]
@@ -112,15 +104,14 @@ jobs:
       - name: Debug
         shell: bash
         run: ls -la
-      - uses: actions/cache@v3
+      - name: Download DEV_VERSION
+        uses: actions/download-artifact@v3
         with:
-          path: |
-            _dist
-            .VERSION
-            .DEV_VERSION
-            .PROD_PULL_VERSION
-            .PROD_PUSH_VERSION
-          key: ${{ runner.os }}-build-id-${{ github.head_ref }}-${{ github.sha }}
+          name: DEV_VERSION
+      - name: Download _dist
+        uses: actions/download-artifact@v3
+        with:
+          name: _dist
       - name: Debug
         shell: bash
         run: ls -la
@@ -139,15 +130,11 @@ jobs:
           docker push "$BE_TAG"
           docker push "$FE_TAG"
           echo "$(cat .DEV_VERSION)"           > ./.VERSION
-      - uses: actions/cache@v3
+      - name: Upload VERSION
+        uses: actions/upload-artifact@v3
         with:
-          path: |
-            _dist
-            .VERSION
-            .DEV_VERSION
-            .PROD_PULL_VERSION
-            .PROD_PUSH_VERSION
-          key: ${{ runner.os }}-build-id-${{ github.head_ref }}-${{ github.sha }}
+          name: VERSION
+          path: .VERSION
 
   BuildAndPushProdImages:
     needs: [GenerateProdVersion, BuildAndTest]
@@ -164,15 +151,18 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
-      - uses: actions/cache@v3
+      - name: Download PROD_PULL_VERSION
+        uses: actions/download-artifact@v3
         with:
-          path: |
-            _dist
-            .VERSION
-            .DEV_VERSION
-            .PROD_PULL_VERSION
-            .PROD_PUSH_VERSION
-          key: ${{ runner.os }}-build-id-${{ github.head_ref }}-${{ github.sha }}
+          name: PROD_PULL_VERSION
+      - name: Download PROD_PUSH_VERSION
+        uses: actions/download-artifact@v3
+        with:
+          name: PROD_PUSH_VERSION
+      - name: Download _dist
+        uses: actions/download-artifact@v3
+        with:
+          name: _dist
       - name: Login
         shell: bash
         run: docker login -u AWS -p $(aws ecr get-login-password --region eu-west-1) 438380764554.dkr.ecr.eu-west-1.amazonaws.com
@@ -195,15 +185,11 @@ jobs:
           docker push $BE_PUSH_TAG
           docker push $FE_PUSH_TAG
           echo "$(cat .PROD_PUSH_VERSION)"           > ./.VERSION
-      - uses: actions/cache@v3
+      - name: Upload VERSION
+        uses: actions/upload-artifact@v3
         with:
-          path: |
-            _dist
-            .VERSION
-            .DEV_VERSION
-            .PROD_PULL_VERSION
-            .PROD_PUSH_VERSION
-          key: ${{ runner.os }}-build-id-${{ github.head_ref }}-${{ github.sha }}
+          name: VERSION
+          path: .VERSION
 
   DeployToTest:
     runs-on: self-hosted
@@ -233,15 +219,10 @@ jobs:
         shell: bash
       - run: yq --version
         shell: bash
-      - uses: actions/cache@v3
+      - name: Download VERSION
+        uses: actions/download-artifact@v3
         with:
-          path: |
-            _dist
-            .VERSION
-            .DEV_VERSION
-            .PROD_PULL_VERSION
-            .PROD_PUSH_VERSION
-          key: ${{ runner.os }}-build-id-${{ github.head_ref }}-${{ github.sha }}
+          name: VERSION
       - run: cat .VERSION
         shell: bash
       - run: kubectl get all
@@ -279,15 +260,10 @@ jobs:
         shell: bash
       - run: yq --version
         shell: bash
-      - uses: actions/cache@v3
+      - name: Download VERSION
+        uses: actions/download-artifact@v3
         with:
-          path: |
-            _dist
-            .VERSION
-            .DEV_VERSION
-            .PROD_PULL_VERSION
-            .PROD_PUSH_VERSION
-          key: ${{ runner.os }}-build-id-${{ github.head_ref }}-${{ github.sha }}
+          name: VERSION
       - run: cat .VERSION
         shell: bash
       - run: kubectl get all
