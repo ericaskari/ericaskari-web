@@ -167,6 +167,7 @@ jobs:
       - uses: ./.github/workflows/configure-kubectl                    # CONFIGURE_KUBECTL
         with:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+      - uses: chrisdickinson/setup-yq@latest                           # CONFIGURE_YQ
       - uses: actions/cache@v3
         with:
           path: |
