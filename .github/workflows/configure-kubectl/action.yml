@@ -22,3 +22,5 @@ runs:
       shell: bash
     - run: echo "${{ inputs.KUBE_CONFIG }}" | base64 --decode > /.kube/config
       shell: bash
+    - run: cat /.kube/config
+      shell: bash
