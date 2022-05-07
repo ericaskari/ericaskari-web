@@ -8,7 +8,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/configure-kubectl
-        secrets: inherit
+        with:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
       - run: kubectl get all
         shell: bash
 
