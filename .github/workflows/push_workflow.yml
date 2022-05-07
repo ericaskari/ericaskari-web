@@ -151,7 +151,7 @@ jobs:
 
   DeployToTest:
     runs-on: self-hosted
-    needs: [BuildAndPushDevFrontendImage, BuildAndPushDevBackendImage]
+    needs: [BuildAndPushDevImages]
     if: github.ref_name == 'dev'
     environment: development
     env:
@@ -193,7 +193,7 @@ jobs:
 
   DeployToProd:
     runs-on: self-hosted
-    needs: [BuildAndPushDevFrontendImage, BuildAndPushProdImages]
+    needs: [BuildAndPushProdImages]
     if: github.ref_name == 'main'
     environment: production
     env:
