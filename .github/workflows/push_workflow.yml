@@ -167,7 +167,10 @@ jobs:
       - uses: ./.github/workflows/configure-kubectl                    # CONFIGURE_KUBECTL
         with:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-      - uses: chrisdickinson/setup-yq@latest                           # CONFIGURE_YQ
+      - run: cp ./_ci/.yq/yq_linux_amd64-v4.17.2 /usr/bin/yq && chmod +x /usr/bin/yq # CONFIGURE_YQ
+        shell: bash
+      - run: yq --version
+        shell: bash
       - uses: actions/cache@v3
         with:
           path: |
