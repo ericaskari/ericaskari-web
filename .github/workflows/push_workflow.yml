@@ -4,7 +4,7 @@ on:
     branches: [ actions ]
 jobs:
   GenerateVersion:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3                                     # CONFIGURE_AWS_CLI
@@ -28,7 +28,7 @@ jobs:
           key: ${{ github.sha }}
 
   BuildAndTest:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3                                         # PULL_SOURCE_CODE
       - uses: actions/setup-node@v3                                       # INSTALL_NODEJS
