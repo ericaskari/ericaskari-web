@@ -152,7 +152,7 @@ jobs:
   DeployToTest:
     runs-on: self-hosted
     needs: [BuildAndPushFrontendImage, BuildAndPushBackendImage]
-    deployment: development
+    environment: development
     steps:
       - uses: actions/checkout@v3                                         # PULL_SOURCE_CODE
       - uses: actions/setup-python@v3                                     # CONFIGURE_AWS_CLI
