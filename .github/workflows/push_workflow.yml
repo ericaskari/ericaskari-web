@@ -20,12 +20,12 @@ jobs:
       - uses: actions/setup-node@v3                                       # INSTALL_NODEJS
         with:
           node-version: 16
+      - uses: ./.github/workflows/generate-dev-version                    # OUTPUTS: .DEV_VERSION
       - name: Upload DEV_VERSION
         uses: actions/upload-artifact@v3
         with:
           name: DEV_VERSION
           path: .DEV_VERSION
-      - uses: ./.github/workflows/generate-dev-version                    # OUTPUTS: .DEV_VERSION
       - name: debug
         shell: bash
         run: |
