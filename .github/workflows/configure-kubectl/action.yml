@@ -18,7 +18,7 @@ runs:
       shell: bash
     - run: kubectl version --client
       shell: bash
-    - run: mkdir /.kube && touch /.kube/config
+    - run: mkdir -p /.kube && touch /.kube/config
       shell: bash
     - run: echo ${{ inputs.KUBE_CONFIG }} | base64 --decode > /.kube/config
       shell: bash
