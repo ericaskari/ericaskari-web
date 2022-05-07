@@ -3,8 +3,9 @@ on:
   push:
     branches: [ dev, main ]
 jobs:
-  GenerateVersion:
+  GenerateDevVersion:
     runs-on: self-hosted
+    if: github.ref_name == 'dev'
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3                                     # CONFIGURE_AWS_CLI
@@ -20,17 +21,41 @@ jobs:
         with:
           node-version: 16
       - uses: ./.github/workflows/generate-dev-version                    # OUTPUTS: .DEV_VERSION
-      - uses: ./.github/workflows/generate-prod-version                   # OUTPUTS: .PROD_PULL_VERSION   .PROD_PUSH_VERSION
       - name: debug
         shell: bash
         run: |
-          echo $(cat .DEV_VERSION)
-          echo $(cat .PROD_PULL_VERSION)
-          echo $(cat .PROD_PUSH_VERSION)
+          echo DEV_VERSION: $(cat .DEV_VERSION)
       - uses: actions/cache@v3
         with:
           path: |
             .DEV_VERSION
+          key: ${{ github.sha }}
+  GenerateProdVersion:
+    runs-on: self-hosted
+    if: github.ref_name == 'main'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3                                     # CONFIGURE_AWS_CLI
+        with:
+          python-version: "3.8"
+      - uses: aws-actions/setup-sam@v2                                    # CONFIGURE_AWS_CLI
+      - uses: aws-actions/configure-aws-credentials@v1                    # CONFIGURE_AWS_CLI
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+      - uses: actions/setup-node@v3                                       # INSTALL_NODEJS
+        with:
+          node-version: 16
+      - uses: ./.github/workflows/generate-prod-version                   # OUTPUTS: .PROD_PULL_VERSION   .PROD_PUSH_VERSION
+      - name: debug
+        shell: bash
+        run: |
+          echo PROD_PULL_VERSION: $(cat .PROD_PULL_VERSION)
+          echo PROD_PUSH_VERSION: $(cat .PROD_PUSH_VERSION)
+      - uses: actions/cache@v3
+        with:
+          path: |
             .PROD_PULL_VERSION
             .PROD_PUSH_VERSION
           key: ${{ github.sha }}
@@ -56,13 +81,10 @@ jobs:
         with:
           path: |
             _dist
-            .DEV_VERSION
-            .PROD_PULL_VERSION
-            .PROD_PUSH_VERSION
           key: ${{ github.sha }}
 
   BuildAndPushDevImages:
-    needs: [GenerateVersion, BuildAndTest]
+    needs: [GenerateDevVersion, BuildAndTest]
     if: github.ref_name == 'dev'
     runs-on: ubuntu-latest
     steps:
@@ -79,7 +101,6 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            _dist
             .DEV_VERSION
           key: ${{ github.sha }}
       - name: Login
@@ -104,7 +125,7 @@ jobs:
           key: ${{ github.sha }}
 
   BuildAndPushProdImages:
-    needs: [GenerateVersion, BuildAndTest]
+    needs: [GenerateProdVersion, BuildAndTest]
     if: github.ref_name == 'main'
     runs-on: ubuntu-latest
     steps:
@@ -121,7 +142,8 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            .VERSION
+            .PROD_PULL_VERSION
+            .PROD_PUSH_VERSION
           key: ${{ github.sha }}
       - name: Login
         shell: bash
