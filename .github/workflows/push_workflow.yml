@@ -183,4 +183,9 @@ jobs:
       - run: chmod +x ./_ci/scripts/STEP_DEPLOYMENT.sh
         shell: bash
       - run: ./_ci/scripts/STEP_DEPLOYMENT.sh
+        env:
+          BE_DOMAIN: ${{ secrets.BE_DOMAIN }}
+          FE_DOMAIN_ONE: ${{ secrets.FE_DOMAIN_ONE }}
+          FE_DOMAIN_TWO: ${{ secrets.FE_DOMAIN_TWO }}
+          NAMESPACE: ${{ secrets.NAMESPACE }}
         shell: bash
