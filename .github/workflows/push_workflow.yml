@@ -6,12 +6,10 @@ jobs:
   GenerateVersion:
     runs-on: self-hosted
     steps:
-      - name: deploy to cluster
-        uses: wahyd4/kubectl-helm-action@master
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG }}
-        with:
-          args: kubectl get all
+      - uses: ./.github/workflows/configure-kubectl
+      - run: kubectl get all
+        shell: bash
+
 #  GenerateVersion:
 #    runs-on: self-hosted
 #    steps:
