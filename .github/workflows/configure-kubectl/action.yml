@@ -1,8 +1,8 @@
-inputs:
-  KUBE_CONFIG_BASE64:
-    description: 'KUBE_CONFIG_BASE64'
-    required: true
-    default: 'KUBE_CONFIG_BASE64'
+#inputs:
+#  KUBE_CONFIG_BASE64:
+#    description: 'KUBE_CONFIG_BASE64'
+#    required: true
+#    default: 'KUBE_CONFIG_BASE64'
 name: ConfigureKubectl
 description: ConfigureKubectl
 runs:
