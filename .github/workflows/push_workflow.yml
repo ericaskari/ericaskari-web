@@ -56,6 +56,9 @@ jobs:
         with:
           path: |
             _dist
+            .DEV_VERSION
+            .PROD_PULL_VERSION
+            .PROD_PUSH_VERSION
           key: ${{ github.sha }}
 
   BuildAndPushDevImages:
@@ -118,8 +121,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            .PROD_PULL_VERSION
-            .PROD_PUSH_VERSION
+            .VERSION
           key: ${{ github.sha }}
       - name: Login
         shell: bash
@@ -146,7 +148,11 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
+            _dist
             .VERSION
+            .DEV_VERSION
+            .PROD_PULL_VERSION
+            .PROD_PUSH_VERSION
           key: ${{ github.sha }}
 
   DeployToTest:
