@@ -23,6 +23,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HeaderComponent } from "./components/header/header.component";
 import { FooterComponent } from "./components/footer/footer.component";
 import { LoadingComponent } from "./components/loading/loading.component";
+import { environmentInjectionToken } from "../environments/environment.prod";
 
 @NgModule({
     declarations: [ AppComponent, SvgFirmwareComponent, HomePageComponent, AboutPageComponent, LoadingComponent, ScrollIndicatorComponent, FooterComponent, HeaderComponent ],
@@ -52,6 +53,10 @@ import { LoadingComponent } from "./components/loading/loading.component";
             },
             deps: [ BootstrapService ],
             multi: true
+        },
+        {
+            provide: environmentInjectionToken,
+            useValue: environment
         }
     ],
     bootstrap: [ AppComponent ],

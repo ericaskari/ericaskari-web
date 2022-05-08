@@ -7,7 +7,8 @@ import { GenericEndpointService } from "@ericaskari/endpoints";
     styleUrls: [ './app.component.scss' ],
 })
 export class AppComponent {
-
+    appVersion$ = this.genericEndpointService.AppVersion();
+    apiVersion$ = this.genericEndpointService.ApiVersion();
     constructor(private genericEndpointService: GenericEndpointService) {
         this.genericEndpointService.AppVersion().subscribe((data) => {
             console.log(`Web version: ${ data.version }`);
