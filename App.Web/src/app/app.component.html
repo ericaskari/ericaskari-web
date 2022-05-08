@@ -7,8 +7,9 @@
 <!--        <a href="">CV</a>-->
     </div>
 </header>
-<router-outlet></router-outlet>
-
+<main [@darkenBg]="'visible'"  class="landing-bg">
+    <router-outlet></router-outlet>
+</main>
 <footer>
 <!--    <span>{{ (apiVersion$ | async)?.version }}</span>-->
 </footer>
