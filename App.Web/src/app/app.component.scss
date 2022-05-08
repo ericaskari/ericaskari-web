@@ -35,7 +35,7 @@ header {
   div:last-child {
     flex: 1;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
   }
   a {
     color: white;
@@ -48,7 +48,7 @@ header {
     div:last-child {
       flex: 1;
       display: flex;
-      justify-content: end;
+      justify-content: flex-end;
     }
     a {
       padding: 0 2rem;
