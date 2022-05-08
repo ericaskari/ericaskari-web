@@ -107,7 +107,8 @@ jobs:
 
   DeployToProd:
     runs-on: self-hosted
-    needs: [BuildAndPushProdImages]
+#    needs: [BuildAndPushProdImages]
+    needs: [BuildAndPushDevImages]
     # if: github.ref_name == 'main'
     if: github.ref_name == 'dev'
     environment: production
