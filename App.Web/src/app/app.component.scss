@@ -1,5 +1,37 @@
 :host {
-  grid-column: 1 / 13;
+
+}
+
+header {
+  display: flex;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  height: 100px;
+  align-items: center;
+  padding: 0 3rem;
+  div:last-child {
+    flex: 1;
+    display: flex;
+    justify-content: end;
+    gap: 5rem;
+  }
+
+  a {
+    color: white;
+  }
+}
+main {
+}
+
+.landing-bg {
+  background: radial-gradient(114.87% 310.42% at 100% 0%, #31186C 0%, #316E9A 60.48%, #219096 97.09%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  //background-position: center;
+  //background-size: cover;
+  //background-repeat: no-repeat;
+  filter: brightness(100%);
 }
 
 header {

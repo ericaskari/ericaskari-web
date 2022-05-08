@@ -1,29 +1,18 @@
 @import "../../../theme/mixins";
 
 :host {
-  min-height: 100vh;
   display: block;
+  min-height: 100vh;
 }
 
-section {
-  overflow: hidden;
-  position: relative;
+section:first-child {
   min-height: 100vh;
+  box-sizing: border-box;
+  padding-top: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 1rem;
-}
-
-.landing-bg {
-  background: radial-gradient(114.87% 310.42% at 100% 0%, #31186C 0%, #316E9A 60.48%, #219096 97.09%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
-  //background-position: center;
-  //background-size: cover;
-  //background-repeat: no-repeat;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  filter: brightness(100%);
 }
 
 .profile-image {
@@ -31,8 +20,8 @@ section {
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  width: 200px;
-  height: 200px;
+  width: clamp(120px, 20vw, 200px);
+  height: clamp(120px, 20vw, 200px);
   z-index: 1;
   border-radius: 50%;
   margin: 0 clamp(0rem, 10%, 50%) 2rem;
