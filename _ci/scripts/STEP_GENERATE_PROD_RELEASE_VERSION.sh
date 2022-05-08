@@ -39,6 +39,7 @@ NEW_PACKAGE_JSON_VERSION="$(npm version minor --allow-same-version --git-tag-ver
 
 echo "$LAST_DEV_RELEASE"           > ./.PROD_PULL_VERSION
 echo "$NEW_PACKAGE_JSON_VERSION"   > ./.PROD_PUSH_VERSION
+echo "$NEW_PACKAGE_JSON_VERSION"   > ./.DEV_VERSION
 
 echo "PROD_PULL_VERSION:            $LAST_DEV_RELEASE"
 echo "PROD_PUSH_VERSION:            $NEW_PACKAGE_JSON_VERSION"

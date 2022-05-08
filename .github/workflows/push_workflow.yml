@@ -4,9 +4,9 @@ on:
 #    branches: [ dev, main ]
     branches: [ main ]
 jobs:
-  GenerateDevVersion:
+  GenerateProdVersion:
     runs-on: self-hosted
-    #if: github.ref_name == 'dev'
+    # if: github.ref_name == 'main'
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3                                     # CONFIGURE_AWS_CLI
@@ -21,16 +21,28 @@ jobs:
       - uses: actions/setup-node@v3                                       # INSTALL_NODEJS
         with:
           node-version: 16
-      - uses: ./.github/workflows/generate-dev-version                    # OUTPUTS: .DEV_VERSION
+      - uses: ./.github/workflows/generate-prod-version                   # OUTPUTS: .PROD_PULL_VERSION   .PROD_PUSH_VERSION
+      - name: Debug
+        shell: bash
+        run: |
+          echo PROD_PULL_VERSION: $(cat .PROD_PULL_VERSION)
+          echo PROD_PUSH_VERSION: $(cat .PROD_PUSH_VERSION)
+      - name: Upload PROD_PULL_VERSION
+        uses: actions/upload-artifact@v3
+        with:
+          name: PROD_PULL_VERSION
+          path: .PROD_PULL_VERSION
+      - name: Upload PROD_PUSH_VERSION
+        uses: actions/upload-artifact@v3
+        with:
+          name: PROD_PUSH_VERSION
+          path: .PROD_PUSH_VERSION
       - name: Upload DEV_VERSION
         uses: actions/upload-artifact@v3
         with:
           name: DEV_VERSION
           path: .DEV_VERSION
-      - name: debug
-        shell: bash
-        run: |
-          echo DEV_VERSION: $(cat .DEV_VERSION)
+
 
   BuildAndTest:
     runs-on: self-hosted
@@ -54,7 +66,7 @@ jobs:
           name: _dist
           path: _dist
   BuildAndPushDevImages:
-    needs: [GenerateDevVersion, BuildAndTest]
+    needs: [GenerateProdVersion, BuildAndTest]
     #if: github.ref_name == 'dev'
     runs-on: ubuntu-latest
     steps:
@@ -149,9 +161,10 @@ jobs:
         shell: bash
 
 
-#  GenerateProdVersion:
+
+#  GenerateDevVersion:
 #    runs-on: self-hosted
-#    if: github.ref_name == 'main'
+#    #if: github.ref_name == 'dev'
 #    steps:
 #      - uses: actions/checkout@v3
 #      - uses: actions/setup-python@v3                                     # CONFIGURE_AWS_CLI
@@ -166,23 +179,16 @@ jobs:
 #      - uses: actions/setup-node@v3                                       # INSTALL_NODEJS
 #        with:
 #          node-version: 16
-#      - uses: ./.github/workflows/generate-prod-version                   # OUTPUTS: .PROD_PULL_VERSION   .PROD_PUSH_VERSION
+#      - uses: ./.github/workflows/generate-dev-version                    # OUTPUTS: .DEV_VERSION
+#      - name: Upload DEV_VERSION
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: DEV_VERSION
+#          path: .DEV_VERSION
 #      - name: debug
 #        shell: bash
 #        run: |
-#          echo PROD_PULL_VERSION: $(cat .PROD_PULL_VERSION)
-#          echo PROD_PUSH_VERSION: $(cat .PROD_PUSH_VERSION)
-#      - name: Upload PROD_PULL_VERSION
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: PROD_PULL_VERSION
-#          path: .PROD_PULL_VERSION
-#      - name: Upload PROD_PUSH_VERSION
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: PROD_PUSH_VERSION
-#          path: .PROD_PUSH_VERSION
-
+#          echo DEV_VERSION: $(cat .DEV_VERSION)
 
 #  BuildAndPushProdImages:
 #    needs: [GenerateProdVersion, BuildAndTest]
