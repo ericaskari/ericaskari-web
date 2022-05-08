@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { HttpClientModule } from "@angular/common/http";
-import { SvgFirmwareComponent } from "./svgs/svg-firmware.component";
 import { ReactiveFormsModule } from "@angular/forms";
 import { AppRoutingModule } from "./app.routing-module";
 import { EffectsModule } from "@ngrx/effects";
@@ -17,16 +16,11 @@ import { environment } from "../environments/environment";
 import { BootstrapStoreModule } from "@ericaskari/state";
 import { BootstrapService } from "./services/bootstrap.service";
 import { HomePageComponent } from "./pages/home-page/home-page.component";
-import { AboutPageComponent } from "./pages/about-page/about-page.component";
-import { ScrollIndicatorComponent } from './scroll-indicator/scroll-indicator.component';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { HeaderComponent } from "./components/header/header.component";
-import { FooterComponent } from "./components/footer/footer.component";
-import { LoadingComponent } from "./components/loading/loading.component";
 import { environmentInjectionToken } from "../environments/environment.prod";
 
 @NgModule({
-    declarations: [ AppComponent, SvgFirmwareComponent, HomePageComponent, AboutPageComponent, LoadingComponent, ScrollIndicatorComponent, FooterComponent, HeaderComponent ],
+    declarations: [ AppComponent, HomePageComponent ],
     imports: [
         HttpClientModule,
         BrowserModule,

@@ -17,7 +17,7 @@ export class AppController implements OnApplicationBootstrap {
     @Get('/version')
     getVersion(): BootstrapResponseModel {
         return BootstrapResponseModel.fromJson({
-            version: process.env.VERSION
+            version: process.env.VERSION || 'local-development'
         });
     }
 

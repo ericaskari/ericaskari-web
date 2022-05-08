@@ -15,18 +15,18 @@ export class GenericEndpointService {
         console.log(environment)
     }
 
-    AppVersion(): Observable<BootstrapResponseModel> {
+    AppVersion(): Observable<{ version: string }> {
         return this.httpClient
-            .get<BootstrapResponseModel>('/assets/app-version.json')
+            .get<{ version: string }>('/assets/app-version.json')
     }
 
-    ApiVersion(): Observable<BootstrapResponseModel> {
+    ApiVersion(): Observable<{ version: string }> {
         if (this.environment.production) {
             return this.httpClient
-                .get<BootstrapResponseModel>('/api/version');
+                .get<{ version: string }>('/api/version');
         } else {
             return this.httpClient
-                .get<BootstrapResponseModel>('http://localhost:8000/api/version');
+                .get<{ version: string }>('http://localhost:8000/api/version');
         }
     }
 }
