@@ -24,6 +24,10 @@ async function bootstrap() {
 
     Logger.log(`process.env.NODE_ENV: ${ process.env.NODE_ENV }`);
 
+    if (process.env.NODE_ENV === 'development') {
+        app.enableCors();
+    }
+
     app.get<EnvironmentService>(EnvironmentService).init();
 
     await app.listen(port, hostname, () => {
