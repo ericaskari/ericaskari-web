@@ -6,7 +6,9 @@
     "start": "docker-compose up --build --remove-orphans",
     "Start:App.Api": "nx serve App.Api -- --no-inspect",
     "Start:App.Web": "nx serve App.Web --host 0.0.0.0 --public-host ericaskari.localnet",
-    "postinstall": "ngcc --properties es2015 browser module main"
+    "postinstall": "ngcc --properties es2015 browser module main",
+    "generate:exports": "npm run _tsnode Scripts/generator-exports.ts",
+    "_tsnode": "ts-node -O '{\"module\": \"commonjs\", \"target\": \"ES6\", \"experimentalDecorators\": true, \"emitDecoratorMetadata\": true, \"lib\": [\"es2020\"] }'"
   },
   "private": true,
   "devDependencies": {

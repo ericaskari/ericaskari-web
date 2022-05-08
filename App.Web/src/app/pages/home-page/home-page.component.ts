@@ -1,9 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable } from "rxjs";
-import { BootstrapStoreSelectors } from "@ericaskari/state";
-import { Store } from "@ngrx/store";
 import { animate, state, style, transition, trigger } from "@angular/animations";
-import { BootstrapResponseModel } from "@ericaskari/model";
 
 @Component({
     selector: 'app-home-page',
@@ -12,28 +8,13 @@ import { BootstrapResponseModel } from "@ericaskari/model";
     animations: [
         trigger('landingText', [
             transition('* => visible', [
-                animate('3s')
+                animate('1s')
             ]),
             state('visible', style({
                 opacity: 1
             }))
-        ]),
-        trigger('darkenBg', [
-            transition('* => visible', [
-                animate('4s')
-            ]),
-            state('visible', style({
-                filter: 'brightness(50%)'
-            }))
-        ]),
+        ])
     ]
 })
 export class HomePageComponent {
-    isOpen = true;
-
-
-
-    constructor(private store: Store) {
-    }
-
 }

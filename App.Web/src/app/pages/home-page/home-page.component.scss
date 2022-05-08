@@ -5,7 +5,7 @@
   min-height: 100vh;
 }
 
-section {
+section:first-child {
   min-height: 100vh;
   box-sizing: border-box;
   padding-top: 100px;
@@ -13,6 +13,24 @@ section {
   flex-direction: column;
   justify-content: center;
   gap: 1rem;
+}
+
+section:nth-child(2) {
+  min-height: 100vh;
+  box-sizing: border-box;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: repeat(2, 100px);
+  grid-template-rows: repeat(6, 100px);
+  gap: 3rem;
+
+  @media screen and (min-width: 1000px) {
+    grid-template-columns: repeat(4, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 2rem;
+
+  }
 }
 
 .profile-image {
