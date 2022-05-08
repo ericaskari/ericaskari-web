@@ -32,7 +32,6 @@ export class HomePageComponent {
     isOpen = true;
 
 
-    version$: Observable<BootstrapResponseModel | null> = this.store.select(BootstrapStoreSelectors.bootstrapData)
 
     constructor(private store: Store) {
     }

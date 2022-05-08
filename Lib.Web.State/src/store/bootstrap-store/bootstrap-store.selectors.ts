@@ -5,7 +5,8 @@ import { BootstrapStoreConfig } from "./bootstrap-store.config";
 export abstract class BootstrapStoreSelectors {
     public static getState = createFeatureSelector<BootstrapStoreState>(BootstrapStoreConfig.name);
 
-    public static bootstrapData = createSelector(BootstrapStoreSelectors.getState, (state) => state.bootstrapData);
+    public static appVersion = createSelector(BootstrapStoreSelectors.getState, (state) => state.appVersion);
+    public static apiVersion = createSelector(BootstrapStoreSelectors.getState, (state) => state.apiVersion);
 
     public static finished = createSelector(BootstrapStoreSelectors.getState, (state) => state.finished);
 }

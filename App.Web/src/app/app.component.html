@@ -10,7 +10,11 @@
 <main>
     <router-outlet></router-outlet>
 </main>
-<div  [@darkenBg]="'visible'"  class="landing-bg"></div>
 <footer>
-<!--    <span>{{ (apiVersion$ | async)?.version }}</span>-->
+    <span><b>Backend version:</b></span>
+    <span>{{ (apiVersion$ | async) }}</span>
+    <br>
+    <span><b>Frontend version:</b></span>
+    <span>{{ (appVersion$ | async) }}</span>
 </footer>
+<div  [@darkenBg]="'visible'"  class="landing-bg"></div>

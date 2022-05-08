@@ -1,6 +1,5 @@
 import { Controller, Get, OnApplicationBootstrap, } from '@nestjs/common';
 import { LoggerService } from "./logger.service";
-import { BootstrapResponseModel } from "@ericaskari/model";
 
 
 @Controller()
@@ -15,10 +14,10 @@ export class AppController implements OnApplicationBootstrap {
     }
 
     @Get('/version')
-    getVersion(): BootstrapResponseModel {
-        return BootstrapResponseModel.fromJson({
+    getVersion(): { version: string } {
+        return {
             version: process.env.VERSION || 'local-development'
-        });
+        }
     }
 
     onApplicationBootstrap(): void {

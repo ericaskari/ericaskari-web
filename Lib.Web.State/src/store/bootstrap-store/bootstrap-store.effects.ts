@@ -4,7 +4,7 @@ import { concatMap, map } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
 import { BootstrapStoreActions } from "./bootstrap-store.actions";
 import { GenericEndpointService } from "@ericaskari/endpoints";
-import { BootstrapResponseModel } from "@ericaskari/model";
+import { combineLatest, zip } from "rxjs";
 
 @Injectable()
 export class BootstrapStoreEffects {
@@ -13,10 +13,12 @@ export class BootstrapStoreEffects {
         return this.actions$
             .pipe(
                 ofType(BootstrapStoreActions.AppStarted),
-                concatMap(() => this.genericEndpointService.AppVersion()),
-                map((bootstrapData: BootstrapResponseModel) =>
+                concatMap(() => {
+                    return combineLatest([this.genericEndpointService.AppVersion(), this.genericEndpointService.ApiVersion()])
+                }),
+                map(([appVersion, apiVersion]) =>
                     BootstrapStoreActions
-                        .BootstrapSucceededAndFinished({ bootstrapData })
+                        .BootstrapSucceededAndFinished({ appVersion, apiVersion })
                 ));
     });
 

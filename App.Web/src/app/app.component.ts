@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { GenericEndpointService } from "@ericaskari/endpoints";
 import { animate, state, style, transition, trigger } from "@angular/animations";
+import { Observable } from "rxjs";
+import { BootstrapStoreSelectors } from "@ericaskari/state";
+import { Store } from "@ngrx/store";
 
 @Component({
     selector: 'app-root',
@@ -18,14 +21,14 @@ import { animate, state, style, transition, trigger } from "@angular/animations"
 ]
 })
 export class AppComponent {
-    appVersion$ = this.genericEndpointService.AppVersion();
-    apiVersion$ = this.genericEndpointService.ApiVersion();
-    constructor(private genericEndpointService: GenericEndpointService) {
-        this.genericEndpointService.AppVersion().subscribe((data) => {
-            console.log(`Web version: ${ data.version }`);
+    appVersion$: Observable<string | null> = this.store.select(BootstrapStoreSelectors.appVersion)
+    apiVersion$: Observable<string | null> = this.store.select(BootstrapStoreSelectors.apiVersion)
+    constructor(private store: Store) {
+        this.appVersion$.subscribe((data) => {
+            console.log(`Web version: ${ data }`);
         });
-        this.genericEndpointService.ApiVersion().subscribe((data) => {
-            console.log(`Api version: ${ data.version }`);
+        this.apiVersion$.subscribe((data) => {
+            console.log(`Api version: ${ data }`);
         });
     }
 }

@@ -34,7 +34,8 @@ echo "CURRENT BRANCH:               $BRANCH_NAME"
 
 sed -i='backup' -e "s|$(cat ./package.json | jq -r '.version')|${LAST_DEV_RELEASE}|" ./package.json
 
-NEW_DEV_RELEASE="$(npm version prerelease --allow-same-version --git-tag-version false --preid $BRANCH_NAME)"
+#NEW_DEV_RELEASE="$(npm version prerelease --allow-same-version --git-tag-version false --preid $BRANCH_NAME)"
+NEW_DEV_RELEASE="$(npm version release --allow-same-version --git-tag-version false --preid $BRANCH_NAME)"
 
 echo "NEW_DEV_RELEASE:              $NEW_DEV_RELEASE"
 echo "$NEW_DEV_RELEASE"           > ./.DEV_VERSION

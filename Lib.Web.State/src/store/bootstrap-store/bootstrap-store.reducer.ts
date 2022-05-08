@@ -1,21 +1,23 @@
 import { createReducer, on } from "@ngrx/store";
 import { BootstrapStoreActions } from "./bootstrap-store.actions";
-import { BootstrapResponseModel } from "@ericaskari/model";
 
 export interface BootstrapStoreState {
     finished: boolean;
-    bootstrapData: BootstrapResponseModel | null
+    appVersion: string;
+    apiVersion: string;
 }
 
 export const BootstrapStoreReducer = createReducer<BootstrapStoreState>(
     {
         finished: false,
-        bootstrapData: null
+        appVersion: '',
+        apiVersion: '',
     },
-    on(BootstrapStoreActions.BootstrapSucceededAndFinished, (state, { bootstrapData }): BootstrapStoreState => {
+    on(BootstrapStoreActions.BootstrapSucceededAndFinished, (state, { appVersion, apiVersion }): BootstrapStoreState => {
         return {
             finished: true,
-            bootstrapData
+            appVersion,
+            apiVersion
         };
     })
 );
