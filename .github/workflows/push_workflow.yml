@@ -32,7 +32,27 @@ jobs:
         run: |
           echo DEV_VERSION: $(cat .DEV_VERSION)
 
-
+    BuildAndTest:
+      runs-on: self-hosted
+      steps:
+        - uses: actions/checkout@v3                                         # PULL_SOURCE_CODE
+        - uses: actions/setup-node@v3                                       # INSTALL_NODEJS
+          with:
+            node-version: 16
+        - name: Install dependencies
+          shell: bash
+          run: npm install
+        - name: Test
+          shell: bash
+          run: npx nx run-many --target=test --all
+        - name: Build
+          shell: bash
+          run: npx nx run-many --target=build --all
+        - name: Upload _dist
+          uses: actions/upload-artifact@v3
+          with:
+            name: _dist
+            path: _dist
   BuildAndPushDevImages:
     needs: [GenerateDevVersion, BuildAndTest]
     if: github.ref_name == 'dev'
@@ -163,27 +183,7 @@ jobs:
 #          name: PROD_PUSH_VERSION
 #          path: .PROD_PUSH_VERSION
 
-#  BuildAndTest:
-#    runs-on: self-hosted
-#    steps:
-#      - uses: actions/checkout@v3                                         # PULL_SOURCE_CODE
-#      - uses: actions/setup-node@v3                                       # INSTALL_NODEJS
-#        with:
-#          node-version: 16
-#      - name: Install dependencies
-#        shell: bash
-#        run: npm install
-#      - name: Test
-#        shell: bash
-#        run: npx nx run-many --target=test --all
-#      - name: Build
-#        shell: bash
-#        run: npx nx run-many --target=build --all
-#      - name: Upload _dist
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: _dist
-#          path: _dist
+
 #  BuildAndPushProdImages:
 #    needs: [GenerateProdVersion, BuildAndTest]
 #    if: github.ref_name == 'main'
