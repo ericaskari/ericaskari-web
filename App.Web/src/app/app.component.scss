@@ -33,3 +33,24 @@ main {
   //background-repeat: no-repeat;
   filter: brightness(100%);
 }
+
+header {
+  display: flex;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 1;
+
+  div:last-child {
+    flex: 1;
+    display: flex;
+    justify-content: end;
+  }
+
+  a {
+    color: white;
+    padding: 3rem 6rem 3rem 3rem;
+  }
+}
+
