@@ -2,27 +2,6 @@
 
 }
 
-header {
-  display: flex;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  z-index: 1;
-  height: 100px;
-  align-items: center;
-  padding: 0 3rem;
-  div:last-child {
-    flex: 1;
-    display: flex;
-    justify-content: end;
-    gap: 5rem;
-  }
-
-  a {
-    color: white;
-  }
-}
 main {
 }
 
@@ -42,8 +21,10 @@ main {
 }
 
 header {
+  height: 100px;
   display: flex;
-  position: fixed;
+  align-items: stretch;
+  position: absolute;
   left: 0;
   right: 0;
   top: 0;
@@ -54,10 +35,22 @@ header {
     display: flex;
     justify-content: end;
   }
-
   a {
     color: white;
-    padding: 3rem 6rem 3rem 3rem;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+  }
+
+  @media screen and (min-width: 1000px) {
+    div:last-child {
+      flex: 1;
+      display: flex;
+      justify-content: end;
+    }
+    a {
+      padding: 0 2rem;
+    }
   }
 }
 
