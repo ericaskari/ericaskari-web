@@ -26,6 +26,9 @@
       ],
       "@ericaskari/endpoints": [
         "Lib.Web.Endpoints/src/index.ts"
+      ],
+      "@ericaskari/api-common": [
+        "Lib.Api.Common/src/index.ts"
       ]
     }
   },

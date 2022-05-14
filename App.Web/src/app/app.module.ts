@@ -42,9 +42,7 @@ import { environmentInjectionToken } from "../environments/environment.prod";
     providers: [
         {
             provide: APP_INITIALIZER,
-            useFactory: (appService: BootstrapService) => {
-                return () => appService.initializeApp();
-            },
+            useFactory: BootstrapService.useFactory,
             deps: [ BootstrapService ],
             multi: true
         },

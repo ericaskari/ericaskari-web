@@ -58,5 +58,5 @@ _dist
 *.key
 .env
 .docker.env
-.backend.env
+.env
 .github/self_runners.yml

@@ -2,8 +2,6 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
-import { config as dotenvConfig  } from 'dotenv';
-import { EnvironmentService } from "./environment/environment.service";
 
 process.on('SIGINT', () => {
     console.info("Interrupted");
@@ -27,8 +25,6 @@ async function bootstrap() {
     if (process.env.NODE_ENV === 'development') {
         app.enableCors();
     }
-
-    app.get<EnvironmentService>(EnvironmentService).init();
 
     await app.listen(port, hostname, () => {
         Logger.log(`Listening at http://${ hostname }:${ port }/${ globalPrefix }`);

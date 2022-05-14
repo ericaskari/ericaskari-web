@@ -22,4 +22,10 @@ export class BootstrapService {
             .select(BootstrapStoreSelectors.finished)
             .pipe(tap(console.log), first());
     }
+
+    static get useFactory(): (appService: BootstrapService) => () => Observable<boolean> {
+        return (appService: BootstrapService) => {
+            return () => appService.initializeApp();
+        };
+    }
 }

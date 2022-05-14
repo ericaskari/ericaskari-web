@@ -21,12 +21,10 @@ export class GenericEndpointService {
     }
 
     ApiVersion(): Observable<string> {
-        if (this.environment.production) {
-            return this.httpClient
-                .get<{ version: string }>('/api/version').pipe(map(x => x.version), catchError(err => of('')))
-        } else {
-            return this.httpClient
-                .get<{ version: string }>('http://localhost:8000/api/version').pipe(map(x => x.version), catchError(err => of('')))
-        }
+        const source: Observable<{ runtimeVersion: string, buildVersion: string }> = this.environment.production
+            ? this.httpClient.get<{ runtimeVersion: string, buildVersion: string }>('/api/version')
+            : this.httpClient.get<{ runtimeVersion: string, buildVersion: string }>('http://localhost:8000/api/version')
+
+        return source.pipe(map(x => x.runtimeVersion), catchError(err => of('')))
     }
 }

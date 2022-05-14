@@ -5,6 +5,7 @@
     "App.Web": "App.Web",
     "Lib.Shared.Model": "Lib.Shared.Model",
     "Lib.Web.State": "Lib.Web.State",
-    "Lib.Web.Endpoints": "Lib.Web.Endpoints"
+    "Lib.Web.Endpoints": "Lib.Web.Endpoints",
+    "Lib.Api.Common": "Lib.Api.Common"
   }
 }
