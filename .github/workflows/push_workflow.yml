@@ -1,7 +1,7 @@
 name: Docker Image Build
 on:
   push:
-#    branches: [ dev, main ]
+    #    branches: [ dev, main ]
     branches: [ main ]
 jobs:
   GenerateProdVersion:
@@ -66,7 +66,7 @@ jobs:
           name: _dist
           path: _dist
   BuildAndPushDevImages:
-    needs: [GenerateProdVersion, BuildAndTest]
+    needs: [ GenerateProdVersion, BuildAndTest ]
     #if: github.ref_name == 'dev'
     runs-on: ubuntu-latest
     steps:
@@ -120,7 +120,7 @@ jobs:
   DeployToProd:
     runs-on: self-hosted
     # needs: [BuildAndPushProdImages]
-    needs: [BuildAndPushDevImages]
+    needs: [ BuildAndPushDevImages ]
     if: github.ref_name == 'main'
     environment: production
     env:
@@ -128,6 +128,12 @@ jobs:
       FE_DOMAIN_ONE: ${{ secrets.FE_DOMAIN_ONE }}
       FE_DOMAIN_TWO: ${{ secrets.FE_DOMAIN_TWO }}
       NAMESPACE: ${{ secrets.NAMESPACE }}
+      NODE_MAILER_AUTH_PASS: ${{ secrets.NODE_MAILER_AUTH_PASS }}
+      NODE_MAILER_AUTH_USER: ${{ secrets.NODE_MAILER_AUTH_USER }}
+      NODE_MAILER_HOST: ${{ secrets.NODE_MAILER_HOST }}
+      NODE_MAILER_PORT: ${{ secrets.NODE_MAILER_PORT }}
+      NODE_MAILER_SECURE: ${{ secrets.NODE_MAILER_SECURE }}
+      NODE_MAILER_SSL: ${{ secrets.NODE_MAILER_SSL }}
     steps:
       - uses: actions/checkout@v3                                         # PULL_SOURCE_CODE
       - uses: actions/setup-python@v3                                     # CONFIGURE_AWS_CLI
