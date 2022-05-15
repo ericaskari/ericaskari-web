@@ -2,12 +2,12 @@
   "version": 2,
   "projects": {
     "App.Api": "App.Api",
+    "Lib.Api.Common": "Lib.Api.Common",
     "App.Web": "App.Web",
-    "Lib.Shared.Model": "Lib.Shared.Model",
     "Lib.Web.State": "Lib.Web.State",
     "Lib.Web.Endpoints": "Lib.Web.Endpoints",
-    "Lib.Api.Common": "Lib.Api.Common",
+    "Lib.Web.Forms": "Lib.Web.Forms",
     "Lib.Shared.Common": "Lib.Shared.Common",
-    "Lib.Web.Forms": "Lib.Web.Forms"
+    "Lib.Shared.Model": "Lib.Shared.Model"
   }
 }
