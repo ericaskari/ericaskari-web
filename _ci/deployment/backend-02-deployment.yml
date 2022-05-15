@@ -19,5 +19,17 @@ spec:
           env:
             - name: VERSION
               value: "CUSTOM_VERSION"
+            - name: NODE_MAILER_HOST
+              value: "NODE_MAILER_HOST"
+            - name: NODE_MAILER_PORT
+              value: "NODE_MAILER_PORT"
+            - name: NODE_MAILER_SSL
+              value: "NODE_MAILER_SSL"
+            - name: NODE_MAILER_AUTH_USER
+              value: "NODE_MAILER_AUTH_USER"
+            - name: NODE_MAILER_AUTH_PASS
+              value: "NODE_MAILER_AUTH_PASS"
+            - name: NODE_MAILER_SECURE
+              value: "NODE_MAILER_SECURE"
       imagePullSecrets:
         - name: regcred

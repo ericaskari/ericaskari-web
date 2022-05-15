@@ -10,6 +10,7 @@ export interface IEnvironment {
     FRONTEND_URL: string;
     EMAIL_SERVER_HOST: string;
     EMAIL_SERVER_PORT: number;
+    NODE_MAILER_SECURE: boolean;
     NODE_MAILER_HOST: string;
     NODE_MAILER_PORT: number;
     NODE_MAILER_ENABLE_SSL: boolean;

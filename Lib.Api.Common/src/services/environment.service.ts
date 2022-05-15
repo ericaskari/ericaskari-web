@@ -33,6 +33,7 @@ export class EnvironmentService {
             NODE_MAILER_ENABLE_SSL: bool({ devDefault: false }),
             NODE_MAILER_AUTH_USER: str(),
             NODE_MAILER_AUTH_PASS: str(),
+            NODE_MAILER_SECURE: bool()
         } as {
             [K in keyof IEnvironment]: ValidatorSpec<IEnvironment[K]>;
         });
@@ -108,6 +109,10 @@ export class EnvironmentService {
 
     public get NODE_MAILER_AUTH_PASS(): string {
         return this.environment.NODE_MAILER_AUTH_PASS;
+    }
+
+    public get NODE_MAILER_SECURE(): boolean {
+        return this.environment.NODE_MAILER_SECURE;
     }
 
     private devAndTestDefault(devDefault: string, testDefault: string): string {

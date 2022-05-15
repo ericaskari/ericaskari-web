@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { animate, state, style, transition, trigger } from "@angular/animations";
 import { Observable } from "rxjs";
-import { BootstrapStoreSelectors } from "@ericaskari/state";
+import { BootstrapStoreSelectors } from "@ericaskari/web-state";
 import { Store } from "@ngrx/store";
 
 @Component({
@@ -9,15 +9,15 @@ import { Store } from "@ngrx/store";
     templateUrl: './app.component.html',
     styleUrls: [ './app.component.scss' ],
     animations: [
-    trigger('darkenBg', [
-        transition('* => visible', [
-            animate('2s')
+        trigger('darkenBg', [
+            transition('* => visible', [
+                animate('2s')
+            ]),
+            state('visible', style({
+                filter: 'brightness(80%)'
+            }))
         ]),
-        state('visible', style({
-            filter: 'brightness(80%)'
-        }))
-    ]),
-]
+    ]
 })
 export class AppComponent {
     appVersion$: Observable<string | null> = this.store.select(BootstrapStoreSelectors.appVersion);

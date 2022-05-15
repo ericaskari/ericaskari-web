@@ -6,14 +6,14 @@ import { EnvironmentService } from "@ericaskari/api-common";
 export class MailService {
     transporter = createTransport({
         host: this.environmentService.NODE_MAILER_HOST,
-        secure: this.environmentService.isProduction,
+        secure: this.environmentService.NODE_MAILER_SECURE,
         port: this.environmentService.NODE_MAILER_PORT,
         auth: {
             user: this.environmentService.NODE_MAILER_AUTH_USER,
             pass: this.environmentService.NODE_MAILER_AUTH_PASS
         },
         tls: {
-            rejectUnauthorized: this.environmentService.isProduction
+            rejectUnauthorized: this.environmentService.NODE_MAILER_SECURE
         }
     });
 
@@ -24,23 +24,14 @@ export class MailService {
         return await this.transporter.sendMail({
             from: '"Mohammad Askari (Eric)" <me@ericaskari.com>',
             to: 'ericaskari@gmail.com',
-            subject: subject,
-            html: data
+            subject: `Contact me form entry ${ new Date().toDateString() }`,
+            html: `
+            <p>From: <b>${ fromEmail }</b></p>
+            <p>Name: <b>${ name }</b></p>
+            <p>Subject: <b>${ subject }</b></p>
+            <div>${ data }</div>
+            `
         })
 
-    }
-
-
-    sendEmail() {
-        this.transporter.sendMail({
-            from: '"Mohammad Askari (Eric)" <me@ericaskari.com>',
-            to: 'ericaskari@gmail.com',
-            subject: 'test API email',
-            html: `Hello this is a test email`
-        }).then(data => {
-            console.log({ data })
-        }).catch(err => {
-            console.log({ err })
-        })
     }
 }

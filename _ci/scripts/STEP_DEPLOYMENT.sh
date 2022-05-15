@@ -10,16 +10,22 @@ BE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:$VERSION
 export FE_TAG
 export BE_TAG
 
-echo "NAMESPACE       $NAMESPACE"
-echo "VERSION         $VERSION"
-echo "FE_TAG          $FE_TAG"
-echo "BE_TAG          $BE_TAG"
-echo "BE_DOMAIN       $BE_DOMAIN"
-echo "FE_DOMAIN_ONE   $FE_DOMAIN_ONE"
-echo "FE_DOMAIN_TWO   $FE_DOMAIN_TWO"
+echo "NAMESPACE                 $NAMESPACE"
+echo "VERSION                   $VERSION"
+echo "FE_TAG                    $FE_TAG"
+echo "BE_TAG                    $BE_TAG"
+echo "BE_DOMAIN                 $BE_DOMAIN"
+echo "FE_DOMAIN_ONE             $FE_DOMAIN_ONE"
+echo "FE_DOMAIN_TWO             $FE_DOMAIN_TWO"
 
 yq e -i '.spec.template.spec.containers[0].image=env(BE_TAG)' ./_ci/deployment/backend-02-deployment.yml
 yq e -i '(.spec.template.spec.containers[0].env[] | select(.name == "VERSION")).value=env(VERSION)' ./_ci/deployment/backend-02-deployment.yml
+yq e -i '(.spec.template.spec.containers[0].env[] | select(.name == "NODE_MAILER_HOST")).value=env(NODE_MAILER_HOST)' ./_ci/deployment/backend-02-deployment.yml
+yq e -i '(.spec.template.spec.containers[0].env[] | select(.name == "NODE_MAILER_PORT")).value=env(NODE_MAILER_PORT)' ./_ci/deployment/backend-02-deployment.yml
+yq e -i '(.spec.template.spec.containers[0].env[] | select(.name == "NODE_MAILER_SSL")).value=env(NODE_MAILER_SSL)' ./_ci/deployment/backend-02-deployment.yml
+yq e -i '(.spec.template.spec.containers[0].env[] | select(.name == "NODE_MAILER_AUTH_USER")).value=env(NODE_MAILER_AUTH_USER)' ./_ci/deployment/backend-02-deployment.yml
+yq e -i '(.spec.template.spec.containers[0].env[] | select(.name == "NODE_MAILER_AUTH_PASS")).value=env(NODE_MAILER_AUTH_PASS)' ./_ci/deployment/backend-02-deployment.yml
+yq e -i '(.spec.template.spec.containers[0].env[] | select(.name == "NODE_MAILER_SECURE")).value=env(NODE_MAILER_SECURE)' ./_ci/deployment/backend-02-deployment.yml
 yq e -i ".spec.template.spec.containers[0].image=env(FE_TAG)" ./_ci/deployment/frontend-02-deployment.yml
 yq e -i '(.spec.template.spec.containers[0].env[] | select(.name == "VERSION")).value=env(VERSION)' ./_ci/deployment/frontend-02-deployment.yml
 yq e -i '.spec.tls[0].hosts[0]=env(FE_DOMAIN_ONE)' ./_ci/deployment/frontend-04-ingress.yml

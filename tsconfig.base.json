@@ -18,14 +18,20 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ericaskari/state": [
-        "Lib.Web.State/src/index.ts"
-      ],
       "@ericaskari/model": [
         "Lib.Shared.Model/src/index.ts"
       ],
-      "@ericaskari/endpoints": [
+      "@ericaskari/common": [
+        "Lib.Shared.Common/src/index.ts"
+      ],
+      "@ericaskari/web-state": [
+        "Lib.Web.State/src/index.ts"
+      ],
+      "@ericaskari/web-endpoints": [
         "Lib.Web.Endpoints/src/index.ts"
+      ],
+      "@ericaskari/web-forms": [
+        "Lib.Web.Forms/src/index.ts"
       ],
       "@ericaskari/api-common": [
         "Lib.Api.Common/src/index.ts"

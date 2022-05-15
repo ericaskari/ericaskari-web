@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { environmentInjectionToken } from "../../../App.Web/src/environments/environment.prod";
 import { catchError, map } from "rxjs/operators";
+import { ContactRequest, ContactResponse } from "@ericaskari/model";
 
 @Injectable({
     providedIn: 'root'
@@ -13,6 +14,11 @@ export class GenericEndpointService {
         @Inject(environmentInjectionToken) private environment: any
     ) {
         console.log(environment)
+    }
+
+    contact(request: ContactRequest): Observable<ContactResponse> {
+        return this.httpClient
+            .post<ContactResponse>('/api/contact', request);
     }
 
     AppVersion(): Observable<string> {

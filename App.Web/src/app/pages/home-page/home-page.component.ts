@@ -17,4 +17,8 @@ import { animate, state, style, transition, trigger } from "@angular/animations"
     ]
 })
 export class HomePageComponent {
+
+    onClick(event: MouseEvent): void {
+        console.info('click', event);
+    }
 }

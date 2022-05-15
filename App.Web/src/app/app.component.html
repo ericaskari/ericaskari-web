@@ -1,20 +1,43 @@
-<header>
-    <div>
-<!--        <a href="">Blog</a>-->
-        <a href="https://www.linkedin.com/in/ericaskari/">Contact me</a>
-        <a href="https://www.linkedin.com/in/ericaskari">Linkedin</a>
-        <a href="https://github.com/ericaskari">Github</a>
-<!--        <a href="">CV</a>-->
-    </div>
-</header>
-<main>
-    <router-outlet></router-outlet>
-</main>
-<footer>
-    <span><b>Backend version:</b></span>
-    <span>{{ (apiVersion$ | async) }}</span>
-    <br>
-    <span><b>Frontend version:</b></span>
-    <span>{{ (appVersion$ | async) }}</span>
-</footer>
-<div  [@darkenBg]="'visible'"  class="landing-bg"></div>
+<tui-root>
+    <!-- content of your app -->
+    <header class="tui-text_body-xl">
+        <a routerLink="/">Home</a>
+
+        <div>
+            <!--        <a href="">Blog</a>-->
+            <a routerLink="/contact">Contact me</a>
+            <a href="https://www.linkedin.com/in/ericaskari">Linkedin</a>
+            <a href="https://github.com/ericaskari">Github</a>
+            <!--        <a href="">CV</a>-->
+        </div>
+    </header>
+    <main style="display: flex">
+        <router-outlet></router-outlet>
+    </main>
+    <footer>
+        <span><b>Backend version:</b></span>
+        <span>{{ (apiVersion$ | async) }}</span>
+        <br>
+        <span><b>Frontend version:</b></span>
+        <span>{{ (appVersion$ | async) }}</span>
+    </footer>
+    <div [@darkenBg]="'visible'" class="landing-bg"></div>
+    <!--
+     If you need, you can add something between Taiga portal layers:
+    -->
+    <ng-container ngProjectAs="tuiOverContent">
+        <!-- Content over app content -->
+    </ng-container>
+    <ng-container ngProjectAs="tuiOverDialogs">
+        <!-- Content over dialogs -->
+    </ng-container>
+    <ng-container ngProjectAs="tuiOverAlerts">
+        <!-- Content over notifications -->
+    </ng-container>
+    <ng-container ngProjectAs="tuiOverPortals">
+        <!-- Content over dropdowns -->
+    </ng-container>
+    <ng-container ngProjectAs="tuiOverHints">
+        <!-- Content over hints -->
+    </ng-container>
+</tui-root>
