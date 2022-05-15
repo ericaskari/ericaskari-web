@@ -1,9 +1,11 @@
 #!/bin/sh
 set -e
 
-echo "RUNTIME VERSION: $VERSION"
+echo "BUILD_VERSION:    $BUILD_VERSION"
+echo "RUNTIME_VERSION:  $RUNTIME_VERSION"
 
-sed -i='' -e "s|local-development|${VERSION}|" /usr/share/nginx/html/assets/app-version.json || true
+sed -i='' -e "s|local-development-build|${BUILD_VERSION}|" /usr/share/nginx/html/assets/app-version.json || true
+sed -i='' -e "s|local-development-runtime|${RUNTIME_VERSION}|" /usr/share/nginx/html/assets/app-version.json || true
 
 if [ -z "${NGINX_ENTRYPOINT_QUIET_LOGS:-}" ]; then
     exec 3>&1

@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-import { bool, cleanEnv, host, port, str, url } from 'envalid';
+import { bool, cleanEnv, host, port, str } from 'envalid';
 import { CleanedEnvAccessors, ValidatorSpec } from "envalid/dist/types";
 import { IEnvironment } from "../interfaces/environment.interface";
 
@@ -22,12 +22,6 @@ export class EnvironmentService {
             }),
             ENABLE_SWAGGER: bool({ devDefault: true, default: true, desc: 'Enable/Disable Swagger' }),
             ENABLE_MIGRATIONS: bool({ devDefault: true, default: true, desc: 'Enable/Disable Migration' }),
-            HOST_NAME: host({ default: '0.0.0.0', devDefault: '0.0.0.0' }),
-            SERVER_ADDRESS: host({ default: 'localhost', devDefault: '127.0.0.1' }),
-            PORT: port({ default: 8000, devDefault: 8000 }),
-            FRONTEND_URL: url({ devDefault: 'http://127.0.0.1:8443' }),
-            EMAIL_SERVER_HOST: host({ devDefault: 'localhost' }),
-            EMAIL_SERVER_PORT: port({ devDefault: 1025 }),
             NODE_MAILER_HOST: host({ devDefault: 'localhost' }),
             NODE_MAILER_PORT: port({ devDefault: 1025 }),
             NODE_MAILER_ENABLE_SSL: bool({ devDefault: false }),
@@ -69,30 +63,6 @@ export class EnvironmentService {
 
     public get ENABLE_MIGRATIONS(): boolean {
         return this.environment.ENABLE_MIGRATIONS;
-    }
-
-    public get HOST_NAME(): string {
-        return this.environment.HOST_NAME;
-    }
-
-    public get SERVER_ADDRESS(): string {
-        return this.environment.SERVER_ADDRESS;
-    }
-
-    public get PORT(): number {
-        return this.environment.PORT;
-    }
-
-    public get FRONTEND_URL(): string {
-        return this.environment.FRONTEND_URL;
-    }
-
-    public get EMAIL_SERVER_HOST(): string {
-        return this.environment.EMAIL_SERVER_HOST;
-    }
-
-    public get EMAIL_SERVER_PORT(): number {
-        return this.environment.EMAIL_SERVER_PORT;
     }
 
     public get NODE_MAILER_HOST(): string {

@@ -123,17 +123,6 @@ jobs:
     needs: [ BuildAndPushDevImages ]
     if: github.ref_name == 'main'
     environment: production
-    env:
-      BE_DOMAIN: ${{ secrets.BE_DOMAIN }}
-      FE_DOMAIN_ONE: ${{ secrets.FE_DOMAIN_ONE }}
-      FE_DOMAIN_TWO: ${{ secrets.FE_DOMAIN_TWO }}
-      NAMESPACE: ${{ secrets.NAMESPACE }}
-      NODE_MAILER_AUTH_PASS: ${{ secrets.NODE_MAILER_AUTH_PASS }}
-      NODE_MAILER_AUTH_USER: ${{ secrets.NODE_MAILER_AUTH_USER }}
-      NODE_MAILER_HOST: ${{ secrets.NODE_MAILER_HOST }}
-      NODE_MAILER_PORT: ${{ secrets.NODE_MAILER_PORT }}
-      NODE_MAILER_SECURE: ${{ secrets.NODE_MAILER_SECURE }}
-      NODE_MAILER_SSL: ${{ secrets.NODE_MAILER_SSL }}
     steps:
       - uses: actions/checkout@v3                                         # PULL_SOURCE_CODE
       - uses: actions/setup-python@v3                                     # CONFIGURE_AWS_CLI
@@ -161,9 +150,49 @@ jobs:
         shell: bash
       - run: kubectl get all
         shell: bash
-      - run: chmod +x ./_ci/scripts/STEP_DEPLOYMENT.sh
+      - run: |
+          # Assign Env variables Backend       
+          yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_ENV",               "value": "production"}]'                          ./_ci/deployment/backend-02-deployment.yml
+          yq e -i '.spec.template.spec.containers[0].env += [{"name": "BUILD_VERSION",          "value": "${{secrets.BUILD_VERSION}}"}]'          ./_ci/deployment/backend-02-deployment.yml
+          yq e -i '.spec.template.spec.containers[0].env += [{"name": "RUNTIME_VERSION",        "value": "${{secrets.RUNTIME_VERSION}}"}]'        ./_ci/deployment/backend-02-deployment.yml
+          yq e -i '.spec.template.spec.containers[0].env += [{"name": "ENABLE_SWAGGER",         "value": "${{secrets.ENABLE_SWAGGER}}"}]'         ./_ci/deployment/backend-02-deployment.yml
+          yq e -i '.spec.template.spec.containers[0].env += [{"name": "ENABLE_MIGRATIONS",      "value": "${{secrets.ENABLE_MIGRATIONS}}"}]'      ./_ci/deployment/backend-02-deployment.yml
+          yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_HOST",       "value": "${{secrets.NODE_MAILER_HOST}}"}]'       ./_ci/deployment/backend-02-deployment.yml
+          yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_PORT",       "value": "${{secrets.NODE_MAILER_PORT}}"}]'       ./_ci/deployment/backend-02-deployment.yml
+          yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_ENABLE_SSL", "value": "${{secrets.NODE_MAILER_ENABLE_SSL}}"}]' ./_ci/deployment/backend-02-deployment.yml
+          yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_AUTH_USER",  "value": "${{secrets.NODE_MAILER_AUTH_USER}}"}]'  ./_ci/deployment/backend-02-deployment.yml
+          yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_AUTH_PASS",  "value": "${{secrets.NODE_MAILER_AUTH_PASS}}"}]'  ./_ci/deployment/backend-02-deployment.yml
+          yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_SECURE",     "value": "${{secrets.NODE_MAILER_SECURE}}"}]'     ./_ci/deployment/backend-02-deployment.yml
+          
+          # Assign Env variables FrontEnd      
+          yq e -i '.spec.template.spec.containers[0].env += [{"name": "BUILD_VERSION",          "value": "${{secrets.BUILD_VERSION}}"}]'          ./_ci/deployment/frontend-02-deployment.yml
+          yq e -i '.spec.template.spec.containers[0].env += [{"name": "RUNTIME_VERSION",        "value": "${{secrets.RUNTIME_VERSION}}"}]'        ./_ci/deployment/frontend-02-deployment.yml
+          
+          # Assign container images          
+          export VERSION="$(cat .VERSION)"
+          export FE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:$VERSION"
+          export BE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:$VERSION"
+          yq e -i '.spec.template.spec.containers[0].image=env(BE_TAG)'                                                                           ./_ci/deployment/backend-02-deployment.yml
+          yq e -i ".spec.template.spec.containers[0].image=env(FE_TAG)"                                                                           ./_ci/deployment/frontend-02-deployment.yml
+          
+          # Other configurations          
+          yq e -i '.spec.tls[0].hosts[0]="${{secrets.FE_DOMAIN_ONE}}"'                                                                            ./_ci/deployment/frontend-04-ingress.yml
+          yq e -i '.spec.tls[0].hosts[1]="${{secrets.FE_DOMAIN_TWO}}"'                                                                            ./_ci/deployment/frontend-04-ingress.yml
+          yq e -i '.spec.rules[0].host="${{secrets.FE_DOMAIN_ONE}}"'                                                                              ./_ci/deployment/frontend-04-ingress.yml
+          yq e -i '.spec.rules[1].host="${{secrets.FE_DOMAIN_TWO}}"'                                                                              ./_ci/deployment/frontend-04-ingress.yml
         shell: bash
-      - run: ./_ci/scripts/STEP_DEPLOYMENT.sh
+      - run: |
+          kubectl create namespace "${{ secrets.NAMESPACE }}" || true
+          kubectl delete secret --namespace="${{ secrets.NAMESPACE }}" regcred || true
+          kubectl create secret docker-registry regcred --namespace="${{ secrets.NAMESPACE }}" --docker-server=438380764554.dkr.ecr.eu-west-1.amazonaws.com --docker-username=AWS --docker-password="$(aws ecr get-login-password)" || true
+          #kubectl apply  --namespace="${{ secrets.NAMESPACE }}" --filename=./_ci/deployment/shared-01-mirror-secret-production.yaml
+          kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./_ci/deployment/backend-01-secret.yml
+          kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./_ci/deployment/backend-02-deployment.yml
+          kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./_ci/deployment/backend-03-service.yml
+          kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./_ci/deployment/frontend-01-secret.yml
+          kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./_ci/deployment/frontend-02-deployment.yml
+          kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./_ci/deployment/frontend-03-service.yml
+          kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./_ci/deployment/frontend-04-ingress.yml
         shell: bash
 
 

@@ -1,9 +1,8 @@
 #!/bin/sh
 set -e
 
-echo "RUNTIME VERSION: $VERSION"
-
-sed -i='' -e "s|local-development|${VERSION}|" /app/assets/app-version.json || true
+echo "BUILD_VERSION:    $BUILD_VERSION"
+echo "RUNTIME_VERSION:  $RUNTIME_VERSION"
 
 echo '$@' "$@"
 # Run command with node if the first argument contains a "-" or is not a system command. The last

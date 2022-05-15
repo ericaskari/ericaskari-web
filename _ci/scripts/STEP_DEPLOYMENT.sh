@@ -26,6 +26,7 @@ yq e -i '(.spec.template.spec.containers[0].env[] | select(.name == "NODE_MAILER
 yq e -i '(.spec.template.spec.containers[0].env[] | select(.name == "NODE_MAILER_AUTH_USER")).value=env(NODE_MAILER_AUTH_USER)' ./_ci/deployment/backend-02-deployment.yml
 yq e -i '(.spec.template.spec.containers[0].env[] | select(.name == "NODE_MAILER_AUTH_PASS")).value=env(NODE_MAILER_AUTH_PASS)' ./_ci/deployment/backend-02-deployment.yml
 yq e -i '(.spec.template.spec.containers[0].env[] | select(.name == "NODE_MAILER_SECURE")).value=env(NODE_MAILER_SECURE)' ./_ci/deployment/backend-02-deployment.yml
+
 yq e -i ".spec.template.spec.containers[0].image=env(FE_TAG)" ./_ci/deployment/frontend-02-deployment.yml
 yq e -i '(.spec.template.spec.containers[0].env[] | select(.name == "VERSION")).value=env(VERSION)' ./_ci/deployment/frontend-02-deployment.yml
 yq e -i '.spec.tls[0].hosts[0]=env(FE_DOMAIN_ONE)' ./_ci/deployment/frontend-04-ingress.yml
@@ -34,10 +35,8 @@ yq e -i '.spec.rules[0].host=env(FE_DOMAIN_ONE)' ./_ci/deployment/frontend-04-in
 yq e -i '.spec.rules[1].host=env(FE_DOMAIN_TWO)' ./_ci/deployment/frontend-04-ingress.yml
 
 kubectl create namespace "$NAMESPACE" || true
-
 kubectl delete secret --namespace="$NAMESPACE" regcred || true
 kubectl create secret docker-registry regcred --namespace="$NAMESPACE" --docker-server=438380764554.dkr.ecr.eu-west-1.amazonaws.com --docker-username=AWS --docker-password="$(aws ecr get-login-password)" || true
-
 #kubectl apply --namespace="$NAMESPACE" --filename=./_ci/deployment/shared-01-mirror-secret-production.yaml
 kubectl apply --namespace="$NAMESPACE" --filename=./_ci/deployment/backend-01-secret.yml
 kubectl apply --namespace="$NAMESPACE" --filename=./_ci/deployment/backend-02-deployment.yml
