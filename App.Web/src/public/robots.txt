@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /favorites/
+Disallow: /login/
+Disallow: /assets/
+Disallow: /api/
