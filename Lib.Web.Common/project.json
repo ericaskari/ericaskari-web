@@ -1,0 +1,22 @@
+{
+    "projectType": "library",
+    "root": "Lib.Web.Common",
+    "sourceRoot": "Lib.Web.Common/src",
+    "prefix": "lohi",
+    "targets": {
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/Lib.Web.Common"],
+            "options": {
+                "jestConfig": "Lib.Web.Common/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": ["Lib.Web.Common/src/**/*.ts", "Lib.Web.Common/src/**/*.html"]
+            }
+        }
+    }
+}

@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { HomePageComponent } from './pages/home-page/home-page.component';
+
 import { ContactPageComponent } from './pages/contact-page/contact-page.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
 
 @NgModule({
     exports: [RouterModule],

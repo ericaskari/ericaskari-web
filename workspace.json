@@ -8,6 +8,7 @@
         "Lib.Shared.Model": "Lib.Shared.Model",
         "Lib.Web.Endpoints": "Lib.Web.Endpoints",
         "Lib.Web.Forms": "Lib.Web.Forms",
-        "Lib.Web.State": "Lib.Web.State"
+        "Lib.Web.State": "Lib.Web.State",
+        "Lib.Web.Common": "Lib.Web.Common"
     }
 }

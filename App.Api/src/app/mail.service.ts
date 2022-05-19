@@ -1,6 +1,6 @@
+import { EnvironmentService } from '@ericaskari/api-common';
 import { Injectable } from '@nestjs/common';
 import { createTransport } from 'nodemailer';
-import { EnvironmentService } from '@ericaskari/api-common';
 
 @Injectable()
 export class MailService {

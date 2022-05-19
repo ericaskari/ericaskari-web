@@ -1,5 +1,5 @@
-import { RouterStateSerializer } from '@ngrx/router-store';
 import { ActivatedRouteSnapshot, Params, RouterStateSnapshot } from '@angular/router';
+import { RouterStateSerializer } from '@ngrx/router-store';
 
 //  Things we need to export from router.snapshot
 export interface RouterStateUrl {

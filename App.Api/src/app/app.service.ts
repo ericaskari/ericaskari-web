@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
 import { ContactRequest, ContactResponse } from '@ericaskari/model';
+import { Injectable } from '@nestjs/common';
+
 import { MailService } from './mail.service';
 
 @Injectable()

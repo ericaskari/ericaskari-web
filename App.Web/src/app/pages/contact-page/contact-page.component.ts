@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ContactFormService } from '@ericaskari/web-forms';
-import { GenericEndpointService } from '@ericaskari/web-endpoints';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { GenericEndpointService } from '@ericaskari/web-endpoints';
+import { ContactFormService } from '@ericaskari/web-forms';
 
 @Component({
     selector: 'contact-home-page',

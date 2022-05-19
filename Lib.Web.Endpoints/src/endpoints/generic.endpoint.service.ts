@@ -1,15 +1,18 @@
-import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { environmentInjectionToken } from '../../../App.Web/src/environments/environment.prod';
-import { catchError, map } from 'rxjs/operators';
+import { Inject, Injectable } from '@angular/core';
 import { ContactRequest, ContactResponse } from '@ericaskari/model';
+import { FrontendEnvironment, frontendEnvironmentInterfaceInjectionToken } from '@ericaskari/web-common';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root',
 })
 export class GenericEndpointService {
-    constructor(private httpClient: HttpClient, @Inject(environmentInjectionToken) private environment: any) {
+    constructor(
+        private httpClient: HttpClient,
+        @Inject(frontendEnvironmentInterfaceInjectionToken) private environment: FrontendEnvironment
+    ) {
         console.log(environment);
     }
 

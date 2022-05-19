@@ -1,8 +1,9 @@
 import { ActionReducerMap, MetaReducer } from '@ngrx/store';
-import { environment } from '../environments/environment';
+
+import { frontendEnvironment } from '../environments/frontend-environment';
 
 export interface AppModuleState {}
 
 export const rootActionReducerMap: ActionReducerMap<AppModuleState> = {};
 
-export const rootMetaReducers: MetaReducer<AppModuleState>[] = !environment.production ? [] : [];
+export const rootMetaReducers: MetaReducer<AppModuleState>[] = !frontendEnvironment.production ? [] : [];

@@ -1,8 +1,9 @@
-import { Body, Controller, Get, OnApplicationBootstrap, Post } from '@nestjs/common';
-import { LoggerService } from './logger.service';
 import { EnvironmentService } from '@ericaskari/api-common';
 import { ContactRequest, ContactResponse } from '@ericaskari/model';
+import { Body, Controller, Get, OnApplicationBootstrap, Post } from '@nestjs/common';
+
 import { AppService } from './app.service';
+import { LoggerService } from './logger.service';
 
 @Controller()
 export class AppController implements OnApplicationBootstrap {

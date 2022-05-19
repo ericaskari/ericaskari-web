@@ -20,7 +20,8 @@
             "@ericaskari/model": ["Lib.Shared.Model/src/index.ts"],
             "@ericaskari/web-endpoints": ["Lib.Web.Endpoints/src/index.ts"],
             "@ericaskari/web-forms": ["Lib.Web.Forms/src/index.ts"],
-            "@ericaskari/web-state": ["Lib.Web.State/src/index.ts"]
+            "@ericaskari/web-state": ["Lib.Web.State/src/index.ts"],
+            "@ericaskari/web-common": ["Lib.Web.Common/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

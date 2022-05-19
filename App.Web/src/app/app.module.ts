@@ -1,28 +1,29 @@
+import { LayoutModule } from '@angular/cdk/layout';
+import { HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { frontendEnvironmentInterfaceInjectionToken } from '@ericaskari/web-common';
+import { BootstrapStoreModule } from '@ericaskari/web-state';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
+import { frontendEnvironment } from '../environments/frontend-environment';
+import { appModuleEffects } from '../store/app.module.effect';
+import { rootActionReducerMap, rootMetaReducers } from '../store/app.module.reducer';
+import { CustomRouterStateSerializer } from '../store/router.serializer';
 
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app.routing-module';
-import { EffectsModule } from '@ngrx/effects';
-import { appModuleEffects } from '../store/app.module.effect';
-import { StoreModule } from '@ngrx/store';
-import { rootActionReducerMap, rootMetaReducers } from '../store/app.module.reducer';
-import { StoreRouterConnectingModule } from '@ngrx/router-store';
-import { CustomRouterStateSerializer } from '../store/router.serializer';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
-import { BootstrapStoreModule } from '@ericaskari/web-state';
-import { BootstrapService } from './services/bootstrap.service';
-import { HomePageComponent } from './pages/home-page/home-page.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { environmentInjectionToken } from '../environments/environment.prod';
-import { ContactPageComponent } from './pages/contact-page/contact-page.component';
-import { NotificationComponent } from './notification/notification.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { LayoutModule } from '@angular/cdk/layout';
 import { ButtonDirective } from './components/button/button.directive';
+import { NotificationComponent } from './notification/notification.component';
+import { ContactPageComponent } from './pages/contact-page/contact-page.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
+import { BootstrapService } from './services/bootstrap.service';
 
 @NgModule({
     declarations: [AppComponent, HomePageComponent, ContactPageComponent, NotificationComponent, ButtonDirective],
@@ -45,7 +46,7 @@ import { ButtonDirective } from './components/button/button.directive';
         }),
         StoreDevtoolsModule.instrument({
             maxAge: 25,
-            logOnly: environment.production,
+            logOnly: frontendEnvironment.production,
             serialize: false,
         }),
         BootstrapStoreModule.forRoot(),
@@ -60,8 +61,8 @@ import { ButtonDirective } from './components/button/button.directive';
             multi: true,
         },
         {
-            provide: environmentInjectionToken,
-            useValue: environment,
+            provide: frontendEnvironmentInterfaceInjectionToken,
+            useValue: frontendEnvironment,
         },
     ],
     bootstrap: [AppComponent],

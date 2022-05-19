@@ -1,8 +1,8 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
-import { from, Observable } from 'rxjs';
-import { validate, ValidationError } from 'class-validator';
-import { map } from 'rxjs/operators';
 import { ClassConstructor } from 'class-transformer/types/interfaces';
+import { validate, ValidationError } from 'class-validator';
+import { from, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export interface FormFieldError {
     [key: string]: boolean;

@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { first, tap } from 'rxjs/operators';
-
-import { Observable } from 'rxjs';
 import { BootstrapStoreActions, BootstrapStoreSelectors } from '@ericaskari/web-state';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { first, tap } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root',

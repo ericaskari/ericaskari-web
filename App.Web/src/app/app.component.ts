@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Observable } from 'rxjs';
+import { Component } from '@angular/core';
 import { BootstrapStoreSelectors } from '@ericaskari/web-state';
-import { Store } from '@ngrx/store';
-import { NotificationService } from './notification/notification.service';
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+
+import { NotificationService } from './notification/notification.service';
 
 @Component({
     selector: 'app-root',
