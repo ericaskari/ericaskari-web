@@ -1,12 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { ContactRequest, ContactResponse } from "@ericaskari/model";
-import { MailService } from "./mail.service";
+import { ContactRequest, ContactResponse } from '@ericaskari/model';
+import { MailService } from './mail.service';
 
 @Injectable()
 export class AppService {
-    constructor(private mailService: MailService) {
-
-    }
+    constructor(private mailService: MailService) {}
 
     getData(): { message: string } {
         return { message: 'Welcome to App.Api!' };
@@ -16,5 +14,4 @@ export class AppService {
         await this.mailService.sendContactMeEmail(request.email, request.name, request.subject, request.message);
         return new ContactResponse();
     }
-
 }

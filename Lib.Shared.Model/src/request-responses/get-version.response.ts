@@ -1,4 +1,4 @@
-import { plainToClass } from "class-transformer";
+import { plainToClass } from 'class-transformer';
 
 export class GetVersionResponse {
     version: string | null = null;

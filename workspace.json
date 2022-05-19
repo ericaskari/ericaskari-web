@@ -1,13 +1,13 @@
 {
-  "version": 2,
-  "projects": {
-    "App.Api": "App.Api",
-    "App.Web": "App.Web",
-    "Lib.Api.Common": "Lib.Api.Common",
-    "Lib.Shared.Common": "Lib.Shared.Common",
-    "Lib.Shared.Model": "Lib.Shared.Model",
-    "Lib.Web.Endpoints": "Lib.Web.Endpoints",
-    "Lib.Web.Forms": "Lib.Web.Forms",
-    "Lib.Web.State": "Lib.Web.State"
-  }
+    "version": 2,
+    "projects": {
+        "App.Api": "App.Api",
+        "App.Web": "App.Web",
+        "Lib.Api.Common": "Lib.Api.Common",
+        "Lib.Shared.Common": "Lib.Shared.Common",
+        "Lib.Shared.Model": "Lib.Shared.Model",
+        "Lib.Web.Endpoints": "Lib.Web.Endpoints",
+        "Lib.Web.Forms": "Lib.Web.Forms",
+        "Lib.Web.State": "Lib.Web.State"
+    }
 }

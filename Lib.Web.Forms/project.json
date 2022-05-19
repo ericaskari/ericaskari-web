@@ -6,9 +6,7 @@
     "targets": {
         "test": {
             "executor": "@nrwl/jest:jest",
-            "outputs": [
-                "coverage/Lib.Web.Forms"
-            ],
+            "outputs": ["coverage/Lib.Web.Forms"],
             "options": {
                 "jestConfig": "Lib.Web.Forms/jest.config.js",
                 "passWithNoTests": true
@@ -17,10 +15,7 @@
         "lint": {
             "executor": "@nrwl/linter:eslint",
             "options": {
-                "lintFilePatterns": [
-                    "Lib.Web.Forms/src/**/*.ts",
-                    "Lib.Web.Forms/src/**/*.html"
-                ]
+                "lintFilePatterns": ["Lib.Web.Forms/src/**/*.ts", "Lib.Web.Forms/src/**/*.html"]
             }
         }
     }

@@ -1,6 +1,6 @@
-import { createFeatureSelector, createSelector } from "@ngrx/store";
-import { BootstrapStoreState } from "./bootstrap-store.reducer";
-import { BootstrapStoreConfig } from "./bootstrap-store.config";
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { BootstrapStoreState } from './bootstrap-store.reducer';
+import { BootstrapStoreConfig } from './bootstrap-store.config';
 
 export abstract class BootstrapStoreSelectors {
     public static getState = createFeatureSelector<BootstrapStoreState>(BootstrapStoreConfig.name);
@@ -10,4 +10,3 @@ export abstract class BootstrapStoreSelectors {
 
     public static finished = createSelector(BootstrapStoreSelectors.getState, (state) => state.finished);
 }
-

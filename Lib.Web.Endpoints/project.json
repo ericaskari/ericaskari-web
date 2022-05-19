@@ -1,28 +1,23 @@
 {
-  "projectType": "library",
-  "root": "Lib.Web.Endpoints",
-  "sourceRoot": "Lib.Web.Endpoints/src",
-  "prefix": "app",
-  "targets": {
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/Lib.Web.Endpoints"
-      ],
-      "options": {
-        "jestConfig": "Lib.Web.Endpoints/jest.config.js",
-        "passWithNoTests": true
-      }
+    "projectType": "library",
+    "root": "Lib.Web.Endpoints",
+    "sourceRoot": "Lib.Web.Endpoints/src",
+    "prefix": "app",
+    "targets": {
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/Lib.Web.Endpoints"],
+            "options": {
+                "jestConfig": "Lib.Web.Endpoints/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": ["Lib.Web.Endpoints/src/**/*.ts", "Lib.Web.Endpoints/src/**/*.html"]
+            }
+        }
     },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "options": {
-        "lintFilePatterns": [
-          "Lib.Web.Endpoints/src/**/*.ts",
-          "Lib.Web.Endpoints/src/**/*.html"
-        ]
-      }
-    }
-  },
-  "tags": []
+    "tags": []
 }

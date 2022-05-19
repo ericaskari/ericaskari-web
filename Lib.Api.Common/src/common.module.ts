@@ -7,7 +7,7 @@ const sharedServices = [EnvironmentService];
     imports: [],
     controllers: [],
     providers: [...sharedServices],
-    exports: [...sharedServices]
+    exports: [...sharedServices],
 })
 export class CommonModule {
     constructor() {}

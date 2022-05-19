@@ -1,2 +1,1 @@
-export class ContactResponse {
-}
+export class ContactResponse {}

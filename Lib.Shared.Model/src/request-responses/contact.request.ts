@@ -1,5 +1,5 @@
-import { IsEmail, IsString } from "class-validator";
-import { plainToClass } from "class-transformer";
+import { IsEmail, IsString } from 'class-validator';
+import { plainToClass } from 'class-transformer';
 
 export class ContactRequest {
     @IsEmail()
@@ -13,7 +13,6 @@ export class ContactRequest {
 
     @IsString()
     message!: string;
-
 
     public static fromRequest(model: Partial<ContactRequest>): ContactRequest {
         return plainToClass(ContactRequest, model);

@@ -1,28 +1,23 @@
 {
-  "projectType": "library",
-  "root": "Lib.Shared.Model",
-  "sourceRoot": "Lib.Shared.Model/src",
-  "prefix": "app",
-  "targets": {
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/Lib.Shared.Model"
-      ],
-      "options": {
-        "jestConfig": "Lib.Shared.Model/jest.config.js",
-        "passWithNoTests": true
-      }
+    "projectType": "library",
+    "root": "Lib.Shared.Model",
+    "sourceRoot": "Lib.Shared.Model/src",
+    "prefix": "app",
+    "targets": {
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/Lib.Shared.Model"],
+            "options": {
+                "jestConfig": "Lib.Shared.Model/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": ["Lib.Shared.Model/src/**/*.ts", "Lib.Shared.Model/src/**/*.html"]
+            }
+        }
     },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "options": {
-        "lintFilePatterns": [
-          "Lib.Shared.Model/src/**/*.ts",
-          "Lib.Shared.Model/src/**/*.html"
-        ]
-      }
-    }
-  },
-  "tags": []
+    "tags": []
 }

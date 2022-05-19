@@ -2,17 +2,18 @@
     <form [formGroup]="contactFormService.formGroup" action="" class="tui-form">
         <span class="tui-form__header" style="color: white">Contact form</span>
         <div class="tui-form__row">
-            <input [formControl]="contactFormService.emailFormControl"
-                   class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                   placeholder="Email"
-                   type="text"/>
+            <input
+                [formControl]="contactFormService.emailFormControl"
+                class="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                placeholder="Email"
+                type="text"
+            />
         </div>
         <div class="tui-form__row">
             <!--            <tui-input [formControl]="contactFormService.nameFormControl" [pseudoFocused]="true">-->
             <!--                <span>Name</span>-->
             <!--                <input tuiTextfield type="text"/>-->
             <!--            </tui-input>-->
-
         </div>
         <div class="tui-form__row">
             <!--            <tui-input [formControl]="contactFormService.subjectFormControl" [pseudoFocused]="true">-->
@@ -26,16 +27,8 @@
             <!--            </tui-text-area>-->
         </div>
         <div class="tui-form__buttons tui-form__buttons_align_end">
-            <button class=""
-                    type="button">
-                Valider
-            </button>
-            <button
-                    (click)="onClick($event)"
-                    [disabled]="contactFormService.formGroup.invalid"
-                    appButton
-                    type="submit"
-            >
+            <button class="" type="button">Valider</button>
+            <button (click)="onClick($event)" [disabled]="contactFormService.formGroup.invalid" appButton type="submit">
                 Send
             </button>
         </div>

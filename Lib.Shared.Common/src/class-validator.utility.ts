@@ -8,7 +8,6 @@ export interface FormFieldError {
     [key: string]: boolean;
 }
 
-
 export class ClassValidatorUtility {
     /**
      * Converts class-validator errors to Angular form async Validator
@@ -41,25 +40,34 @@ export class ClassValidatorUtility {
         };
     }
 
-    static validationErrorsToFormError(validationErrors: ValidationError[]): { [formFieldName: string]: FormFieldError } {
-        const data = validationErrors.map((validationError: ValidationError): { [formFieldName: string]: FormFieldError } => {
-            const constraintKeys: string[] = Object.keys(validationError.constraints || {});
+    static validationErrorsToFormError(validationErrors: ValidationError[]): {
+        [formFieldName: string]: FormFieldError;
+    } {
+        const data = validationErrors.map(
+            (validationError: ValidationError): { [formFieldName: string]: FormFieldError } => {
+                const constraintKeys: string[] = Object.keys(validationError.constraints || {});
 
-            const formFieldErrors: FormFieldError[] = constraintKeys.map((key: string): FormFieldError => ({ [key]: true }));
+                const formFieldErrors: FormFieldError[] = constraintKeys.map(
+                    (key: string): FormFieldError => ({ [key]: true })
+                );
 
-            const propertyErrors: FormFieldError = formFieldErrors.reduce((oldErr, newErr) => ({ ...oldErr, ...newErr }), {});
+                const propertyErrors: FormFieldError = formFieldErrors.reduce(
+                    (oldErr, newErr) => ({ ...oldErr, ...newErr }),
+                    {}
+                );
 
-            return { [validationError.property]: propertyErrors };
-        });
+                return { [validationError.property]: propertyErrors };
+            }
+        );
 
         return data.reduce((old, newOne) => ({ ...old, ...newOne }), {});
     }
 
     static constraintsToLocalizationString(constraints: string[]): string[] {
-        return constraints.map((constraint) => `fieldValidation.${ constraint }`);
+        return constraints.map((constraint) => `fieldValidation.${constraint}`);
     }
 
     static exceptionNameToLocalizationString(exceptionName: string): string {
-        return `exceptions.${ exceptionName }`;
+        return `exceptions.${exceptionName}`;
     }
 }

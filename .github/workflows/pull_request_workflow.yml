@@ -1,24 +1,24 @@
 name: Test and Build
 on:
-  pull_request:
-    branches: [ actions ]
+    pull_request:
+        branches: [actions]
 jobs:
-  Build:
-    runs-on: self-hosted
-    steps:
-      - uses: actions/checkout@v3                                                 # PULL_SOURCE_CODE
-      - uses: actions/setup-node@v3                                               # INSTALL_NODEJS
-        with:
-          node-version: 16
-      - name: debug
-        shell: bash
-        run: echo $(cat .DEV_VERSION)
-      - name: Install dependencies
-        shell: bash
-        run: npm install
-      - name: Test
-        shell: bash
-        run: npx nx run-many --target=test --all
-      - name: Build
-        shell: bash
-        run: npx nx run-many --target=build --all
+    Build:
+        runs-on: self-hosted
+        steps:
+            - uses: actions/checkout@v3 # PULL_SOURCE_CODE
+            - uses: actions/setup-node@v3 # INSTALL_NODEJS
+              with:
+                  node-version: 16
+            - name: debug
+              shell: bash
+              run: echo $(cat .DEV_VERSION)
+            - name: Install dependencies
+              shell: bash
+              run: npm install
+            - name: Test
+              shell: bash
+              run: npx nx run-many --target=test --all
+            - name: Build
+              shell: bash
+              run: npx nx run-many --target=build --all

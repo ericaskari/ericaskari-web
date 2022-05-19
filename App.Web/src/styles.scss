@@ -2,52 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+@import 'theme/componenets';
+
 :root {
-  --tui-text-01: black;
-  --app-header-height: 80px;
-  --app-footer-height: 80px;
-  --app-bg-white: white;
-  --tui-font-text-xl: normal 1rem var(--tui-font-text);
-  --tui-heading-font: 'Titillium Web', sans-serif;
-  --tui-text-font: 'Titillium Web', sans-serif;
-  --tui-font-heading: var(--tui-heading-font);
-  --tui-font-heading-1: bold 3.125rem/3.5rem var(--tui-font-heading);
-  --tui-font-heading-2: bold 2.75rem/3rem var(--tui-font-heading);
-  --tui-font-heading-3: bold 2.25rem/2.5rem var(--tui-font-heading);
-  --tui-font-heading-4: bold 1.75rem/2rem var(--tui-font-heading);
-  --tui-font-heading-5: bold 1.5rem/1.75rem var(--tui-font-heading);
-  --tui-font-heading-6: bold 1.25rem/1.5rem var(--tui-font-heading);
-  --tui-font-text-l: normal 1.0625rem/1.5rem var(--tui-font-text);
-  --tui-font-text-m: normal 0.9375rem/1.5rem var(--tui-font-text);
-  --tui-font-text-s: normal 0.8125rem/1.25rem var(--tui-font-text);
-  --tui-font-text-xs: bold 0.6875rem/1rem var(--tui-font-text);
+    --tui-text-01: black;
+    --app-header-height: 80px;
+    --app-footer-height: 80px;
+    --app-bg-white: white;
+    --tui-font-text-xl: normal 1rem var(--tui-font-text);
+    --tui-heading-font: 'Titillium Web', sans-serif;
+    --tui-text-font: 'Titillium Web', sans-serif;
+    --tui-font-heading: var(--tui-heading-font);
+    --tui-font-heading-1: bold 3.125rem/3.5rem var(--tui-font-heading);
+    --tui-font-heading-2: bold 2.75rem/3rem var(--tui-font-heading);
+    --tui-font-heading-3: bold 2.25rem/2.5rem var(--tui-font-heading);
+    --tui-font-heading-4: bold 1.75rem/2rem var(--tui-font-heading);
+    --tui-font-heading-5: bold 1.5rem/1.75rem var(--tui-font-heading);
+    --tui-font-heading-6: bold 1.25rem/1.5rem var(--tui-font-heading);
+    --tui-font-text-l: normal 1.0625rem/1.5rem var(--tui-font-text);
+    --tui-font-text-m: normal 0.9375rem/1.5rem var(--tui-font-text);
+    --tui-font-text-s: normal 0.8125rem/1.25rem var(--tui-font-text);
+    --tui-font-text-xs: bold 0.6875rem/1rem var(--tui-font-text);
 }
 
 html,
 body,
 app-root {
-  display: block;
-  margin: 0;
-  padding: 0;
-  overscroll-behavior: none;
-  scroll-behavior: smooth;
-  width: 100%;
-  min-height: 100%;
+    display: block;
+    margin: 0;
+    padding: 0;
+    overscroll-behavior: none;
+    scroll-behavior: smooth;
+    width: 100%;
+    min-height: 100%;
 }
 
 html {
-  font-family: 'Titillium Web', sans-serif;
+    font-family: 'Titillium Web', sans-serif;
 }
 
 router-outlet {
-  display: none;
+    display: none;
 }
 
 a {
-  text-decoration: none;
-  color: black;
+    text-decoration: none;
+    color: black;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }

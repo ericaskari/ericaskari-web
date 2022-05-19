@@ -1,18 +1,16 @@
-
 :host {
-  display: block;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 0 clamp(0rem, 10vw, 1000px);
-  flex: 1;
+    display: block;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 0 clamp(0rem, 10vw, 1000px);
+    flex: 1;
 }
 
 section:first-child {
-  min-height: 100vh;
-  box-sizing: border-box;
-  padding-top: 100px;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding-top: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
-

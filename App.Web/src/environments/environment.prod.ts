@@ -1,7 +1,7 @@
-import { InjectionToken } from "@angular/core";
+import { InjectionToken } from '@angular/core';
 
 export const environment = {
-    production: true
+    production: true,
 };
 
-export const environmentInjectionToken = new InjectionToken<typeof environment>("environment")
+export const environmentInjectionToken = new InjectionToken<typeof environment>('environment');

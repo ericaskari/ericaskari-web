@@ -1,31 +1,32 @@
 import { Component } from '@angular/core';
-import { animate, state, style, transition, trigger } from "@angular/animations";
-import { ContactFormService } from "@ericaskari/web-forms";
-import { GenericEndpointService } from "@ericaskari/web-endpoints";
-import { Router } from "@angular/router";
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { ContactFormService } from '@ericaskari/web-forms';
+import { GenericEndpointService } from '@ericaskari/web-endpoints';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'contact-home-page',
     templateUrl: './contact-page.component.html',
-    styleUrls: [ './contact-page.component.scss' ],
+    styleUrls: ['./contact-page.component.scss'],
     animations: [
         trigger('landingText', [
-            transition('* => visible', [
-                animate('1s')
-            ]),
-            state('visible', style({
-                opacity: 1
-            }))
-        ])
+            transition('* => visible', [animate('1s')]),
+            state(
+                'visible',
+                style({
+                    opacity: 1,
+                })
+            ),
+        ]),
     ],
-    providers: [ ContactFormService ]
+    providers: [ContactFormService],
 })
 export class ContactPageComponent {
     constructor(
         public contactFormService: ContactFormService,
         public genericEndpointService: GenericEndpointService,
-        private router: Router) {
-    }
+        private router: Router
+    ) {}
 
     onClick(event: MouseEvent): void {
         console.log(this.contactFormService.value());

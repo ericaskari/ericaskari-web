@@ -7,7 +7,7 @@ const env = resolve(process.cwd(), '.env');
 export const BACKUP_DIR = resolve(process.cwd(), '_backups');
 
 config({
-    path: env
+    path: env,
 });
 
 export async function execAsync(command: string) {
@@ -37,7 +37,9 @@ export async function backup(volumeName: string, backupDir: string, backupName: 
 }
 
 export async function restoreBackup(volumeName: string, backupDir: string, backupName: string) {
-    await execAsync(`cat ${backupDir}/${backupName} | docker run -i -v ${volumeName}:/volume --rm loomchild/volume-backup restore -f -`);
+    await execAsync(
+        `cat ${backupDir}/${backupName} | docker run -i -v ${volumeName}:/volume --rm loomchild/volume-backup restore -f -`
+    );
 }
 
 export function backupFileNameGenerator(timeStamp: string, type: 'postgres' | 'pgadmin4' | 'minio'): string {

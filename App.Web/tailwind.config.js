@@ -2,23 +2,15 @@ const { createGlobPatternsForDependencies } = require('@nrwl/angular/tailwind');
 const { join } = require('path');
 const mode = process.env.TAILWIND_MODE === 'watch' ? 'aot' : 'jit';
 
-console.table({
-    TAILWIND_MODE: process.env.TAILWIND_MODE,
-    mode
-})
-
 module.exports = {
     mode: mode,
-    content: [
-        join(__dirname, 'src/**/*.{html,ts}'),
-        ...createGlobPatternsForDependencies(__dirname),
-    ],
+    content: [join(__dirname, 'src/**/*.{html,ts}'), ...createGlobPatternsForDependencies(__dirname)],
     important: true,
     // Active dark mode on class basis
-    darkMode: "class",
+    darkMode: 'class',
     i18n: {
-        locales: [ "en-US" ],
-        defaultLocale: "en-US",
+        locales: ['en-US'],
+        defaultLocale: 'en-US',
     },
     theme: {
         extend: {
@@ -30,10 +22,10 @@ module.exports = {
     },
     variants: {
         extend: {
-            backgroundColor: [ "checked" ],
-            borderColor: [ "checked" ],
-            inset: [ "checked" ],
-            zIndex: [ "hover", "active" ],
+            backgroundColor: ['checked'],
+            borderColor: ['checked'],
+            inset: ['checked'],
+            zIndex: ['hover', 'active'],
         },
     },
     plugins: [],

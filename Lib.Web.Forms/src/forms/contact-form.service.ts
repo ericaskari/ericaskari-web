@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
-import { ClassValidatorUtility } from "@ericaskari/common";
-import { ContactRequest } from "@ericaskari/model";
+import { ClassValidatorUtility } from '@ericaskari/common';
+import { ContactRequest } from '@ericaskari/model';
 
 @Injectable()
 export class ContactFormService {
@@ -14,17 +14,25 @@ export class ContactFormService {
     private static get controllers(): Record<keyof ContactRequest, AbstractControl> {
         return {
             email: new FormControl('', {
-                asyncValidators: [ ClassValidatorUtility.createFormControlAsyncValidator(ContactRequest, this.emailFormControlName) ]
+                asyncValidators: [
+                    ClassValidatorUtility.createFormControlAsyncValidator(ContactRequest, this.emailFormControlName),
+                ],
             }),
             name: new FormControl('', {
-                asyncValidators: [ ClassValidatorUtility.createFormControlAsyncValidator(ContactRequest, this.nameFormControlName) ]
+                asyncValidators: [
+                    ClassValidatorUtility.createFormControlAsyncValidator(ContactRequest, this.nameFormControlName),
+                ],
             }),
             subject: new FormControl('', {
-                asyncValidators: [ ClassValidatorUtility.createFormControlAsyncValidator(ContactRequest, this.subjectFormControlName) ]
+                asyncValidators: [
+                    ClassValidatorUtility.createFormControlAsyncValidator(ContactRequest, this.subjectFormControlName),
+                ],
             }),
             message: new FormControl('', {
-                asyncValidators: [ ClassValidatorUtility.createFormControlAsyncValidator(ContactRequest, this.messageFormControlName) ]
-            })
+                asyncValidators: [
+                    ClassValidatorUtility.createFormControlAsyncValidator(ContactRequest, this.messageFormControlName),
+                ],
+            }),
         };
     }
 

@@ -1,4 +1,4 @@
 {
-  "BUILD_VERSION": "local-development-build",
-  "RUNTIME_VERSION": "local-development-runtime"
+    "BUILD_VERSION": "local-development-build",
+    "RUNTIME_VERSION": "local-development-runtime"
 }

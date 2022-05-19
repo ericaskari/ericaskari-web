@@ -17,8 +17,6 @@
   </p>
 </div>
 
-
-
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
@@ -40,68 +38,64 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
-[//]: # ([![Product Name Screen Shot][product-screenshot]]&#40;https://www.ericaskari.com&#41;)
-
-
-
+[//]: # '[![Product Name Screen Shot][product-screenshot]](https://www.ericaskari.com)'
 
 ### Built With
 
-* [Angular](https://angular.io/)
-* [NestJs](https://nestjs.com/)
-
+-   [Angular](https://angular.io/)
+-   [NestJs](https://nestjs.com/)
 
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 ### Prerequisites
 
-* node
-* docker
-
+-   node
+-   docker
 
 ### Installation
 
 1. Clone the repo
-   ```sh
-   git clone https://github.com/ericaskari/ericaskari-web.git
-   ```
-   
+    ```sh
+    git clone https://github.com/ericaskari/ericaskari-web.git
+    ```
 2. Install NPM packages
-   ```sh
-   npm install
-   ```
+
+    ```sh
+    npm install
+    ```
 
 3. Start containers
-   ```sh
-   docker-compose up -d
-   ```
-   
+    ```sh
+    docker-compose up -d
+    ```
 4. Start backend
-   ```sh
-   npm run Start:App.Api
-   ```
+
+    ```sh
+    npm run Start:App.Api
+    ```
 
 5. Start frontend
-   ```sh
-   npm run Start:App.Web
-   ```
+    ```sh
+    npm run Start:App.Web
+    ```
 
 <!-- CONTACT -->
+
 ## Contact
 
 Mohammad Askari (Eric) - [@Erikaskari](https://twitter.com/Erikaskari) - me@ericaskari.com
 
 Project Link: [https://github.com/ericaskari/ericaskari-web](https://github.com/ericaskari/ericaskari-web)
 
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/ericaskari/ericaskari-web.svg?style=for-the-badge
 [contributors-url]: https://github.com/ericaskari/ericaskari-web/graphs/contributors
 [issues-shield]: https://img.shields.io/github/issues/ericaskari/ericaskari-web.svg?style=for-the-badge

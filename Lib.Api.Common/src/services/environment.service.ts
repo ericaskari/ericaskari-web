@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 import { bool, cleanEnv, host, port, str } from 'envalid';
-import { CleanedEnvAccessors, ValidatorSpec } from "envalid/dist/types";
-import { IEnvironment } from "../interfaces/environment.interface";
+import { CleanedEnvAccessors, ValidatorSpec } from 'envalid/dist/types';
+import { IEnvironment } from '../interfaces/environment.interface';
 
 export class EnvironmentService {
     private readonly environment: Readonly<IEnvironment & CleanedEnvAccessors>;
@@ -11,14 +11,14 @@ export class EnvironmentService {
         dotenv.config();
 
         this.environment = cleanEnv(process.env, {
-            NODE_ENV: str({ devDefault: 'development', choices: [ 'test', 'development', 'production' ] }),
+            NODE_ENV: str({ devDefault: 'development', choices: ['test', 'development', 'production'] }),
             BUILD_VERSION: str({
                 devDefault: 'local-development',
-                desc: 'docker image tag when building the docker image'
+                desc: 'docker image tag when building the docker image',
             }),
             RUNTIME_VERSION: str({
                 devDefault: 'local-development',
-                desc: 'docker image tag when deploying the docker image'
+                desc: 'docker image tag when deploying the docker image',
             }),
             ENABLE_SWAGGER: bool({ devDefault: true, default: true, desc: 'Enable/Disable Swagger' }),
             ENABLE_MIGRATIONS: bool({ devDefault: true, default: true, desc: 'Enable/Disable Migration' }),
@@ -27,7 +27,7 @@ export class EnvironmentService {
             NODE_MAILER_ENABLE_SSL: bool({ devDefault: false }),
             NODE_MAILER_AUTH_USER: str(),
             NODE_MAILER_AUTH_PASS: str(),
-            NODE_MAILER_SECURE: bool()
+            NODE_MAILER_SECURE: bool(),
         } as {
             [K in keyof IEnvironment]: ValidatorSpec<IEnvironment[K]>;
         });

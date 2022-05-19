@@ -1,28 +1,23 @@
 {
-  "projectType": "library",
-  "root": "Lib.Web.State",
-  "sourceRoot": "Lib.Web.State/src",
-  "prefix": "app",
-  "targets": {
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/Lib.Web.State"
-      ],
-      "options": {
-        "jestConfig": "Lib.Web.State/jest.config.js",
-        "passWithNoTests": true
-      }
+    "projectType": "library",
+    "root": "Lib.Web.State",
+    "sourceRoot": "Lib.Web.State/src",
+    "prefix": "app",
+    "targets": {
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/Lib.Web.State"],
+            "options": {
+                "jestConfig": "Lib.Web.State/jest.config.js",
+                "passWithNoTests": true
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": ["Lib.Web.State/src/**/*.ts", "Lib.Web.State/src/**/*.html"]
+            }
+        }
     },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "options": {
-        "lintFilePatterns": [
-          "Lib.Web.State/src/**/*.ts",
-          "Lib.Web.State/src/**/*.html"
-        ]
-      }
-    }
-  },
-  "tags": []
+    "tags": []
 }

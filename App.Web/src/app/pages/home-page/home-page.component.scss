@@ -1,79 +1,71 @@
-@import "../../../theme/mixins";
-
 :host {
-  display: block;
-  min-height: 100vh;
+    display: block;
+    min-height: 100vh;
 }
 
 section:first-child {
-  min-height: 100vh;
-  box-sizing: border-box;
-  padding-top: 100px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1rem;
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding-top: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
 }
 
 section:nth-child(2) {
-  min-height: 100vh;
-  box-sizing: border-box;
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  grid-template-columns: repeat(2, 100px);
-  grid-template-rows: repeat(6, 100px);
-  gap: 3rem;
-  
-  @media screen and (min-width: 1000px) {
-    grid-template-columns: repeat(4, 100px);
-    grid-template-rows: repeat(3, 100px);
-    gap: 2rem;
+    min-height: 100vh;
+    box-sizing: border-box;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: repeat(2, 100px);
+    grid-template-rows: repeat(6, 100px);
+    gap: 3rem;
 
-  }
+    @media screen and (min-width: 1000px) {
+        grid-template-columns: repeat(4, 100px);
+        grid-template-rows: repeat(3, 100px);
+        gap: 2rem;
+    }
 }
 
 .profile-image {
-  background-image: url("../../../assets/profile-image.jpg");
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  width: clamp(120px, 20vw, 200px);
-  height: clamp(120px, 20vw, 200px);
-  z-index: 1;
-  border-radius: 50%;
-  margin: 0 clamp(0rem, 10%, 50%) 2rem;
+    background-image: url('../../../assets/profile-image.jpg');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: clamp(120px, 20vw, 200px);
+    height: clamp(120px, 20vw, 200px);
+    z-index: 1;
+    border-radius: 50%;
+    margin: 0 clamp(0rem, 10%, 50%) 2rem;
 }
 
 .landing-text {
-  font-size: clamp(24px, 3vw, 42px);
-  padding: 0 clamp(0rem, 10%, 50%);
-  z-index: 1;
-  opacity: 0;
-  color: white;
-  font-weight: 300;
+    font-size: clamp(24px, 3vw, 42px);
+    padding: 0 clamp(0rem, 10%, 50%);
+    z-index: 1;
+    opacity: 0;
+    color: white;
+    font-weight: 300;
 }
 
 .landing-text-small {
-  font-size: clamp(16px, 3vw, 24px);
-  padding: 0 clamp(0rem, 10%, 50%);
-  z-index: 1;
-  opacity: 0;
-  color: white;
-  font-weight: 300;
-
+    font-size: clamp(16px, 3vw, 24px);
+    padding: 0 clamp(0rem, 10%, 50%);
+    z-index: 1;
+    opacity: 0;
+    color: white;
+    font-weight: 300;
 }
 
 .my-words {
-  font-size: clamp(20px, 3vw, 32px);
-  z-index: 1;
-  padding: 2rem clamp(0rem, 10%, 50%);
-  opacity: 0;
-  color: white;
-  font-weight: 300;
-  max-width: 80ch;
-
+    font-size: clamp(20px, 3vw, 32px);
+    z-index: 1;
+    padding: 2rem clamp(0rem, 10%, 50%);
+    opacity: 0;
+    color: white;
+    font-weight: 300;
+    max-width: 80ch;
 }
-
-
-
