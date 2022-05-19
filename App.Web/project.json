@@ -19,19 +19,12 @@
         "assets": [
           {
             "glob": "**/*",
-            "input": "node_modules/@taiga-ui/icons/src",
-            "output": "assets/taiga-ui/icons"
-          },
-          {
-            "glob": "**/*",
             "input": "App.Web/src/public",
             "output": "/"
           },
           "App.Web/src/assets"
         ],
         "styles": [
-          "node_modules/@taiga-ui/core/styles/taiga-ui-global.less",
-          "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",
           "App.Web/src/styles.scss"
         ],
         "scripts": [

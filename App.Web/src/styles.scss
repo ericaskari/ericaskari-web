@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --tui-text-01: black;
@@ -20,7 +23,9 @@
   --tui-font-text-xs: bold 0.6875rem/1rem var(--tui-font-text);
 }
 
-html, body, app-root {
+html,
+body,
+app-root {
   display: block;
   margin: 0;
   padding: 0;

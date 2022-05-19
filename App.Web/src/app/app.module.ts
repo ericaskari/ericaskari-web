@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, inject, NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -18,22 +18,14 @@ import { BootstrapService } from "./services/bootstrap.service";
 import { HomePageComponent } from "./pages/home-page/home-page.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { environmentInjectionToken } from "../environments/environment.prod";
-import {
-    TUI_ANIMATIONS_DURATION,
-    TuiButtonModule,
-    TuiHintControllerModule,
-    TuiNotificationsModule,
-    TuiPrimitiveTextfieldModule,
-    TuiRootModule,
-    TuiTextfieldControllerModule
-} from "@taiga-ui/core";
-import { TUI_IS_CYPRESS, TuiFocusableModule } from "@taiga-ui/cdk";
 import { ContactPageComponent } from "./pages/contact-page/contact-page.component";
-import { TuiInputModule, TuiTextAreaModule } from "@taiga-ui/kit";
-import { TuiMobileDialogModule } from "@taiga-ui/addon-mobile";
+import { NotificationComponent } from './notification/notification.component';
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { LayoutModule } from "@angular/cdk/layout";
+import { ButtonDirective } from './button.directive';
 
 @NgModule({
-    declarations: [ AppComponent, HomePageComponent, ContactPageComponent ],
+    declarations: [ AppComponent, HomePageComponent, ContactPageComponent, NotificationComponent, ButtonDirective ],
     imports: [
         HttpClientModule,
         BrowserModule,
@@ -51,16 +43,8 @@ import { TuiMobileDialogModule } from "@taiga-ui/addon-mobile";
         StoreRouterConnectingModule.forRoot({ serializer: CustomRouterStateSerializer }),
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production, serialize: false }),
         BootstrapStoreModule.forRoot(),
-        TuiRootModule,
-        TuiButtonModule,
-        TuiFocusableModule,
-        TuiTextfieldControllerModule,
-        TuiNotificationsModule,
-        TuiInputModule,
-        TuiMobileDialogModule,
-        TuiHintControllerModule,
-        TuiPrimitiveTextfieldModule,
-        TuiTextAreaModule
+        FontAwesomeModule,
+        LayoutModule
     ],
     providers: [
         {
@@ -72,10 +56,6 @@ import { TuiMobileDialogModule } from "@taiga-ui/addon-mobile";
         {
             provide: environmentInjectionToken,
             useValue: environment
-        },
-        {
-            provide: TUI_ANIMATIONS_DURATION,
-            useFactory: () => (inject(TUI_IS_CYPRESS) ? 0 : 200),
         }
     ],
     bootstrap: [ AppComponent ],
