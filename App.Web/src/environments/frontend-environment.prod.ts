@@ -1,5 +1,5 @@
 import { FrontendEnvironment } from '@ericaskari/web-common';
 
-export const environment: FrontendEnvironment = {
+export const frontendEnvironment: FrontendEnvironment = {
     production: true,
 };

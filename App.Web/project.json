@@ -104,8 +104,8 @@
                     ],
                     "fileReplacements": [
                         {
-                            "replace": "App.Web/src/environments/environment.ts",
-                            "with": "App.Web/src/environments/environment.prod.ts"
+                            "replace": "App.Web/src/environments/frontend-environment.ts",
+                            "with": "App.Web/src/environments/frontend-environment.prod.ts"
                         }
                     ],
                     "outputHashing": "all"
