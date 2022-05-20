@@ -21,6 +21,25 @@
   rounded-lg;
 }
 
-.app-input{
+.app-input {
+    @apply rounded-lg border-transparent border-2 focus:border-amber-500 outline-none;
+    @apply flex-1 appearance-none  w-full py-4 px-4 bg-white text-gray-900 placeholder-gray-400 shadow-sm text-base transition;
+}
+.app-input-invalid {
+    @apply border-red-400;
+}
 
+.app-input-valid {
+    @apply border-green-400;
+}
+
+.app-form {
+    @apply flex flex-col gap-3;
+}
+.app-form-row {
+}
+
+.app-form-header {
+}
+.app-form-action {
 }

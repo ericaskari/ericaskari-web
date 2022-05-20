@@ -1,5 +1,5 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, HostBinding, OnInit } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { map, tap } from 'rxjs/operators';
 
@@ -10,7 +10,7 @@ import { NotificationService } from './notification.service';
     templateUrl: './notification.component.html',
     styleUrls: ['./notification.component.scss'],
 })
-export class NotificationComponent implements OnInit {
+export class NotificationComponent {
     @HostBinding('class.left-0') leftZero = false;
     faCoffee = faCoffee;
     isMobile$ = this.breakpointObserver.observe(['(min-width: 600px)']).pipe(
@@ -22,5 +22,7 @@ export class NotificationComponent implements OnInit {
 
     constructor(public notificationService: NotificationService, public breakpointObserver: BreakpointObserver) {}
 
-    ngOnInit(): void {}
+    onClick($event: MouseEvent) {
+        this.notificationService.clear();
+    }
 }

@@ -26,6 +26,10 @@ import { BootstrapService } from './services/bootstrap.service';
 import { appModuleEffects } from '../store/app.module.effect';
 import { CommonModule } from '@angular/common';
 import { InputDirective } from './components/button/input.directive';
+import { FormDirective } from './components/button/form.directive';
+import { FormHeaderDirective } from './components/button/form-header.directive';
+import { FormActionDirective } from './components/button/form-action.directive';
+import { FormRowDirective } from './components/button/form-row.directive';
 
 @NgModule({
     declarations: [
@@ -35,6 +39,10 @@ import { InputDirective } from './components/button/input.directive';
         NotificationComponent,
         ButtonDirective,
         InputDirective,
+        FormDirective,
+        FormHeaderDirective,
+        FormRowDirective,
+        FormActionDirective,
     ],
     imports: [
         HttpClientModule,

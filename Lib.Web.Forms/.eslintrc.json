@@ -6,6 +6,8 @@
             "files": ["*.ts"],
             "extends": ["plugin:@nrwl/nx/angular", "plugin:@angular-eslint/template/process-inline-templates"],
             "rules": {
+                "@typescript-eslint/ban-ts-comment": ["off"],
+                "@typescript-eslint/no-inferrable-types": ["off"],
                 "@angular-eslint/directive-selector": [
                     "error",
                     {

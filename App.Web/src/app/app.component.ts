@@ -1,7 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
 import { BootstrapStoreSelectors } from '@ericaskari/web-state';
-import { faAdd } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -28,6 +27,7 @@ export class AppComponent {
     apiVersion$: Observable<string | null> = this.store.select(BootstrapStoreSelectors.apiVersion);
 
     constructor(private store: Store, private notificationService: NotificationService) {
-        this.notificationService.add(faAdd, 'Hellow', 30000);
+        // this.notificationService.add('success', 'Email sent.', '');
+        // this.notificationService.add('error', 'An error occurred.', '');
     }
 }

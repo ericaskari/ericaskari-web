@@ -6,9 +6,18 @@
 <!--    <fa-icon [icon]="notification.type" class="m-2"></fa-icon>-->
 <!--    <span>{{ notification.message }}</span>-->
 <!--</div>-->
-<div class="bg-green-200 border-green-600 text-green-600 border-l-4 p-4" role="alert">
-    <p class="font-bold">Success</p>
-    <p>Congratulations, you are the best player.</p>
+<div
+    class="border-l-4 p-4 m-3 notification"
+    (click)="onClick($event)"
+    [ngClass]="{
+        'bg-green-50 border-green-600 text-green-600': notification.type === 'success',
+        'bg-red-50   border-red-600   text-red-600': notification.type === 'error'
+    }"
+    role="alert"
+    *ngIf="notificationService.notifications | async as notification"
+>
+    <p class="font-bold">{{ notification.title }}</p>
+    <p>{{ notification.message }}</p>
 </div>
 
 <div class="hidden">
