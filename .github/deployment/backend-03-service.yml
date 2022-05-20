@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: service-ericaskari-backend
+spec:
+    ports:
+        - port: 80
+          protocol: TCP
+          targetPort: 8000
+    selector:
+        app.kubernetes.io/name: deployment-ericaskari-backend
+    sessionAffinity: None
+    type: ClusterIP

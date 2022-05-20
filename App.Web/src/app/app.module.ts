@@ -13,7 +13,6 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { frontendEnvironment } from '../environments/frontend-environment';
-import { appModuleEffects } from '../store/app.module.effect';
 import { rootActionReducerMap, rootMetaReducers } from '../store/app.module.reducer';
 import { CustomRouterStateSerializer } from '../store/router.serializer';
 
@@ -24,9 +23,19 @@ import { NotificationComponent } from './notification/notification.component';
 import { ContactPageComponent } from './pages/contact-page/contact-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { BootstrapService } from './services/bootstrap.service';
+import { appModuleEffects } from '../store/app.module.effect';
+import { CommonModule } from '@angular/common';
+import { InputDirective } from './components/button/input.directive';
 
 @NgModule({
-    declarations: [AppComponent, HomePageComponent, ContactPageComponent, NotificationComponent, ButtonDirective],
+    declarations: [
+        AppComponent,
+        HomePageComponent,
+        ContactPageComponent,
+        NotificationComponent,
+        ButtonDirective,
+        InputDirective,
+    ],
     imports: [
         HttpClientModule,
         BrowserModule,
@@ -52,6 +61,7 @@ import { BootstrapService } from './services/bootstrap.service';
         BootstrapStoreModule.forRoot(),
         FontAwesomeModule,
         LayoutModule,
+        CommonModule,
     ],
     providers: [
         {

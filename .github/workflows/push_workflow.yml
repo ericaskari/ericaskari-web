@@ -105,8 +105,8 @@ jobs:
                   FE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:$(cat .DEV_VERSION)"
                   echo BE_TAG: $BE_TAG
                   echo FE_TAG: $FE_TAG
-                  docker build -f ./_ci/Backend.Dockerfile --tag "$BE_TAG" .
-                  docker build -f ./_ci/Frontend.Dockerfile --tag "$FE_TAG" .
+                  docker build -f ./.github/Backend.Dockerfile --tag "$BE_TAG" .
+                  docker build -f ./.github/Frontend.Dockerfile --tag "$FE_TAG" .
                   docker push "$BE_TAG"
                   docker push "$FE_TAG"
                   echo "$(cat .DEV_VERSION)"           > ./.VERSION
@@ -136,7 +136,7 @@ jobs:
             - uses: ./.github/workflows/configure-kubectl # CONFIGURE_KUBECTL
               with:
                   KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-            - run: cp ./_ci/.yq/yq_linux_amd64-v4.17.2 /usr/bin/yq && chmod +x /usr/bin/yq # CONFIGURE_YQ
+            - run: cp ./.github/tools/.yq/yq_linux_amd64-v4.17.2 /usr/bin/yq && chmod +x /usr/bin/yq # CONFIGURE_YQ
               shell: bash
             - run: yq --version
               shell: bash
@@ -151,171 +151,45 @@ jobs:
               shell: bash
             - run: |
                   # Assign Env variables Backend       
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_ENV",               "value": "production"}]'                          ./_ci/deployment/backend-02-deployment.yml
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "BUILD_VERSION",          "value": "${{secrets.BUILD_VERSION}}"}]'          ./_ci/deployment/backend-02-deployment.yml
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "RUNTIME_VERSION",        "value": "${{secrets.RUNTIME_VERSION}}"}]'        ./_ci/deployment/backend-02-deployment.yml
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "ENABLE_SWAGGER",         "value": "${{secrets.ENABLE_SWAGGER}}"}]'         ./_ci/deployment/backend-02-deployment.yml
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "ENABLE_MIGRATIONS",      "value": "${{secrets.ENABLE_MIGRATIONS}}"}]'      ./_ci/deployment/backend-02-deployment.yml
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_HOST",       "value": "${{secrets.NODE_MAILER_HOST}}"}]'       ./_ci/deployment/backend-02-deployment.yml
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_PORT",       "value": "${{secrets.NODE_MAILER_PORT}}"}]'       ./_ci/deployment/backend-02-deployment.yml
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_ENABLE_SSL", "value": "${{secrets.NODE_MAILER_ENABLE_SSL}}"}]' ./_ci/deployment/backend-02-deployment.yml
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_AUTH_USER",  "value": "${{secrets.NODE_MAILER_AUTH_USER}}"}]'  ./_ci/deployment/backend-02-deployment.yml
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_AUTH_PASS",  "value": "${{secrets.NODE_MAILER_AUTH_PASS}}"}]'  ./_ci/deployment/backend-02-deployment.yml
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_SECURE",     "value": "${{secrets.NODE_MAILER_SECURE}}"}]'     ./_ci/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_ENV",               "value": "production"}]'                          ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "BUILD_VERSION",          "value": "${{secrets.BUILD_VERSION}}"}]'          ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "RUNTIME_VERSION",        "value": "${{secrets.RUNTIME_VERSION}}"}]'        ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "ENABLE_SWAGGER",         "value": "${{secrets.ENABLE_SWAGGER}}"}]'         ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "ENABLE_MIGRATIONS",      "value": "${{secrets.ENABLE_MIGRATIONS}}"}]'      ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_HOST",       "value": "${{secrets.NODE_MAILER_HOST}}"}]'       ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_PORT",       "value": "${{secrets.NODE_MAILER_PORT}}"}]'       ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_ENABLE_SSL", "value": "${{secrets.NODE_MAILER_ENABLE_SSL}}"}]' ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_AUTH_USER",  "value": "${{secrets.NODE_MAILER_AUTH_USER}}"}]'  ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_AUTH_PASS",  "value": "${{secrets.NODE_MAILER_AUTH_PASS}}"}]'  ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_SECURE",     "value": "${{secrets.NODE_MAILER_SECURE}}"}]'     ./.github/deployment/backend-02-deployment.yml
 
                   # Assign Env variables FrontEnd      
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "BUILD_VERSION",          "value": "${{secrets.BUILD_VERSION}}"}]'          ./_ci/deployment/frontend-02-deployment.yml
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "RUNTIME_VERSION",        "value": "${{secrets.RUNTIME_VERSION}}"}]'        ./_ci/deployment/frontend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "BUILD_VERSION",          "value": "${{secrets.BUILD_VERSION}}"}]'          ./.github/deployment/frontend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "RUNTIME_VERSION",        "value": "${{secrets.RUNTIME_VERSION}}"}]'        ./.github/deployment/frontend-02-deployment.yml
 
                   # Assign container images          
                   export VERSION="$(cat .VERSION)"
                   export FE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:$VERSION"
                   export BE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:$VERSION"
-                  yq e -i '.spec.template.spec.containers[0].image=env(BE_TAG)'                                                                           ./_ci/deployment/backend-02-deployment.yml
-                  yq e -i ".spec.template.spec.containers[0].image=env(FE_TAG)"                                                                           ./_ci/deployment/frontend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].image=env(BE_TAG)'                                                                           ./.github/deployment/backend-02-deployment.yml
+                  yq e -i ".spec.template.spec.containers[0].image=env(FE_TAG)"                                                                           ./.github/deployment/frontend-02-deployment.yml
 
                   # Other configurations          
-                  yq e -i '.spec.tls[0].hosts[0]="${{secrets.FE_DOMAIN_ONE}}"'                                                                            ./_ci/deployment/frontend-04-ingress.yml
-                  yq e -i '.spec.tls[0].hosts[1]="${{secrets.FE_DOMAIN_TWO}}"'                                                                            ./_ci/deployment/frontend-04-ingress.yml
-                  yq e -i '.spec.rules[0].host="${{secrets.FE_DOMAIN_ONE}}"'                                                                              ./_ci/deployment/frontend-04-ingress.yml
-                  yq e -i '.spec.rules[1].host="${{secrets.FE_DOMAIN_TWO}}"'                                                                              ./_ci/deployment/frontend-04-ingress.yml
+                  yq e -i '.spec.tls[0].hosts[0]="${{secrets.FE_DOMAIN_ONE}}"'                                                                            ./.github/deployment/frontend-04-ingress.yml
+                  yq e -i '.spec.tls[0].hosts[1]="${{secrets.FE_DOMAIN_TWO}}"'                                                                            ./.github/deployment/frontend-04-ingress.yml
+                  yq e -i '.spec.rules[0].host="${{secrets.FE_DOMAIN_ONE}}"'                                                                              ./.github/deployment/frontend-04-ingress.yml
+                  yq e -i '.spec.rules[1].host="${{secrets.FE_DOMAIN_TWO}}"'                                                                              ./.github/deployment/frontend-04-ingress.yml
               shell: bash
             - run: |
                   kubectl create namespace "${{ secrets.NAMESPACE }}" || true
                   kubectl delete secret --namespace="${{ secrets.NAMESPACE }}" regcred || true
                   kubectl create secret docker-registry regcred --namespace="${{ secrets.NAMESPACE }}" --docker-server=438380764554.dkr.ecr.eu-west-1.amazonaws.com --docker-username=AWS --docker-password="$(aws ecr get-login-password)" || true
-                  #kubectl apply  --namespace="${{ secrets.NAMESPACE }}" --filename=./_ci/deployment/shared-01-mirror-secret-production.yaml
-                  kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./_ci/deployment/backend-01-secret.yml
-                  kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./_ci/deployment/backend-02-deployment.yml
-                  kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./_ci/deployment/backend-03-service.yml
-                  kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./_ci/deployment/frontend-01-secret.yml
-                  kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./_ci/deployment/frontend-02-deployment.yml
-                  kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./_ci/deployment/frontend-03-service.yml
-                  kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./_ci/deployment/frontend-04-ingress.yml
+                  #kubectl apply  --namespace="${{ secrets.NAMESPACE }}" --filename=./.github/deployment/shared-01-mirror-secret-production.yaml
+                  kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./.github/deployment/backend-01-secret.yml
+                  kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./.github/deployment/backend-02-deployment.yml
+                  kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./.github/deployment/backend-03-service.yml
+                  kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./.github/deployment/frontend-01-secret.yml
+                  kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./.github/deployment/frontend-02-deployment.yml
+                  kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./.github/deployment/frontend-03-service.yml
+                  kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./.github/deployment/frontend-04-ingress.yml
               shell: bash
-#  GenerateDevVersion:
-#    runs-on: self-hosted
-#    #if: github.ref_name == 'dev'
-#    steps:
-#      - uses: actions/checkout@v3
-#      - uses: actions/setup-python@v3                                     # CONFIGURE_AWS_CLI
-#        with:
-#          python-version: "3.8"
-#      - uses: aws-actions/setup-sam@v2                                    # CONFIGURE_AWS_CLI
-#      - uses: aws-actions/configure-aws-credentials@v1                    # CONFIGURE_AWS_CLI
-#        with:
-#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#          aws-region: eu-west-1
-#      - uses: actions/setup-node@v3                                       # INSTALL_NODEJS
-#        with:
-#          node-version: 16
-#      - uses: ./.github/workflows/generate-dev-version                    # OUTPUTS: .DEV_VERSION
-#      - name: Upload DEV_VERSION
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: DEV_VERSION
-#          path: .DEV_VERSION
-#      - name: debug
-#        shell: bash
-#        run: |
-#          echo DEV_VERSION: $(cat .DEV_VERSION)
-
-#  BuildAndPushProdImages:
-#    needs: [GenerateProdVersion, BuildAndTest]
-#    if: github.ref_name == 'main'
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v3
-#      - uses: actions/setup-python@v3                                     # CONFIGURE_AWS_CLI
-#        with:
-#          python-version: "3.8"
-#      - uses: aws-actions/setup-sam@v2                                    # CONFIGURE_AWS_CLI
-#      - uses: aws-actions/configure-aws-credentials@v1                    # CONFIGURE_AWS_CLI
-#        with:
-#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#          aws-region: eu-west-1
-#      - name: Download PROD_PULL_VERSION
-#        uses: actions/download-artifact@v3
-#        with:
-#          name: PROD_PULL_VERSION
-#          path: .
-#      - name: Download PROD_PUSH_VERSION
-#        uses: actions/download-artifact@v3
-#        with:
-#          name: PROD_PUSH_VERSION
-#          path: .
-#      - name: Download _dist
-#        uses: actions/download-artifact@v3
-#        with:
-#          name: _dist
-#          path: .
-#      - name: Login
-#        shell: bash
-#        run: docker login -u AWS -p $(aws ecr get-login-password --region eu-west-1) 438380764554.dkr.ecr.eu-west-1.amazonaws.com
-#
-#      - name: Pull And Push
-#        shell: bash
-#        run: |
-#          BE_PULL_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:$(cat .PROD_PULL_VERSION)"
-#          BE_PUSH_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:$(cat .PROD_PUSH_VERSION)"
-#          FE_PULL_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:$(cat .PROD_PULL_VERSION)"
-#          FE_PUSH_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:$(cat .PROD_PUSH_VERSION)"
-#          echo BE_PULL_TAG: $BE_PULL_TAG
-#          echo BE_PUSH_TAG: $BE_PUSH_TAG
-#          echo FE_PULL_TAG: $FE_PULL_TAG
-#          echo FE_PUSH_TAG: $FE_PUSH_TAG
-#          docker pull $BE_PULL_TAG
-#          docker pull $FE_PULL_TAG
-#          docker tag $BE_PULL_TAG $BE_PUSH_TAG
-#          docker tag $FE_PULL_TAG $FE_PUSH_TAG
-#          docker push $BE_PUSH_TAG
-#          docker push $FE_PUSH_TAG
-#          echo "$(cat .PROD_PUSH_VERSION)"           > ./.VERSION
-#      - name: Upload VERSION
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: VERSION
-#          path: .VERSION
-#  DeployToTest:
-#    runs-on: self-hosted
-#    needs: [BuildAndPushDevImages]
-#    if: github.ref_name == 'dev'
-#    environment: development
-#    env:
-#      BE_DOMAIN: ${{ secrets.BE_DOMAIN }}
-#      FE_DOMAIN_ONE: ${{ secrets.FE_DOMAIN_ONE }}
-#      FE_DOMAIN_TWO: ${{ secrets.FE_DOMAIN_TWO }}
-#      NAMESPACE: ${{ secrets.NAMESPACE }}
-#    steps:
-#      - uses: actions/checkout@v3                                         # PULL_SOURCE_CODE
-#      - uses: actions/setup-python@v3                                     # CONFIGURE_AWS_CLI
-#        with:
-#          python-version: "3.8"
-#      - uses: aws-actions/setup-sam@v2                                    # CONFIGURE_AWS_CLI
-#      - uses: aws-actions/configure-aws-credentials@v1                    # CONFIGURE_AWS_CLI
-#        with:
-#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#          aws-region: eu-west-1
-#      - uses: ./.github/workflows/configure-kubectl                    # CONFIGURE_KUBECTL
-#        with:
-#          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-#      - run: cp ./_ci/.yq/yq_linux_amd64-v4.17.2 /usr/bin/yq && chmod +x /usr/bin/yq # CONFIGURE_YQ
-#        shell: bash
-#      - run: yq --version
-#        shell: bash
-#      - name: Download VERSION
-#        uses: actions/download-artifact@v3
-#        with:
-#          name: VERSION
-#          path: .
-#      - run: cat .VERSION
-#        shell: bash
-#      - run: kubectl get all
-#        shell: bash
-#      - run: chmod +x ./_ci/scripts/STEP_DEPLOYMENT.sh
-#        shell: bash
-#      - run: ./_ci/scripts/STEP_DEPLOYMENT.sh
-#        shell: bash

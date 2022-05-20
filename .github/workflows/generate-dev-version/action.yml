@@ -8,9 +8,9 @@ description: GENERATE_DEV_RELEASE_VERSION
 runs:
     using: 'composite'
     steps:
-        - run: chmod +x ./_ci/scripts/STEP_GENERATE_DEV_RELEASE_VERSION.sh
+        - run: chmod +x ./.github/scripts/STEP_GENERATE_DEV_RELEASE_VERSION.sh
           shell: bash
-        - run: ./_ci/scripts/STEP_GENERATE_DEV_RELEASE_VERSION.sh
+        - run: ./.github/scripts/STEP_GENERATE_DEV_RELEASE_VERSION.sh
           shell: bash
         - run: echo $(cat .DEV_VERSION)
           shell: bash

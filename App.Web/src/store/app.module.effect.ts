@@ -1,1 +1,2 @@
-none
+export const appModuleEffects: any[] = [];
+
