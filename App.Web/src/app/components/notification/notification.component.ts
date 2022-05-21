@@ -2,7 +2,7 @@ import { Component, HostBinding } from '@angular/core';
 import { tap } from 'rxjs/operators';
 
 import { NotificationService } from './notification.service';
-import { BreakpointService } from '../services/breakpoint.service';
+import { BreakpointService } from '../../services/breakpoint.service';
 
 @Component({
     selector: 'app-notification',

@@ -5,7 +5,7 @@ import { GenericEndpointService } from '@ericaskari/web-endpoints';
 import { ContactFormService } from '@ericaskari/web-forms';
 import { catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { NotificationService } from '../../notification/notification.service';
+import { NotificationService } from '../../components/notification/notification.service';
 
 @Component({
     selector: 'app-contact-home-page',

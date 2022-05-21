@@ -19,7 +19,6 @@ import { CustomRouterStateSerializer } from '../store/router.serializer';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing-module';
 import { ButtonDirective } from './components/button/button.directive';
-import { NotificationComponent } from './notification/notification.component';
 import { ContactPageComponent } from './pages/contact-page/contact-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { BootstrapService } from './services/bootstrap.service';
@@ -30,7 +29,9 @@ import { FormDirective } from './components/button/form.directive';
 import { FormHeaderDirective } from './components/button/form-header.directive';
 import { FormActionDirective } from './components/button/form-action.directive';
 import { FormRowDirective } from './components/button/form-row.directive';
-import { NavbarComponent } from './navbar/navbar.component';
+import { CvPageComponent } from './pages/cv-page/cv-page.component';
+import { NotificationComponent } from './components/notification/notification.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
     declarations: [
@@ -45,6 +46,7 @@ import { NavbarComponent } from './navbar/navbar.component';
         FormRowDirective,
         FormActionDirective,
         NavbarComponent,
+        CvPageComponent,
     ],
     imports: [
         HttpClientModule,

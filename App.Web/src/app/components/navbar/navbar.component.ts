@@ -1,6 +1,6 @@
 import { Component, HostBinding } from '@angular/core';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { BreakpointService } from '../services/breakpoint.service';
+import { BreakpointService } from '../../services/breakpoint.service';
 
 @Component({
     selector: 'app-navbar',
