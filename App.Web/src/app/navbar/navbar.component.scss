@@ -1,0 +1,15 @@
+:host {
+    display: block;
+}
+
+nav {
+    @apply bg-white dark:bg-gray-800;
+}
+
+.link {
+    @apply text-gray-500 hover:text-gray-800  dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium;
+}
+
+.mobile-link-button {
+    @apply text-gray-800 dark:text-white hover:text-gray-300 inline-flex  justify-end p-2 rounded-md focus:outline-none;
+}

@@ -30,6 +30,7 @@ import { FormDirective } from './components/button/form.directive';
 import { FormHeaderDirective } from './components/button/form-header.directive';
 import { FormActionDirective } from './components/button/form-action.directive';
 import { FormRowDirective } from './components/button/form-row.directive';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
     declarations: [
@@ -43,6 +44,7 @@ import { FormRowDirective } from './components/button/form-row.directive';
         FormHeaderDirective,
         FormRowDirective,
         FormActionDirective,
+        NavbarComponent,
     ],
     imports: [
         HttpClientModule,

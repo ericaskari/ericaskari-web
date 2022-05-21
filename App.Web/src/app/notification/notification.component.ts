@@ -1,9 +1,8 @@
-import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, HostBinding } from '@angular/core';
-import { faCoffee } from '@fortawesome/free-solid-svg-icons';
-import { map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 import { NotificationService } from './notification.service';
+import { BreakpointService } from '../services/breakpoint.service';
 
 @Component({
     selector: 'app-notification',
@@ -12,17 +11,16 @@ import { NotificationService } from './notification.service';
 })
 export class NotificationComponent {
     @HostBinding('class.left-0') leftZero = false;
-    faCoffee = faCoffee;
-    isMobile$ = this.breakpointObserver.observe(['(min-width: 600px)']).pipe(
-        map((d) => !d.matches),
+
+    isMobile$ = this.breakpointService.isMobile$.pipe(
         tap((d) => {
             this.leftZero = d;
         })
     );
 
-    constructor(public notificationService: NotificationService, public breakpointObserver: BreakpointObserver) {}
+    constructor(public notificationService: NotificationService, public breakpointService: BreakpointService) {}
 
-    onClick($event: MouseEvent) {
+    onClick(_: MouseEvent) {
         this.notificationService.clear();
     }
 }
