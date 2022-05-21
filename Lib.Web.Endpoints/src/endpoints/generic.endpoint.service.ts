@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { ContactRequest, ContactResponse } from '@ericaskari/model';
+import { ContactRequest, ContactResponse, GetVersionRequest, GetVersionResponse } from '@ericaskari/model';
 import { FrontendEnvironment, frontendEnvironmentInterfaceInjectionToken } from '@ericaskari/web-common';
 import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root',
@@ -20,23 +20,21 @@ export class GenericEndpointService {
         return this.httpClient.post<ContactResponse>('/api/contact', request);
     }
 
-    AppVersion(): Observable<string> {
-        return this.httpClient.get<{ version: string }>('/assets/app-version.json').pipe(
-            map((x) => x.version),
-            catchError((err) => of(''))
+    AppVersion(request: GetVersionRequest = new GetVersionRequest()): Observable<GetVersionResponse> {
+        return this.httpClient.get<GetVersionResponse>('/assets/app-version.json').pipe(
+            map((x) => GetVersionResponse.fromJson(x)),
+            catchError(() => of(new GetVersionResponse()))
         );
     }
 
-    ApiVersion(): Observable<string> {
-        const source: Observable<{ runtimeVersion: string; buildVersion: string }> = this.environment.production
-            ? this.httpClient.get<{ runtimeVersion: string; buildVersion: string }>('/api/version')
-            : this.httpClient.get<{ runtimeVersion: string; buildVersion: string }>(
-                  'http://localhost:8000/api/version'
-              );
+    ApiVersion(request: GetVersionRequest = new GetVersionRequest()): Observable<GetVersionResponse> {
+        const source: Observable<GetVersionResponse> = this.environment.production
+            ? this.httpClient.get<GetVersionResponse>('/api/version')
+            : this.httpClient.get<GetVersionResponse>('http://localhost:8000/api/version');
 
         return source.pipe(
-            map((x) => x.runtimeVersion),
-            catchError((err) => of(''))
+            map((x) => GetVersionResponse.fromJson(x)),
+            catchError(() => of(new GetVersionResponse()))
         );
     }
 }

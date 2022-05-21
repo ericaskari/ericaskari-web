@@ -10,6 +10,9 @@ RUN npm install
 
 HEALTHCHECK CMD curl --fail http://localhost:8000/api/healthcheck || exit 1
 
+ARG BUILD_VERSION=local-development
+ENV BUILD_VERSION=$BUILD_VERSION
+
 ENTRYPOINT ["/entrypoint.sh"]
 CMD [ "node", "/app/main.js" ]
 

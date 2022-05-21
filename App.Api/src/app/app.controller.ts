@@ -1,5 +1,5 @@
 import { EnvironmentService } from '@ericaskari/api-common';
-import { ContactRequest, ContactResponse } from '@ericaskari/model';
+import { ContactRequest, ContactResponse, GetVersionResponse } from '@ericaskari/model';
 import { Body, Controller, Get, OnApplicationBootstrap, Post } from '@nestjs/common';
 
 import { AppService } from './app.service';
@@ -27,19 +27,17 @@ export class AppController implements OnApplicationBootstrap {
     }
 
     @Get('/version')
-    getVersion(): { buildVersion: string; runtimeVersion: string } {
-        console.log({
-            buildVersion: this.environmentService.BUILD_VERSION,
-            runtimeVersion: this.environmentService.RUNTIME_VERSION,
-        });
-        return {
-            buildVersion: this.environmentService.BUILD_VERSION,
-            runtimeVersion: this.environmentService.RUNTIME_VERSION,
-        };
+    getVersion(): GetVersionResponse {
+        const response = new GetVersionResponse();
+
+        response.buildVersion = this.environmentService.BUILD_VERSION;
+
+        console.log(response);
+
+        return response;
     }
 
     onApplicationBootstrap(): void {
-        this.logger.verbose(`RUNTIME_VERSION: ${this.environmentService.RUNTIME_VERSION}`);
         this.logger.verbose(`BUILD_VERSION: ${this.environmentService.BUILD_VERSION}`);
     }
 }

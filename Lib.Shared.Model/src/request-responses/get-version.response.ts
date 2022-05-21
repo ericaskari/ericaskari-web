@@ -1,9 +1,9 @@
 import { plainToClass } from 'class-transformer';
 
 export class GetVersionResponse {
-    version: string | null = null;
+    buildVersion: string | null = null;
 
-    static fromJson(json: Pick<GetVersionResponse, keyof GetVersionResponse>): GetVersionResponse {
+    static fromJson(json: Partial<GetVersionResponse>): GetVersionResponse {
         return plainToClass(GetVersionResponse, json, { exposeDefaultValues: true });
     }
 }

@@ -1,7 +1,6 @@
 export interface IEnvironment {
     NODE_ENV: 'test' | 'development' | 'production';
     BUILD_VERSION: string;
-    RUNTIME_VERSION: string;
     ENABLE_SWAGGER: boolean;
     ENABLE_MIGRATIONS: boolean;
     NODE_MAILER_SECURE: boolean;

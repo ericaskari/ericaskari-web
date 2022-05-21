@@ -1,17 +1,18 @@
 import { createReducer, on } from '@ngrx/store';
 import { BootstrapStoreActions } from './bootstrap-store.actions';
+import { GetVersionResponse } from '@ericaskari/model';
 
 export interface BootstrapStoreState {
     finished: boolean;
-    appVersion: string;
-    apiVersion: string;
+    appVersion: GetVersionResponse;
+    apiVersion: GetVersionResponse;
 }
 
 export const BootstrapStoreReducer = createReducer<BootstrapStoreState>(
     {
         finished: false,
-        appVersion: '',
-        apiVersion: '',
+        appVersion: new GetVersionResponse(),
+        apiVersion: new GetVersionResponse(),
     },
     on(
         BootstrapStoreActions.BootstrapSucceededAndFinished,

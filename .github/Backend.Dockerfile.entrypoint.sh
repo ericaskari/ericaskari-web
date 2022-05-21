@@ -1,8 +1,7 @@
 #!/bin/sh
 set -e
 
-echo "BUILD_VERSION:    $BUILD_VERSION"
-echo "RUNTIME_VERSION:  $RUNTIME_VERSION"
+echo "BUILD_VERSION:  $BUILD_VERSION"
 
 echo '$@' "$@"
 # Run command with node if the first argument contains a "-" or is not a system command. The last

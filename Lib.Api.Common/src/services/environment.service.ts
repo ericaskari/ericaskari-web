@@ -16,10 +16,6 @@ export class EnvironmentService {
                 devDefault: 'local-development',
                 desc: 'docker image tag when building the docker image',
             }),
-            RUNTIME_VERSION: str({
-                devDefault: 'local-development',
-                desc: 'docker image tag when deploying the docker image',
-            }),
             ENABLE_SWAGGER: bool({ devDefault: true, default: true, desc: 'Enable/Disable Swagger' }),
             ENABLE_MIGRATIONS: bool({ devDefault: true, default: true, desc: 'Enable/Disable Migration' }),
             NODE_MAILER_HOST: host({ devDefault: 'localhost' }),
@@ -51,10 +47,6 @@ export class EnvironmentService {
 
     public get BUILD_VERSION(): string {
         return this.environment.BUILD_VERSION;
-    }
-
-    public get RUNTIME_VERSION(): string {
-        return this.environment.RUNTIME_VERSION;
     }
 
     public get ENABLE_SWAGGER(): boolean {

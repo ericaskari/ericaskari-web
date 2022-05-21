@@ -2,12 +2,6 @@
 <main class="flex">
     <router-outlet></router-outlet>
 </main>
-<footer>
-    <span><b>Backend version:</b></span>
-    <span>{{ apiVersion$ | async }}</span>
-    <br />
-    <span><b>Frontend version:</b></span>
-    <span>{{ appVersion$ | async }}</span>
-</footer>
+<footer></footer>
 <div [@darkenBg]="'visible'" class="landing-bg"></div>
 <app-notification></app-notification>

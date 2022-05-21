@@ -3,8 +3,7 @@ import { Component } from '@angular/core';
 import { BootstrapStoreSelectors } from '@ericaskari/web-state';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-
-import { NotificationService } from './notification/notification.service';
+import { GetVersionResponse } from '@ericaskari/model';
 
 @Component({
     selector: 'app-root',
@@ -23,11 +22,15 @@ import { NotificationService } from './notification/notification.service';
     ],
 })
 export class AppComponent {
-    appVersion$: Observable<string | null> = this.store.select(BootstrapStoreSelectors.appVersion);
-    apiVersion$: Observable<string | null> = this.store.select(BootstrapStoreSelectors.apiVersion);
+    appVersion$: Observable<GetVersionResponse | null> = this.store.select(BootstrapStoreSelectors.appVersion);
+    apiVersion$: Observable<GetVersionResponse | null> = this.store.select(BootstrapStoreSelectors.apiVersion);
 
-    constructor(private store: Store, private notificationService: NotificationService) {
-        // this.notificationService.add('success', 'Email sent.', '');
-        // this.notificationService.add('error', 'An error occurred.', '');
+    constructor(private store: Store) {
+        this.appVersion$.subscribe((appVersion) => {
+            console.log('appVersion: ', appVersion?.buildVersion);
+        });
+        this.apiVersion$.subscribe((apiVersion) => {
+            console.log('apiVersion: ', apiVersion?.buildVersion);
+        });
     }
 }
