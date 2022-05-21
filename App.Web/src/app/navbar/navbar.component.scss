@@ -7,7 +7,7 @@
 }
 
 .mobile-link-button {
-    @apply text-gray-800 dark:text-white hover:text-gray-300 inline-flex  justify-end p-2 rounded-md focus:outline-none;
+    @apply text-zinc-50 hover:text-zinc-400 inline-flex  justify-end p-2 rounded-md focus:outline-none;
 }
 .link-active {
     @apply text-zinc-400;

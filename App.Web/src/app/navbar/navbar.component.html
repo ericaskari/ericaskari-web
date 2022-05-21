@@ -18,7 +18,14 @@
     <nav>
         <div class="mx-auto flex px-2 py-3 h-auto flex-col gap-2">
             <div class="flex items-center">
-                <a class="link" routerLinkActive="link-active" routerLink="/"> Home </a>
+                <a
+                    class="link"
+                    routerLinkActive="link-active"
+                    routerLink="/"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                >
+                    Home
+                </a>
                 <div class="flex-1"></div>
                 <button class="mobile-link-button" (click)="expanded = !expanded">
                     <fa-icon size="1x" [icon]="faBars"></fa-icon>

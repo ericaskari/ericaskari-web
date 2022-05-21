@@ -77,12 +77,12 @@
 4. Start backend
 
     ```sh
-    npm run Start:App.Api
+    npm run start:app.api
     ```
 
 5. Start frontend
     ```sh
-    npm run Start:App.Web
+    npm run start:app.web
     ```
 
 <!-- CONTACT -->
