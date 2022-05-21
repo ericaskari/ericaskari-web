@@ -10,7 +10,7 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
         RouterModule.forRoot(
             [
                 {
-                    path: 'home',
+                    path: '',
                     component: HomePageComponent,
                 },
                 {
@@ -19,7 +19,7 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
                 },
                 {
                     path: '**',
-                    redirectTo: 'home',
+                    redirectTo: '',
                 },
             ],
             { initialNavigation: 'enabledBlocking' }
