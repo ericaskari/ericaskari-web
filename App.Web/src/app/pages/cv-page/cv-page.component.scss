@@ -1,3 +1,32 @@
 :host {
     @apply flex-1 flex;
 }
+.box {
+    @apply flex-1 flex flex-col gap-10 lg:mx-[5vw] xl:mx-[10vw] text-white;
+}
+.grid-box {
+    @apply col-span-6 p-3;
+    img {
+        border-radius: 50%;
+    }
+}
+
+.grid-box-header {
+    @apply pt-3 pb-5 text-3xl font-light uppercase;
+}
+.contacts {
+    @apply flex flex-col gap-4;
+
+    .contact-group {
+        @apply flex gap-4;
+        div:first-child {
+            min-width: 30px;
+            @apply col-span-1 flex justify-center;
+        }
+
+        span,
+        a {
+            @apply col-span-5 text-white;
+        }
+    }
+}
