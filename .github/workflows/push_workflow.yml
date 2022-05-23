@@ -186,4 +186,5 @@ jobs:
                   kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./.github/deployment/frontend-02-deployment.yml
                   kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./.github/deployment/frontend-03-service.yml
                   kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./.github/deployment/frontend-04-ingress.yml
+                  kubectl apply   --namespace="${{ secrets.NAMESPACE }}" --filename=./.github/deployment/frontend-05-redirect.yml
               shell: bash
