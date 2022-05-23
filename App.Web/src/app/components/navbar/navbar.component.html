@@ -5,9 +5,7 @@
 <ng-template #desktopMode>
     <nav>
         <div class="mx-auto flex px-8 h-16 items-center gap-5">
-            <a class="link" routerLinkActive="link-active" routerLink="/" [routerLinkActiveOptions]="{ exact: true }">
-                Home
-            </a>
+            <a class="link" routerLink="/"> Home </a>
             <div class="flex-1"></div>
             <ng-container *ngTemplateOutlet="links"></ng-container>
         </div>
@@ -18,15 +16,7 @@
     <nav>
         <div class="mx-auto flex px-2 py-3 h-auto flex-col gap-2">
             <div class="flex items-center">
-                <a
-                    class="link"
-                    routerLinkActive="link-active"
-                    routerLink="/"
-                    [routerLinkActiveOptions]="{ exact: true }"
-                    (click)="expanded = false"
-                >
-                    Home
-                </a>
+                <a class="link" routerLink="/" (click)="expanded = false"> Home </a>
                 <div class="flex-1"></div>
                 <button class="mobile-link-button" (click)="expanded = !expanded">
                     <fa-icon size="1x" [icon]="faBars"></fa-icon>
@@ -42,7 +32,7 @@
 <ng-template #links>
     <div class="flex-1"></div>
     <a class="link" routerLinkActive="link-active" routerLink="/contact" (click)="expanded = false"> Contact </a>
-    <a class="link" routerLinkActive="link-active" routerLink="/cv"> CV </a>
+    <a class="link" routerLinkActive="link-active" routerLink="/cv" (click)="expanded = false"> CV </a>
     <div></div>
     <a class="link" href="https://github.com/ericaskari"> Github </a>
     <a class="link" href="https://www.linkedin.com/in/ericaskari"> Linkedin </a>
