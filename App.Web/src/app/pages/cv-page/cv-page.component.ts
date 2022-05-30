@@ -63,7 +63,10 @@ export class CvPageComponent {
                 endDateStr: 'Now',
                 position: 'Web Developer  (Part-time)',
                 location: 'WeAre Solutions Oy',
-                description: `<p>I manage a React component library and update it as needed.</p>`,
+                description: `
+                <p>I manage a React component library and update it as needed.</p>
+                <p>Also, I have been working on an accounting project working with an invoicing system.</p>
+                `,
             },
             {
                 startDate: new Date(2020, Month.AUG),
@@ -73,8 +76,8 @@ export class CvPageComponent {
                 location: 'WeAre Solutions Oy',
                 description: `
                 <p>I managed the DevOps side of a few applications to make sure they deploy with correct configurations to Elastic container service (ECS) on Aws.</p>
-                <p>Also, I had a few responsibilities in the productization process and made sure Docker containers' secret management is done in the best way possible.</p>
-                <p>Later I joined the developer’s team to work on migrating multiple react applications’ components to its own npm packages and manage the versions of multiple npm packages.</p>
+                <p>Also, I had a few responsibilities in the productization process and made sure Docker containers' secret management was done in the best way possible.</p>
+                <p>Later I joined the developer’s team to work on migrating multiple react applications’ components to their own npm packages and manage the versions of various npm packages.</p>
                 `,
             },
             {
