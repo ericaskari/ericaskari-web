@@ -4,7 +4,7 @@
 }
 
 section:first-child {
-    min-height: 100vh;
+    min-height: 75vh;
     box-sizing: border-box;
     padding-top: 100px;
     display: flex;
@@ -13,7 +13,10 @@ section:first-child {
     gap: 1rem;
 }
 
-section:nth-child(2) {
+.logos {
+    @apply scale-90 hover:scale-100;
+}
+.logos-section {
     min-height: 100vh;
     box-sizing: border-box;
     display: grid;
@@ -35,11 +38,7 @@ section:nth-child(2) {
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    width: clamp(120px, 20vw, 200px);
-    height: clamp(120px, 20vw, 200px);
-    z-index: 1;
     border-radius: 50%;
-    margin: 0 clamp(0rem, 10%, 50%) 2rem;
 }
 
 .landing-text {
