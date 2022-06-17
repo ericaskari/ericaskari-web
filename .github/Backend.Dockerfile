@@ -2,7 +2,7 @@ FROM node:lts-gallium
 
 WORKDIR /app
 
-COPY _dist/App.Api .
+COPY _dist/api .
 COPY .github/Backend.Dockerfile.entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh

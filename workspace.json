@@ -1,7 +1,7 @@
 {
     "version": 2,
     "projects": {
-        "App.Api": "App.Api",
+        "api": "api",
         "App.Web": "App.Web",
         "Lib.Api.Common": "Lib.Api.Common",
         "Lib.Shared.Common": "Lib.Shared.Common",

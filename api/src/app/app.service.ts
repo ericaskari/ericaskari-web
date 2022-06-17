@@ -8,7 +8,7 @@ export class AppService {
     constructor(private mailService: MailService) {}
 
     getData(): { message: string } {
-        return { message: 'Welcome to App.Api!' };
+        return { message: 'Welcome to api!' };
     }
 
     public async contact(request: ContactRequest): Promise<ContactResponse> {

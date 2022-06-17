@@ -66,8 +66,8 @@ networks:
     #      target: Backend
     #      context: ./
     #    volumes:
-    #      - source: ./App.Api/src
-    #        target: /app/App.Api/src
+    #      - source: ./api/src
+    #        target: /app/api/src
     #        type: bind
     #        read_only: true
     #        consistency: cached
