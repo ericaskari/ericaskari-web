@@ -2,7 +2,7 @@
     "version": 2,
     "projects": {
         "api": "api",
-        "App.Web": "App.Web",
+        "web": "web",
         "Lib.Api.Common": "Lib.Api.Common",
         "Lib.Shared.Common": "Lib.Shared.Common",
         "Lib.Shared.Model": "Lib.Shared.Model",

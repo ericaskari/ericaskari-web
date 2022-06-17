@@ -44,5 +44,5 @@
             "style": "scss"
         }
     },
-    "defaultProject": "App.Web"
+    "defaultProject": "web"
 }

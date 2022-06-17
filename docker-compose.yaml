@@ -85,8 +85,8 @@ networks:
     #      target: Frontend
     #      context: ./
     #    volumes:
-    #      - source: ./App.Web/src
-    #        target: /app/App.Web/src
+    #      - source: ./web/src
+    #        target: /app/web/src
     #        type: bind
     #        read_only: true
     #        consistency: cached
