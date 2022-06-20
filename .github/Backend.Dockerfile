@@ -2,13 +2,13 @@ FROM node:lts-gallium
 
 WORKDIR /app
 
-COPY _dist/App.Api .
+COPY dist/apps/api .
 COPY .github/Backend.Dockerfile.entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh
 RUN npm install
 
-HEALTHCHECK CMD curl --fail http://localhost:8000/api/healthcheck || exit 1
+HEALTHCHECK CMD curl --fail http://localhost:8000/api || exit 1
 
 ARG BUILD_VERSION=local-development
 ENV BUILD_VERSION=$BUILD_VERSION

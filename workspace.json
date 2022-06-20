@@ -1,14 +1,21 @@
 {
-    "version": 2,
-    "projects": {
-        "App.Api": "App.Api",
-        "App.Web": "App.Web",
-        "Lib.Api.Common": "Lib.Api.Common",
-        "Lib.Shared.Common": "Lib.Shared.Common",
-        "Lib.Shared.Model": "Lib.Shared.Model",
-        "Lib.Web.Endpoints": "Lib.Web.Endpoints",
-        "Lib.Web.Forms": "Lib.Web.Forms",
-        "Lib.Web.State": "Lib.Web.State",
-        "Lib.Web.Common": "Lib.Web.Common"
-    }
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
+  "version": 2,
+  "projects": {
+    "api": "apps/api",
+    "api-common": "libs/api/common",
+    "api-core": "libs/api/core",
+    "api-database": "libs/api/database",
+    "api-persistence": "libs/api/persistence",
+    "api-seed-data": "libs/api/seed-data",
+    "shared-common": "libs/shared/common",
+    "shared-enum": "libs/shared/enum",
+    "shared-model": "libs/shared/model",
+    "web": "apps/web",
+    "web-common": "libs/web/common",
+    "web-e2e": "apps/web-e2e",
+    "web-endpoints": "libs/web/endpoints",
+    "web-forms": "libs/web/forms",
+    "web-state": "libs/web/state"
+  }
 }

@@ -1,0 +1,1 @@
+export * from './generated-interfaces/contact-service.interface'
