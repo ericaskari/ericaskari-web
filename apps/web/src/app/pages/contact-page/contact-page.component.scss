@@ -1,7 +1,5 @@
 :host {
-    @apply block;
-    min-height: 100vh;
-    padding: 0 clamp(0rem, 10vw, 1000px);
+    @apply max-w-4xl mx-auto relative block px-2 pt-10;
 }
 
 section:first-child {

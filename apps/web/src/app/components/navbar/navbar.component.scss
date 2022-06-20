@@ -1,9 +1,11 @@
 :host {
-    display: block;
+    @apply block relative z-10;
+    background: radial-gradient(114.87% 310.42% at 100% 0%, #31186c 0%, #316e9a 60.48%, #219096 97.09%);
+    filter: brightness(100%);
 }
 
 .link {
-    @apply text-zinc-100 hover:text-zinc-400 px-3 py-2 rounded-md text-sm font-medium;
+    @apply px-3 py-2 rounded-md text-sm font-medium cursor-pointer text-black hover:text-zinc-200 md:text-white md:hover:text-zinc-400;
 }
 
 .mobile-link-button {

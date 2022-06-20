@@ -33,14 +33,6 @@ section:first-child {
     }
 }
 
-.profile-image {
-    background-image: url('../../../assets/profile-image.jpg');
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    border-radius: 50%;
-}
-
 .landing-text {
     font-size: clamp(24px, 3vw, 42px);
     padding: 0 clamp(0rem, 10%, 50%);

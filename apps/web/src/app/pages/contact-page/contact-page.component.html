@@ -1,29 +1,20 @@
-<section class="tui-text_body-xl">
-    <form [formGroup]="contactFormService.formGroup" appForm class="grid">
-        <div>
-            <h1 class="" appFormHeader style="color: white">Contact form</h1>
-        </div>
-        <div>
-            <input [formControl]="contactFormService.emailFormControl" appInput placeholder="Email" type="text" />
-        </div>
-        <div>
-            <input [formControl]="contactFormService.nameFormControl" appInput placeholder="Name" type="text" />
-        </div>
-        <div>
-            <input [formControl]="contactFormService.subjectFormControl" appInput placeholder="Subject" type="text" />
-        </div>
-        <div>
-            <textarea
-                [formControl]="contactFormService.messageFormControl"
-                appInput
-                placeholder="Message"
-                type="text"
-            ></textarea>
-        </div>
-        <div class="grid grid-cols-6" style="direction: rtl">
-            <button (click)="onClick($event)" appButton type="submit" class="col-span-12 md:col-span-2 lg:col-span-1">
-                Send
-            </button>
-        </div>
-    </form>
-</section>
+<form [formGroup]="contactFormService.formGroup" appForm class="grid">
+    <div>
+        <h1 class="" appFormHeader style="color: white">Contact form</h1>
+    </div>
+    <div>
+        <input [formControl]="contactFormService.emailFormControl" appInput placeholder="Email" type="text" />
+    </div>
+    <div>
+        <input [formControl]="contactFormService.nameFormControl" appInput placeholder="Name" type="text" />
+    </div>
+    <div>
+        <input [formControl]="contactFormService.subjectFormControl" appInput placeholder="Subject" type="text" />
+    </div>
+    <div>
+        <textarea [formControl]="contactFormService.messageFormControl" appInput placeholder="Message" type="text"></textarea>
+    </div>
+    <div class="grid grid-cols-6" style="direction: rtl">
+        <button (click)="onClick($event)" appButton type="submit" class="col-span-12 md:col-span-2 lg:col-span-1">Send</button>
+    </div>
+</form>

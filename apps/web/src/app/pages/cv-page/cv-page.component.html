@@ -17,14 +17,14 @@
 </ng-template>
 
 <ng-template #imageSection>
-    <div class="grid-box flex flex-col justify-center items-center">
-        <img src="/assets/cv_image.png" width="200" height="200" alt="CV image" />
+    <div class="flex-1 flex justify-center items-center">
+        <div class="bg-profile w-[200px] h-[200px] bg-cover bg-center bg-no-repeat rounded-full"></div>
     </div>
 </ng-template>
 <ng-template #nameSection>
-    <div class="grid-box flex flex-col gap-3 justify-center">
-        <p class="font-thin text-3xl md:text-5xl lg:text-6xl">Mohammad Askari</p>
-        <p class="font-thin text-2xl md:text-3xl lg:text-4xl">Software developer</p>
+    <div class="flex-1 flex flex-col justify-center">
+        <p class="font-thin text-3xl text-center md:text-4xl md:text-start">Mohammad Askari (Eric)</p>
+        <p class="font-thin text-2xl text-center md:text-2xl md:text-start">Software developer</p>
     </div>
 </ng-template>
 
@@ -145,38 +145,19 @@
     </div>
 </ng-template>
 
-<div class="box">
-    <ng-template [ngIf]="breakpointService.isDesktop$ | async" [ngIfElse]="mobileMode">
-        <div class="flex justify-center">
-            <div class="flex-1 flex items-center justify-center">
-                <ng-container *ngTemplateOutlet="imageSection"></ng-container>
-            </div>
-            <div class="flex-1 flex items-center">
-                <ng-container *ngTemplateOutlet="nameSection"></ng-container>
-            </div>
-        </div>
-        <div class="flex gap-6">
-            <div class="flex-1 flex flex-col gap-6">
-                <ng-container *ngTemplateOutlet="contactSection"></ng-container>
-                <ng-container *ngTemplateOutlet="eduSection"></ng-container>
-                <ng-container *ngTemplateOutlet="langSection"></ng-container>
-            </div>
-            <div class="flex-1 flex flex-col gap-6">
-                <ng-container *ngTemplateOutlet="aboutMeSection"></ng-container>
-                <ng-container *ngTemplateOutlet="expSection"></ng-container>
-                <ng-container *ngTemplateOutlet="skillSection"></ng-container>
-            </div>
-        </div>
-    </ng-template>
+<div class="grid grid-cols-12 text-white gap-8">
+    <div class="col-span-12 md:col-span-6"><ng-container *ngTemplateOutlet="imageSection"></ng-container></div>
+    <div class="flex col-span-12 md:col-span-6"><ng-container *ngTemplateOutlet="nameSection"></ng-container></div>
+    <div class="col-span-12 md:col-span-6 md:col-start-7 md:row-start-2">
+        <ng-container *ngTemplateOutlet="aboutMeSection"></ng-container>
+    </div>
+    <div class="col-span-12 md:col-span-6 md:col-start-1 md:row-start-2">
+        <ng-container *ngTemplateOutlet="contactSection"></ng-container>
+    </div>
+    <div class="col-span-12 md:col-span-6"><ng-container *ngTemplateOutlet="eduSection"></ng-container></div>
+    <div class="col-span-12 md:col-span-6"><ng-container *ngTemplateOutlet="expSection"></ng-container></div>
+    <div class="col-span-12 md:col-span-6 md:col-start-7 md:row-start-4">
+        <ng-container *ngTemplateOutlet="skillSection"></ng-container>
+    </div>
+    <div class="col-span-12 md:col-span-6 md:col-start-1 md:row-start-4"><ng-container *ngTemplateOutlet="langSection"></ng-container></div>
 </div>
-
-<ng-template #mobileMode>
-    <ng-container *ngTemplateOutlet="imageSection"></ng-container>
-    <ng-container *ngTemplateOutlet="nameSection"></ng-container>
-    <ng-container *ngTemplateOutlet="aboutMeSection"></ng-container>
-    <ng-container *ngTemplateOutlet="contactSection"></ng-container>
-    <ng-container *ngTemplateOutlet="eduSection"></ng-container>
-    <ng-container *ngTemplateOutlet="expSection"></ng-container>
-    <ng-container *ngTemplateOutlet="skillSection"></ng-container>
-    <ng-container *ngTemplateOutlet="langSection"></ng-container>
-</ng-template>

@@ -9,8 +9,11 @@ module.exports = {
     theme: {
         extend: {
             backgroundImage: (theme) => ({
-                check: "url('/icons/check.svg')",
-                landscape: "url('/images/landscape/2.jpg')"
+                'github-dark': "url('/assets/socials/GitHub-Mark-120px-plus.png')",
+                'github-light': "url('/assets/socials/GitHub-Mark-Light-120px-plus.png')",
+                linkedin: "url('/assets/socials/linkedin.png')",
+                profile: "url('/assets/cv/profile.jpeg')",
+                'home-icon': "url('/assets/icons/home.png')"
             })
         }
     }

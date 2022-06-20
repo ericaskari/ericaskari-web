@@ -17,7 +17,7 @@ enum Month {
 }
 
 @Component({
-    selector: 'app-contact-home-page',
+    selector: 'app-cv-page',
     templateUrl: './cv-page.component.html',
     styleUrls: ['./cv-page.component.scss']
 })

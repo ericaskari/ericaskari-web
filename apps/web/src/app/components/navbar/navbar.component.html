@@ -1,39 +1,67 @@
-<ng-template [ngIf]="breakpointService.isDesktop$ | async" [ngIfElse]="mobileMode">
-    <ng-container *ngTemplateOutlet="desktopMode"></ng-container>
-</ng-template>
-
-<ng-template #desktopMode>
-    <nav>
-        <div class="mx-auto flex px-8 h-16 items-center gap-5">
-            <a class="link" routerLink="/"> Home </a>
-            <div class="flex-1"></div>
+<header class="relative shadow-lg items-center h-16 flex px-8">
+    <div class="flex-1 flex">
+        <ng-template [ngIf]="breakpointService.isDesktop$ | async" [ngIfElse]="mobileMode">
+            <ng-container *ngTemplateOutlet="desktopMode"></ng-container>
+        </ng-template>
+    </div>
+    <div class="flex gap-4 justify-end w-1/4 ml-5 mr-4 sm:mr-0 sm:right-auto">
+        <a
+            class="block relative bg-github-light bg-center bg-contain bg-no-repeat w-8 h-8 transition-all scale-90 hover:scale-100"
+            href="https://github.com/ericaskari"
+        >
+        </a>
+        <a
+            class="block relative bg-linkedin bg-center bg-contain bg-no-repeat w-8 h-8 transition-all scale-90 hover:scale-100"
+            href="https://github.com/ericaskari"
+        >
+        </a>
+    </div>
+    <div
+        [@dropDownAnimation]="expanded ? 'open' : 'closed'"
+        class="absolute left-2 top-[100%] mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+        role="menu"
+        aria-orientation="vertical"
+        aria-labelledby="menu-button"
+        tabindex="-1"
+    >
+        <div class="relative w-56 flex p-2 gap-2 flex flex-col">
             <ng-container *ngTemplateOutlet="links"></ng-container>
         </div>
-    </nav>
+    </div>
+
+    <!-- SUBSCRIPTIONS -->
+    <div class="hidden absolute">
+        {{ hideProfilePopupOnCLickOutside$ | async }}
+    </div>
+</header>
+
+<ng-template #desktopMode>
+    <div class="flex gap-8">
+        <button
+            class="link text-white bg-home-icon bg-center bg-contain bg-no-repeat w-8 h-8 invert"
+            routerLinkActive="link-active"
+            routerLink="/"
+            [routerLinkActiveOptions]="{ exact: true }"
+        ></button>
+        <ng-container *ngTemplateOutlet="links"></ng-container>
+    </div>
 </ng-template>
 
 <ng-template #mobileMode>
-    <nav>
-        <div class="mx-auto flex px-2 py-3 h-auto flex-col gap-2">
-            <div class="flex items-center">
-                <a class="link" routerLink="/" (click)="expanded = false"> Home </a>
-                <div class="flex-1"></div>
-                <button class="mobile-link-button" (click)="expanded = !expanded">
-                    <fa-icon size="1x" [icon]="faBars"></fa-icon>
-                </button>
-            </div>
-            <div class="flex flex-col justify-start gap-3 pb-3" *ngIf="expanded">
-                <ng-container *ngTemplateOutlet="links"></ng-container>
-            </div>
-        </div>
-    </nav>
+    <div class="flex items-center gap-8">
+        <button
+            class="link text-white bg-home-icon bg-center bg-contain bg-no-repeat w-8 h-8 invert"
+            routerLinkActive="link-active"
+            routerLink="/"
+            [routerLinkActiveOptions]="{ exact: true }"
+        ></button>
+        <button class="text-white hover:text-zinc-400" (click)="expanded = !expanded" #dropdown>
+            <fa-icon size="1x" [icon]="faBars"></fa-icon>
+        </button>
+    </div>
 </ng-template>
 
 <ng-template #links>
-    <div class="flex-1"></div>
     <a class="link" routerLinkActive="link-active" routerLink="/contact" (click)="expanded = false"> Contact </a>
     <a class="link" routerLinkActive="link-active" routerLink="/cv" (click)="expanded = false"> CV </a>
-    <div></div>
-    <a class="link" href="https://github.com/ericaskari"> Github </a>
-    <a class="link" href="https://www.linkedin.com/in/ericaskari"> Linkedin </a>
 </ng-template>

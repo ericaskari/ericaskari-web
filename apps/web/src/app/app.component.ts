@@ -1,6 +1,7 @@
 import { animate, animateChild, group, query, sequence, stagger, state, style, transition, trigger } from '@angular/animations';
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ChildrenOutletContexts } from '@angular/router';
+import { ClickService } from './services/click.service';
 
 export const fadeAnimation = trigger('fadeAnimation', [
     transition('* => *', [
@@ -19,9 +20,14 @@ export const fadeAnimation = trigger('fadeAnimation', [
     animations: [fadeAnimation]
 })
 export class AppComponent {
-    constructor(private contexts: ChildrenOutletContexts) {}
+    constructor(private contexts: ChildrenOutletContexts, private clickService: ClickService) {}
 
     public getRouterOutletState(outlet: any) {
         return outlet.isActivated ? outlet.activatedRoute : '';
+    }
+
+    @HostListener('document:click', ['$event'])
+    documentClick(event: any): void {
+        this.clickService.documentClickedTarget.next(event.target);
     }
 }
