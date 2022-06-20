@@ -1,0 +1,19 @@
+[
+  {
+    "name": "contact",
+    "endpoints": [
+      {
+        "name": "sendContactForm",
+        "authenticated": false,
+        "customHeaders": false,
+        "type": "POST",
+        "url": "",
+        "urlProps": [],
+        "bodyRequest": "ContactRequest",
+        "paramRequest": "",
+        "queryParamRequest": "",
+        "response": "ContactResponse"
+      }
+    ]
+  }
+]

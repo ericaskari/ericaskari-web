@@ -1,0 +1,15 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "module": "CommonJS",
+        "target": "ES6",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "lib": ["es2020"]
+    },
+    "ts-node": {
+        "require": ["tsconfig-paths/register"]
+    }
+}

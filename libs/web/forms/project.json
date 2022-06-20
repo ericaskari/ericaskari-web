@@ -1,0 +1,27 @@
+{
+  "projectType": "library",
+  "sourceRoot": "libs/web/forms/src",
+  "prefix": "app",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/web/forms"
+      ],
+      "options": {
+        "jestConfig": "libs/web/forms/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/web/forms/**/*.ts",
+          "libs/web/forms/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

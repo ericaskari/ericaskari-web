@@ -1,28 +1,63 @@
 {
-    "compileOnSave": false,
-    "compilerOptions": {
-        "rootDir": ".",
-        "sourceMap": true,
-        "declaration": false,
-        "moduleResolution": "node",
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "importHelpers": true,
-        "target": "es2015",
-        "module": "esnext",
-        "lib": ["es2017", "dom"],
-        "skipLibCheck": true,
-        "skipDefaultLibCheck": true,
-        "baseUrl": ".",
-        "paths": {
-            "@ericaskari/api-common": ["Lib.Api.Common/src/index.ts"],
-            "@ericaskari/common": ["Lib.Shared.Common/src/index.ts"],
-            "@ericaskari/model": ["Lib.Shared.Model/src/index.ts"],
-            "@ericaskari/web-endpoints": ["Lib.Web.Endpoints/src/index.ts"],
-            "@ericaskari/web-forms": ["Lib.Web.Forms/src/index.ts"],
-            "@ericaskari/web-state": ["Lib.Web.State/src/index.ts"],
-            "@ericaskari/web-common": ["Lib.Web.Common/src/index.ts"]
-        }
-    },
-    "exclude": ["node_modules", "tmp"]
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@ericaskari/api/common": [
+        "libs/api/common/src/index.ts"
+      ],
+      "@ericaskari/api/core": [
+        "libs/api/core/src/index.ts"
+      ],
+      "@ericaskari/api/database": [
+        "libs/api/database/src/index.ts"
+      ],
+      "@ericaskari/api/persistence": [
+        "libs/api/persistence/src/index.ts"
+      ],
+      "@ericaskari/api/seed-data": [
+        "libs/api/seed-data/src/index.ts"
+      ],
+      "@ericaskari/shared/common": [
+        "libs/shared/common/src/index.ts"
+      ],
+      "@ericaskari/shared/enum": [
+        "libs/shared/enum/src/index.ts"
+      ],
+      "@ericaskari/shared/model": [
+        "libs/shared/model/src/index.ts"
+      ],
+      "@ericaskari/web/common": [
+        "libs/web/common/src/index.ts"
+      ],
+      "@ericaskari/web/endpoints": [
+        "libs/web/endpoints/src/index.ts"
+      ],
+      "@ericaskari/web/forms": [
+        "libs/web/forms/src/index.ts"
+      ],
+      "@ericaskari/web/state": [
+        "libs/web/state/src/index.ts"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }
