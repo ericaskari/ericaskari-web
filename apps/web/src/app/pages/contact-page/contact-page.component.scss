@@ -1,9 +1,7 @@
 :host {
-    display: block;
-    justify-content: center;
+    @apply block;
     min-height: 100vh;
     padding: 0 clamp(0rem, 10vw, 1000px);
-    flex: 1;
 }
 
 section:first-child {

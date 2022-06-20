@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
-<main class="flex">
-    <router-outlet></router-outlet>
+<main [@fadeAnimation]="getRouterOutletState(o)">
+    <router-outlet #o="outlet"></router-outlet>
 </main>
 <footer></footer>
 <div [@darkenBg]="'visible'" class="landing-bg"></div>

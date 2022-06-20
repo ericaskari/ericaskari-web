@@ -67,9 +67,9 @@ const store = [
     imports: [
         HttpClientModule,
         BrowserModule,
+        BrowserAnimationsModule,
         AppRoutingModule,
         ReactiveFormsModule,
-        BrowserAnimationsModule,
         FontAwesomeModule,
         LayoutModule,
         CommonModule,

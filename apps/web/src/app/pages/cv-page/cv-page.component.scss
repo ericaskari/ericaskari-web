@@ -1,6 +1,7 @@
 :host {
-    @apply flex-1 flex;
+    @apply block;
 }
+
 .box {
     @apply flex-1 flex flex-col gap-10 lg:mx-[5vw] xl:mx-[10vw] text-white;
 }
