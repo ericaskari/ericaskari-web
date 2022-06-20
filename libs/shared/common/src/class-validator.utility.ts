@@ -1,4 +1,3 @@
-import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { ClassConstructor } from 'class-transformer/types/interfaces';
 import { validate, ValidationError } from 'class-validator';
 import { from, Observable } from 'rxjs';
@@ -15,7 +14,7 @@ export class ClassValidatorUtility {
      * @param key Form key and Class key
      */
     static createFormControlAsyncValidator<T>(convertClass: ClassConstructor<T>, key: keyof T) {
-        return (control: AbstractControl): Observable<ValidationErrors | null> => {
+        return (control: any): Observable<{ [key: string]: any } | null> => {
             //  Creating instance with just given key
             const instance = (convertClass as any).fromRequest({ [key]: control.value });
             //  Validating with class-validator
@@ -43,22 +42,15 @@ export class ClassValidatorUtility {
     static validationErrorsToFormError(validationErrors: ValidationError[]): {
         [formFieldName: string]: FormFieldError;
     } {
-        const data = validationErrors.map(
-            (validationError: ValidationError): { [formFieldName: string]: FormFieldError } => {
-                const constraintKeys: string[] = Object.keys(validationError.constraints || {});
+        const data = validationErrors.map((validationError: ValidationError): { [formFieldName: string]: FormFieldError } => {
+            const constraintKeys: string[] = Object.keys(validationError.constraints || {});
 
-                const formFieldErrors: FormFieldError[] = constraintKeys.map(
-                    (key: string): FormFieldError => ({ [key]: true })
-                );
+            const formFieldErrors: FormFieldError[] = constraintKeys.map((key: string): FormFieldError => ({ [key]: true }));
 
-                const propertyErrors: FormFieldError = formFieldErrors.reduce(
-                    (oldErr, newErr) => ({ ...oldErr, ...newErr }),
-                    {}
-                );
+            const propertyErrors: FormFieldError = formFieldErrors.reduce((oldErr, newErr) => ({ ...oldErr, ...newErr }), {});
 
-                return { [validationError.property]: propertyErrors };
-            }
-        );
+            return { [validationError.property]: propertyErrors };
+        });
 
         return data.reduce((old, newOne) => ({ ...old, ...newOne }), {});
     }

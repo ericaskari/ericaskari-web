@@ -15,7 +15,8 @@
         "assets": [
           "apps/api/src/assets"
         ],
-        "webpackConfig": "apps/api/extended-webpack.config.js"
+        "webpackConfig": "apps/api/extended-webpack.config.js",
+        "generatePackageJson": true
       },
       "configurations": {
         "production": {
