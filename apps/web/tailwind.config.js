@@ -12,7 +12,7 @@ module.exports = {
                 'github-dark': "url('/assets/socials/GitHub-Mark-120px-plus.png')",
                 'github-light': "url('/assets/socials/GitHub-Mark-Light-120px-plus.png')",
                 linkedin: "url('/assets/socials/linkedin.png')",
-                profile: "url('/assets/cv/profile.jpeg')",
+                profile: "url('/assets/cv/300x320.jpeg')",
                 'home-icon': "url('/assets/icons/home.png')"
             })
         }
