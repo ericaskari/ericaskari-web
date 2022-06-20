@@ -55,15 +55,15 @@ jobs:
               run: npm install
             - name: Test
               shell: bash
-              run: npx nx run-many --target=test --all
+              run: npm run test:all
             - name: Build
               shell: bash
-              run: npx nx run-many --target=build --all
-            - name: Upload _dist
+              run: npm run build:all
+            - name: Upload dist
               uses: actions/upload-artifact@v3
               with:
-                  name: _dist
-                  path: _dist
+                  name: dist
+                  path: dist
     BuildAndPushDevImages:
         needs: [GenerateProdVersion, BuildAndTest]
         #if: github.ref_name == 'dev'
@@ -87,11 +87,11 @@ jobs:
               with:
                   name: DEV_VERSION
                   path: .
-            - name: Download _dist
+            - name: Download dist
               uses: actions/download-artifact@v3
               with:
-                  name: _dist
-                  path: _dist
+                  name: dist
+                  path: dist
             - name: Debug
               shell: bash
               run: ls -la
