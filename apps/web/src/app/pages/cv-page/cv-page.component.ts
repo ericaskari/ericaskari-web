@@ -48,15 +48,15 @@ export class CvPageComponent {
                 startDate: new Date(2021, Month.AUG),
                 endDate: new Date(2025, Month.AUG),
                 endDateStr: '',
-                degree: `pages.cv.education-degree-1`,
-                location: 'pages.cv.education-degree-1-place'
+                degree: `pages.cv.education-degree-2`,
+                location: 'pages.cv.education-degree-2-place'
             },
             {
                 startDate: new Date(2018, Month.APR),
                 endDate: new Date(2020, Month.JUN),
                 endDateStr: 'Now',
-                degree: `pages.cv.education-degree-2`,
-                location: 'pages.cv.education-degree-2-place'
+                degree: `pages.cv.education-degree-1`,
+                location: 'pages.cv.education-degree-1-place'
             }
         ];
 
