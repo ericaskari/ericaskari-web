@@ -6,12 +6,15 @@ import { ContactFormService } from '@ericaskari/web/forms';
 import { catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { NotificationService } from '../../components/notification/notification.service';
+import { TranslateService } from '@ngx-translate/core';
+import { TextAnimationDirective } from '../../components/text-animation.directive';
 
 @Component({
     selector: 'app-contact-home-page',
     templateUrl: './contact-page.component.html',
     styleUrls: ['./contact-page.component.scss'],
     animations: [
+        TextAnimationDirective.getTextChangeAnimation(),
         trigger('landingText', [
             transition('* => visible', [animate('1s')]),
             state(
@@ -29,7 +32,8 @@ export class ContactPageComponent {
         public contactFormService: ContactFormService,
         public contactEndpointService: ContactEndpointService,
         private notificationService: NotificationService,
-        private router: Router
+        private router: Router,
+        public translate: TranslateService
     ) {}
 
     onClick(event: MouseEvent): void {

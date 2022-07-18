@@ -1,0 +1,64 @@
+{
+  "contact-form": "Yhteydenottolomake",
+  "generic": {
+    "call": "Soita",
+    "email": "Lähetä sähköposti",
+    "name": "Mohammad (Eric) Askari",
+    "role": "Web-kehittäjä",
+    "show": "Näytä"
+  },
+  "pages": {
+    "contact": {
+      "email": "Sähköposti",
+      "form": "Yhteydenottolomake",
+      "message": "Viesti",
+      "name": "Nimi",
+      "send": "Lähetä",
+      "subject": "Aihe"
+    },
+    "cv": {
+      "aboutme": "Ohjelmointi on intohimoni, jokapäiväinen uuden oppiminen ja innostukseni ovat tekemiseni lähtökohta.",
+      "education-degree-1": "Tieto- ja viestintätekniikan perustutkinto",
+      "education-degree-1-place": "Careeria Ammattikoulu",
+      "education-degree-2": "Tieto- ja viestintätekniikka insinööri",
+      "education-degree-2-place": "Metropolia Ammattikorkeakoulu",
+      "headers": {
+        "about": "TIIVISTELMÄ",
+        "contact": "YHTEYSTIEDOT",
+        "education": "Koulutus",
+        "languages": "KIELITAIDOT",
+        "skills": "AMMATILLISET TAIDOT",
+        "work-experience": "TYÖKOKEMUS"
+      },
+      "languages": {
+        "en": "Englanti",
+        "fa": "Persia",
+        "fi": "Suomi (B2-C1)"
+      },
+      "work-experience": {
+        "weare": {
+          "fulltime": {
+            "sentence-1": "Hallinnoin muutamien sovellusten DevOps-puolta ja varmistin, että ne otetaan käyttöön oikeilla määrityksillä Aws:n Elastic-konttipalveluun (ECS).",
+            "sentence-2": "Lisäksi minulla oli muutama vastuualueita tuotteistamisprosessissa, huolehdin että Docker-konttien salainen hallinta hoidetaan parhaalla mahdollisella tavalla.",
+            "sentence-3": "Myöhemmin liityin kehittäjätiimiin ja siirsin useiden react-sovellusten komponentit niiden omiin npm-paketteihin ja hallinnoin useiden npm-pakettien versioita."
+          },
+          "internship": {
+            "sentence-1": "Muunsin melko suuren Express-projektin Typescriptiksi ja refaktoroin Angular-projektin tiedostojen ja moduulien rakenteen ja päivitin sen uusimpaan versioon."
+          },
+          "parttime": {
+            "sentence-1": "Hallinnoin React-komponenttikirjastoa ja päivitän sitä tarpeen mukaan.",
+            "sentence-2": " "
+          }
+        }
+      }
+    },
+    "home": {
+      "sorry": "Pahoittelut harmillisista kielioppivirheistä ja käännöksen puutteesta"
+    },
+    "home-page": {
+      "contact-me": "Ottaa minuun yhteyttä",
+      "role": "Full-stack Web Kehittäjä"
+    },
+    "home-page-name": "Mohammad (Eric) Askari"
+  }
+}

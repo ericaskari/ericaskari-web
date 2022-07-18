@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { faPhone, faAt, faLocation } from '@fortawesome/free-solid-svg-icons';
 import { BreakpointService } from '../../services/breakpoint.service';
+import { TextAnimationDirective } from '../../components/text-animation.directive';
+import { TranslateService } from '@ngx-translate/core';
 enum Month {
     JAN,
     FEB,
@@ -19,7 +21,8 @@ enum Month {
 @Component({
     selector: 'app-cv-page',
     templateUrl: './cv-page.component.html',
-    styleUrls: ['./cv-page.component.scss']
+    styleUrls: ['./cv-page.component.scss'],
+    animations: [TextAnimationDirective.getTextChangeAnimation()]
 })
 export class CvPageComponent {
     faPhone = faPhone;
@@ -33,26 +36,27 @@ export class CvPageComponent {
         endDateStr: string;
         position: string;
         location: string;
-        description: string;
+        description: string[];
     }[] = [];
     educations: { startDate: Date; endDate: Date | null; endDateStr: string; degree: string; location: string }[] = [];
     skills: string[] = [];
     languages: string[] = [];
-    constructor(public breakpointService: BreakpointService) {
+
+    constructor(public breakpointService: BreakpointService, public translate: TranslateService) {
         this.educations = [
             {
                 startDate: new Date(2021, Month.AUG),
                 endDate: new Date(2025, Month.AUG),
                 endDateStr: '',
-                degree: `Information and Communication Technology, Bachelor's Degree`,
-                location: 'Metropolia University of Applied Sciences, Espoo'
+                degree: `pages.cv.education-degree-1`,
+                location: 'pages.cv.education-degree-1-place'
             },
             {
                 startDate: new Date(2018, Month.APR),
                 endDate: new Date(2020, Month.JUN),
                 endDateStr: 'Now',
-                degree: `Vocational Qualification in Information and Telecommunications Technology`,
-                location: 'Careeria, Porvoo'
+                degree: `pages.cv.education-degree-2`,
+                location: 'pages.cv.education-degree-2-place'
             }
         ];
 
@@ -63,10 +67,7 @@ export class CvPageComponent {
                 endDateStr: 'Now',
                 position: 'Web Developer  (Part-time)',
                 location: 'WeAre Solutions Oy',
-                description: `
-                <p>I manage a React component library and update it as needed.</p>
-                <p>Also, I have been working on an accounting project working with an invoicing system.</p>
-                `
+                description: ['pages.cv.work-experience.weare.parttime.sentence-1', 'pages.cv.work-experience.weare.parttime.sentence-2']
             },
             {
                 startDate: new Date(2020, Month.AUG),
@@ -74,11 +75,11 @@ export class CvPageComponent {
                 endDateStr: '',
                 position: 'Web Developer  (Full-time)',
                 location: 'WeAre Solutions Oy',
-                description: `
-                <p>I managed the DevOps side of a few applications to make sure they deploy with correct configurations to Elastic container service (ECS) on Aws.</p>
-                <p>Also, I had a few responsibilities in the productization process and made sure Docker containers' secret management was done in the best way possible.</p>
-                <p>Later I joined the developer’s team to work on migrating multiple react applications’ components to their own npm packages and manage the versions of various npm packages.</p>
-                `
+                description: [
+                    'pages.cv.work-experience.weare.fulltime.sentence-1',
+                    'pages.cv.work-experience.weare.fulltime.sentence-2',
+                    'pages.cv.work-experience.weare.fulltime.sentence-3'
+                ]
             },
             {
                 startDate: new Date(2019, Month.MAR),
@@ -86,9 +87,7 @@ export class CvPageComponent {
                 endDateStr: '',
                 position: 'Web Developer  (Internship)',
                 location: 'WeAre Solutions Oy',
-                description: `
-                <p>I refactored a quite big Express project to Typescript and at the same refactored the Angular project to have a structure for files and modules and updated it to the latest version. </p>
-                `
+                description: ['pages.cv.work-experience.weare.internship.sentence-1']
             }
         ];
 
@@ -107,6 +106,6 @@ export class CvPageComponent {
             'SQL, TypeORM and Postgress',
             'MongoDb and Mongoose'
         ];
-        this.languages = ['English', 'Finnish (B2-C1)', 'Persian'];
+        this.languages = ['pages.cv.languages.en', 'pages.cv.languages.fi', 'pages.cv.languages.fa'];
     }
 }
