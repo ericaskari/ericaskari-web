@@ -31,6 +31,9 @@ import { StoreModule } from '@ngrx/store';
 import { appModuleEffects, CustomRouterStateSerializer, rootActionReducerMap, rootMetaReducers } from '@ericaskari/web/state';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { LangSelectorComponent } from './components/lang-selector/lang-selector.component';
+import { LocalizedDatePipe } from './components/localized-date.pipe';
+import { TextAnimationDirective } from './components/text-animation.directive';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http);
@@ -68,7 +71,10 @@ const store = [
         FormRowDirective,
         FormActionDirective,
         NavbarComponent,
-        CvPageComponent
+        CvPageComponent,
+        LangSelectorComponent,
+        LocalizedDatePipe,
+        TextAnimationDirective
     ],
     imports: [
         HttpClientModule,

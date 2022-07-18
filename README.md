@@ -115,7 +115,6 @@ Run `nx g @nrwl/nest:lib    my-lib` to generate a library.
 
 Run `docker-compose up -d` for a dev server.
 
-
 ## Create Local SSL
 
 ### Generate Authority keys for development
@@ -150,3 +149,4 @@ openssl x509 \
 [issues-url]: https://github.com/ericaskari/ericaskari-web/issues
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
+

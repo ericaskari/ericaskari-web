@@ -1,9 +1,11 @@
 import { Component, ElementRef, HostBinding, ViewChild } from '@angular/core';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { BreakpointService } from '../../services/breakpoint.service';
-import { dropDownAnimation } from './dropdown.animation';
 import { tap } from 'rxjs/operators';
 import { ClickService } from '../../services/click.service';
+import { dropDownAnimation } from '../lang-selector/dropdown.animation';
+import { TranslateService } from '@ngx-translate/core';
+import { LangSelectorOption } from '../lang-selector/lang-selector.component';
 
 @Component({
     selector: 'app-navbar',
@@ -23,5 +25,10 @@ export class NavbarComponent {
             this.expanded = false;
         })
     );
-    constructor(public breakpointService: BreakpointService, private clickService: ClickService) {}
+    constructor(public breakpointService: BreakpointService, private clickService: ClickService, public translate: TranslateService) {}
+
+    onLanguageChange($event: LangSelectorOption) {
+        this.translate.use($event.value ?? 'en');
+        localStorage.setItem('lang', $event.value ?? 'en');
+    }
 }

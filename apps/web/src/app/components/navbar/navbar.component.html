@@ -1,26 +1,49 @@
-<header class="relative shadow-lg items-center h-16 flex px-8">
-    <div class="flex-1 flex">
-        <ng-template [ngIf]="breakpointService.isDesktop$ | async" [ngIfElse]="mobileMode">
-            <ng-container *ngTemplateOutlet="desktopMode"></ng-container>
-        </ng-template>
+<header class="relative shadow-lg items-center h-16 flex px-4 md:px-8 justify-between">
+    <div class="flex gap-4 justify-start w-1/4 ml-5 mr-4 sm:mr-0 sm:right-auto items-center">
+        <div class="flex gap-8">
+            <button
+                class="link text-white bg-home-icon bg-center bg-contain bg-no-repeat w-8 h-8 invert"
+                routerLinkActive="link-active"
+                routerLink="/"
+                [routerLinkActiveOptions]="{ exact: true }"
+            ></button>
+        </div>
+
+        <div class="flex gap-8" *ngIf="breakpointService.isDesktop$ | async">
+            <ng-container *ngTemplateOutlet="links"></ng-container>
+        </div>
     </div>
-    <div class="flex gap-4 justify-end w-1/4 ml-5 mr-4 sm:mr-0 sm:right-auto">
+
+    <div class="flex gap-4 justify-end w-1/4 ml-5 mr-4 sm:mr-0 sm:right-auto items-center">
+        <div>
+            <app-lang-selector (valueChanged)="onLanguageChange($event)" [selectedValue]="translate.currentLang"></app-lang-selector>
+        </div>
         <a
             class="block relative bg-github-light bg-center bg-contain bg-no-repeat w-8 h-8 transition-all scale-90 hover:scale-100"
+            style="min-width: 2rem"
             href="https://github.com/ericaskari"
             target="_blank"
         >
         </a>
         <a
             class="block relative bg-linkedin bg-center bg-contain bg-no-repeat w-8 h-8 transition-all scale-90 hover:scale-100"
+            style="min-width: 2rem"
             href="https://www.linkedin.com/in/ericaskari/"
             target="_blank"
         >
         </a>
+        <div class="flex pl-2" *ngIf="breakpointService.isMobile$ | async">
+            <div class="flex items-center gap-8">
+                <button class="text-white hover:text-zinc-400" (click)="expanded = !expanded" #dropdown>
+                    <fa-icon size="1x" [icon]="faBars"></fa-icon>
+                </button>
+            </div>
+        </div>
     </div>
+
     <div
         [@dropDownAnimation]="expanded ? 'open' : 'closed'"
-        class="absolute left-2 top-[100%] mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+        class="absolute right-2 top-[100%] mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="menu-button"
@@ -37,33 +60,7 @@
     </div>
 </header>
 
-<ng-template #desktopMode>
-    <div class="flex gap-8">
-        <button
-            class="link text-white bg-home-icon bg-center bg-contain bg-no-repeat w-8 h-8 invert"
-            routerLinkActive="link-active"
-            routerLink="/"
-            [routerLinkActiveOptions]="{ exact: true }"
-        ></button>
-        <ng-container *ngTemplateOutlet="links"></ng-container>
-    </div>
-</ng-template>
-
-<ng-template #mobileMode>
-    <div class="flex items-center gap-8">
-        <button
-            class="link text-white bg-home-icon bg-center bg-contain bg-no-repeat w-8 h-8 invert"
-            routerLinkActive="link-active"
-            routerLink="/"
-            [routerLinkActiveOptions]="{ exact: true }"
-        ></button>
-        <button class="text-white hover:text-zinc-400" (click)="expanded = !expanded" #dropdown>
-            <fa-icon size="1x" [icon]="faBars"></fa-icon>
-        </button>
-    </div>
-</ng-template>
-
 <ng-template #links>
-    <a class="link" routerLinkActive="link-active" routerLink="/contact" (click)="expanded = false"> Contact </a>
+    <a class="link" routerLinkActive="link-active" routerLink="/contact" (click)="expanded = false"> {{ 'contact-form' | translate }} </a>
     <a class="link" routerLinkActive="link-active" routerLink="/cv" (click)="expanded = false"> CV </a>
 </ng-template>

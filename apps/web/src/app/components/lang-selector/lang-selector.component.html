@@ -1,0 +1,63 @@
+<div class="relative inline-block text-left">
+    <div class="flex items-center gap-2">
+        <span class="text-nowrap" *ngIf="label">{{ label }}</span>
+        <button
+            #dropdown
+            (click)="expanded = !expanded"
+            type="button"
+            class="whitespace-nowrap justify-center w-full rounded-md shadow-sm px-4 py-2 text-gray-700 focus:outline-none flex items-center bg-opacity-5 bg-white hover:bg-opacity-10"
+            id="menu-button"
+            aria-expanded="true"
+            aria-haspopup="true"
+        >
+            <div [ngClass]="getFlagClassName()" class="bg-center bg-cover w-6 h-6"></div>
+            <!-- Heroicon name: solid/chevron-down -->
+            <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white" aria-hidden="true">
+                <path
+                    fill-rule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                />
+            </svg>
+        </button>
+    </div>
+
+    <!--
+      Dropdown menu, show/hide based on menu state.
+      Entering: "transition ease-out duration-100"
+        From: "transform opacity-0 scale-95"
+        To: "transform opacity-100 scale-100"
+      Leaving: "transition ease-in duration-75"
+        From: "transform opacity-100 scale-100"
+        To: "transform opacity-0 scale-95"
+    -->
+    <div
+        [@dropDownAnimation]="expanded ? 'open' : 'closed'"
+        class="origin-top-right absolute right-0 mt-2 w-20 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+        role="menu"
+        aria-orientation="vertical"
+        aria-labelledby="menu-button"
+        tabindex="-1"
+    >
+        <div class="py-1 bg-white bg-opacity-10" role="none">
+            <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+            <button
+                *ngFor="let option of getOptions()"
+                class="text-nowrap text-gray-700 hover:bg-gray-100 block w-full text-left px-4 py-2 text-sm bg-opacity-5 hover:bg-opacity-10"
+                [ngClass]="{
+                    'bg-opacity-5': option.value === selectedValue
+                }"
+                [disabled]="option.disabled"
+                (click)="onOptionClick(option)"
+                role="menuitem"
+                tabindex="-1"
+            >
+                <div [ngClass]="getOptionFlagClassName(option)" class="bg-center bg-cover w-6 h-6"></div>
+            </button>
+        </div>
+    </div>
+</div>
+<!-- SUBSCRIPTIONS -->
+<div class="hidden absolute bg-flag-afghanistan bg-flag-finland bg-flag-england">
+    {{ hideProfilePopupOnCLickOutside$ | async }}
+</div>
