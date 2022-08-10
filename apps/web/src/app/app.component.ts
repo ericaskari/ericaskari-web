@@ -80,6 +80,12 @@ export class AppComponent implements OnInit {
                 .catch((err) => {
                     console.log('Google tag failed to start', err);
                 });
+            this.currentRoute$.subscribe((event) => {
+                this.googleTagManagerService.pushTag({
+                    event: 'page',
+                    pageName: event.urlAfterRedirects
+                });
+            });
         }
     }
 }
