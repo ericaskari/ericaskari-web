@@ -34,10 +34,17 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LangSelectorComponent } from './components/lang-selector/lang-selector.component';
 import { LocalizedDatePipe } from './components/localized-date.pipe';
 import { TextAnimationDirective } from './components/text-animation.directive';
+import { GoogleTagManagerModule } from 'angular-google-tag-manager';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http);
 }
+
+const AnalyticsModules: any[] = [
+    GoogleTagManagerModule.forRoot({
+        id: frontendEnvironment.production ? 'GTM-MXC7C6F' : 'GTM-0000000'
+    })
+];
 
 const store = [
     EffectsModule.forRoot(appModuleEffects),
@@ -85,6 +92,7 @@ const store = [
         FontAwesomeModule,
         LayoutModule,
         CommonModule,
+        AnalyticsModules,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,

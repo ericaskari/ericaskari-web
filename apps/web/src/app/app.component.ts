@@ -1,5 +1,5 @@
 import { animate, query, state, style, transition, trigger } from '@angular/animations';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, Optional } from '@angular/core';
 import { ChildrenOutletContexts, NavigationEnd, Router } from '@angular/router';
 import { ClickService } from './services/click.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,9 +9,7 @@ import { registerLocaleData } from '@angular/common';
 import { frontendEnvironment } from '../environments/frontend-environment';
 import { filter, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-declare let gtag: Function;
+import { GoogleTagManagerService } from 'angular-google-tag-manager';
 
 export const fadeAnimation = trigger('fadeAnimation', [
     transition('* => *', [
@@ -48,6 +46,7 @@ export class AppComponent implements OnInit {
 
     constructor(
         private contexts: ChildrenOutletContexts,
+        private googleTagManagerService: GoogleTagManagerService,
         private clickService: ClickService,
         private translate: TranslateService,
         private router: Router
@@ -73,11 +72,14 @@ export class AppComponent implements OnInit {
 
     setUpAnalytics() {
         if (frontendEnvironment.production) {
-            this.currentRoute$.subscribe((event) => {
-                gtag('config', 'G-20PB8EKCKG', {
-                    page_path: event.urlAfterRedirects
+            this.googleTagManagerService
+                .addGtmToDom()
+                .then((data) => {
+                    console.log('Google tag manager enabled.', data);
+                })
+                .catch((err) => {
+                    console.log('Google tag failed to start', err);
                 });
-            });
         }
     }
 }
