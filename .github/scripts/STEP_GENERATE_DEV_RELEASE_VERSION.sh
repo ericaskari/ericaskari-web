@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+git config --global --add safe.directory '*'
+
 DEV_BRANCH_NAME="dev"
 BRANCH_NAME="$(git rev-parse --abbrev-ref HEAD)"
 
