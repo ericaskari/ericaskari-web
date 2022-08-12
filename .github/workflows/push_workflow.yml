@@ -21,6 +21,11 @@ jobs:
             - uses: actions/setup-node@v3 # INSTALL_NODEJS
               with:
                   node-version: 16
+            - name: Git config
+              shell: bash
+              run: |
+                git config --global --add safe.directory '*'
+            - name: Upload PROD_PULL_VERSION
             - uses: ./.github/workflows/generate-prod-version # OUTPUTS: .PROD_PULL_VERSION   .PROD_PUSH_VERSION
             - name: Debug
               shell: bash
@@ -50,6 +55,10 @@ jobs:
             - uses: actions/setup-node@v3 # INSTALL_NODEJS
               with:
                   node-version: 16
+            - name: Git config
+              shell: bash
+              run: |
+                git config --global --add safe.directory '*'
             - name: Install dependencies
               shell: bash
               run: npm install
