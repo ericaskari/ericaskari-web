@@ -26,16 +26,18 @@
                     <fa-icon [icon]="faPhone"></fa-icon>
                 </div>
                 <a href="tel:+358504762583" *ngIf="revealPhone">+358 50 476 2583</a>
-                <span id="reveal-phone-button" (click)="revealPhone = true" *ngIf="!revealPhone" class="cursor-pointer">{{
+                <a id="reveal-phone-button" (click)="revealPhone = true" *ngIf="!revealPhone" class="cursor-pointer">{{
                     'generic.show' | translate
-                }}</span>
+                }}</a>
             </div>
             <div class="contact-group">
                 <div>
                     <fa-icon [icon]="faAt"></fa-icon>
                 </div>
-                <a id="reveal-email-button" href="mailto:eric.askari@gmail.com" *ngIf="revealEmail">eric.askari@gmail.com</a>
-                <span (click)="revealEmail = true" *ngIf="!revealEmail" class="cursor-pointer">{{ 'generic.show' | translate }}</span>
+                <a href="mailto:eric.askari@gmail.com" *ngIf="revealEmail">eric.askari@gmail.com</a>
+                <a id="reveal-email-button" (click)="revealEmail = true" *ngIf="!revealEmail" class="cursor-pointer">{{
+                    'generic.show' | translate
+                }}</a>
             </div>
             <div class="contact-group">
                 <div>
