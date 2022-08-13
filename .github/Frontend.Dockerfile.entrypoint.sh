@@ -3,7 +3,8 @@ set -e
 
 echo "APP_BUILD_VERSION:  $APP_BUILD_VERSION"
 
-sed -i='' -e "s|local-development|${APP_BUILD_VERSION}|" /usr/share/nginx/html/assets/app-version.json || true
+sed -i='' -e "s|local-development|${APP_BUILD_VERSION}|" /usr/share/nginx/html/environments/frontend-runtime-environment.json || true
+sed -i='' -e "s|GTM-local|${APP_GOOGLE_TAG_MANAGER_ID}|" /usr/share/nginx/html/environments/frontend-runtime-environment.json || true
 
 if [ -z "${NGINX_ENTRYPOINT_QUIET_LOGS:-}" ]; then
     exec 3>&1
