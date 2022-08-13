@@ -105,8 +105,8 @@ jobs:
                   FE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:$(cat .DEV_VERSION)"
                   echo BE_TAG: $BE_TAG
                   echo FE_TAG: $FE_TAG
-                  docker build -f ./.github/Backend.Dockerfile --build-arg BUILD_VERSION="$(cat .DEV_VERSION)" --tag "$BE_TAG" .
-                  docker build -f ./.github/Frontend.Dockerfile --build-arg BUILD_VERSION="$(cat .DEV_VERSION)" --tag "$FE_TAG" .
+                  docker build -f ./.github/Backend.Dockerfile --build-arg APP_BUILD_VERSION="$(cat .DEV_VERSION)" --tag "$BE_TAG" .
+                  docker build -f ./.github/Frontend.Dockerfile --build-arg APP_BUILD_VERSION="$(cat .DEV_VERSION)" --tag "$FE_TAG" .
                   docker push "$BE_TAG"
                   docker push "$FE_TAG"
                   echo "$(cat .DEV_VERSION)"           > ./.VERSION
@@ -152,6 +152,7 @@ jobs:
             - run: |
                   # Assign Env variables Backend       
                   yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_NODE_ENV",                         "value": "production"}]'                          ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_HOST_NAME",                        "value": "${{secrets.APP_HOST_NAME}}"}]'         ./.github/deployment/backend-02-deployment.yml
                   yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_ENABLE_SWAGGER",                   "value": "${{secrets.APP_ENABLE_SWAGGER}}"}]'         ./.github/deployment/backend-02-deployment.yml
                   yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_NODE_MAILER_HOST",                 "value": "${{secrets.APP_NODE_MAILER_HOST}}"}]'       ./.github/deployment/backend-02-deployment.yml
                   yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_NODE_MAILER_PORT",                 "value": "${{secrets.APP_NODE_MAILER_PORT}}"}]'       ./.github/deployment/backend-02-deployment.yml

@@ -5,7 +5,7 @@ const seed = `NODE_ENV=development
 BUILD_VERSION=local-development
 ENABLE_SWAGGER=true
 ENABLE_MIGRATIONS=false
-HOST_NAME=ericaskari.localnet
+APP_HOST_NAME=ericaskari.localnet
 ENABLE_SSL=true
 EMAIL_SERVER_HOST=localhost
 EMAIL_SERVER_PORT=1025

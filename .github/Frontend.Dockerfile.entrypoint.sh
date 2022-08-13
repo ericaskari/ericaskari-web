@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
 
-echo "BUILD_VERSION:  $BUILD_VERSION"
+echo "APP_BUILD_VERSION:  $APP_BUILD_VERSION"
 
-sed -i='' -e "s|local-development|${BUILD_VERSION}|" /usr/share/nginx/html/assets/app-version.json || true
+sed -i='' -e "s|local-development|${APP_BUILD_VERSION}|" /usr/share/nginx/html/assets/app-version.json || true
 
 if [ -z "${NGINX_ENTRYPOINT_QUIET_LOGS:-}" ]; then
     exec 3>&1

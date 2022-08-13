@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-echo "BUILD_VERSION:  $BUILD_VERSION"
+echo "APP_BUILD_VERSION:  $APP_BUILD_VERSION"
 
 echo '$@' "$@"
 # Run command with node if the first argument contains a "-" or is not a system command. The last
