@@ -16,7 +16,6 @@
         "tsConfig": "apps/web/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
-          "apps/web/src/environments/frontend-runtime-environment.json",
           "apps/web/src/favicon.ico",
           "apps/web/src/assets"
         ],

@@ -42,7 +42,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 
 const AnalyticsModules: any[] = [
     GoogleTagManagerModule.forRoot({
-        id: frontendEnvironment.production ? 'GTM-MXC7C6F' : 'GTM-W5235KZ'
+        id: 'asd'
     })
 ];
 

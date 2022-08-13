@@ -71,21 +71,17 @@ export class AppComponent implements OnInit {
     }
 
     setUpAnalytics() {
-        if (frontendEnvironment.production) {
-            this.googleTagManagerService
-                .addGtmToDom()
-                .then((data) => {
-                    console.log('Google tag manager enabled.', data);
-                })
-                .catch((err) => {
-                    console.log('Google tag failed to start', err);
-                });
-            this.currentRoute$.subscribe((event) => {
-                this.googleTagManagerService.pushTag({
-                    event: 'page',
-                    pageName: event.urlAfterRedirects
-                });
+        this.googleTagManagerService
+            .addGtmToDom()
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((er) => console.log(er));
+        this.currentRoute$.subscribe((event) => {
+            this.googleTagManagerService.pushTag({
+                event: 'page',
+                pageName: event.urlAfterRedirects
             });
-        }
+        });
     }
 }

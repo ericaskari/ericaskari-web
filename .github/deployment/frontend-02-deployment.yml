@@ -16,8 +16,5 @@ spec:
                 - image: 438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:1.43.3-0
                   name: container-ericaskari-frontend
                   imagePullPolicy: IfNotPresent
-                  env:
-                      - name: VERSION
-                        value: 'CUSTOM_VERSION'
             imagePullSecrets:
                 - name: regcred
