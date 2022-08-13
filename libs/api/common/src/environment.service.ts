@@ -12,11 +12,8 @@ export class EnvironmentService {
         APP_NODE_ENV: str({ choices: ['test', 'development', 'production'] }),
         APP_BUILD_VERSION: str(),
         APP_ENABLE_SWAGGER: bool(),
-        APP_ENABLE_MIGRATIONS: bool(),
         APP_HOST_NAME: host(),
-        APP_ENABLE_SSL: bool(),
-        APP_EMAIL_SERVER_HOST: host(),
-        APP_EMAIL_SERVER_PORT: port(),
+        APP_IS_SSL_ENABLED: bool(),
         APP_NODE_MAILER_AUTH_USER: str(),
         APP_NODE_MAILER_AUTH_PASS: str(),
         APP_NODE_MAILER_SECURE: bool(),
@@ -60,7 +57,7 @@ export class EnvironmentService {
     }
 
     public get SERVER_URL(): string {
-        const prefix = this.environment.APP_ENABLE_SSL ? 'https://' : 'http://';
+        const prefix = this.environment.APP_IS_SSL_ENABLED ? 'https://' : 'http://';
         return [prefix, this.environment.APP_HOST_NAME].join('');
     }
 }

@@ -151,15 +151,15 @@ jobs:
               shell: bash
             - run: |
                   # Assign Env variables Backend       
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_ENV",               "value": "production"}]'                          ./.github/deployment/backend-02-deployment.yml
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "ENABLE_SWAGGER",         "value": "${{secrets.ENABLE_SWAGGER}}"}]'         ./.github/deployment/backend-02-deployment.yml
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "ENABLE_MIGRATIONS",      "value": "${{secrets.ENABLE_MIGRATIONS}}"}]'      ./.github/deployment/backend-02-deployment.yml
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_HOST",       "value": "${{secrets.NODE_MAILER_HOST}}"}]'       ./.github/deployment/backend-02-deployment.yml
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_PORT",       "value": "${{secrets.NODE_MAILER_PORT}}"}]'       ./.github/deployment/backend-02-deployment.yml
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_ENABLE_SSL", "value": "${{secrets.NODE_MAILER_ENABLE_SSL}}"}]' ./.github/deployment/backend-02-deployment.yml
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_AUTH_USER",  "value": "${{secrets.NODE_MAILER_AUTH_USER}}"}]'  ./.github/deployment/backend-02-deployment.yml
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_AUTH_PASS",  "value": "${{secrets.NODE_MAILER_AUTH_PASS}}"}]'  ./.github/deployment/backend-02-deployment.yml
-                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "NODE_MAILER_SECURE",     "value": "${{secrets.NODE_MAILER_SECURE}}"}]'     ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_NODE_ENV",                         "value": "production"}]'                          ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_ENABLE_SWAGGER",                   "value": "${{secrets.APP_ENABLE_SWAGGER}}"}]'         ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_NODE_MAILER_HOST",                 "value": "${{secrets.APP_NODE_MAILER_HOST}}"}]'       ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_NODE_MAILER_PORT",                 "value": "${{secrets.APP_NODE_MAILER_PORT}}"}]'       ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_NODE_MAILER_REJECT_UNAUTHORIZED",  "value": "${{secrets.APP_NODE_MAILER_REJECT_UNAUTHORIZED}}"}]' ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_NODE_MAILER_AUTH_USER",            "value": "${{secrets.APP_NODE_MAILER_AUTH_USER}}"}]'  ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_NODE_MAILER_AUTH_PASS",            "value": "${{secrets.APP_NODE_MAILER_AUTH_PASS}}"}]'  ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_NODE_MAILER_SECURE",               "value": "${{secrets.APP_NODE_MAILER_SECURE}}"}]'     ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_IS_SSL_ENABLED",                   "value": "${{secrets.APP_IS_SSL_ENABLED}}"}]'     ./.github/deployment/backend-02-deployment.yml
 
                   # Assign container images          
                   export VERSION="$(cat .VERSION)"
@@ -169,10 +169,10 @@ jobs:
                   yq e -i ".spec.template.spec.containers[0].image=env(FE_TAG)"                                                                           ./.github/deployment/frontend-02-deployment.yml
 
                   # Other configurations          
-                  yq e -i '.spec.tls[0].hosts[0]="${{secrets.FE_DOMAIN_ONE}}"'                                                                            ./.github/deployment/frontend-04-ingress.yml
-                  yq e -i '.spec.tls[0].hosts[1]="${{secrets.FE_DOMAIN_TWO}}"'                                                                            ./.github/deployment/frontend-04-ingress.yml
-                  yq e -i '.spec.rules[0].host="${{secrets.FE_DOMAIN_ONE}}"'                                                                              ./.github/deployment/frontend-04-ingress.yml
-                  yq e -i '.spec.rules[1].host="${{secrets.FE_DOMAIN_TWO}}"'                                                                              ./.github/deployment/frontend-04-ingress.yml
+                  yq e -i '.spec.tls[0].hosts[0]="${{secrets.APP_FE_DOMAIN_ONE}}"'                                                                            ./.github/deployment/frontend-04-ingress.yml
+                  yq e -i '.spec.tls[0].hosts[1]="${{secrets.APP_FE_DOMAIN_TWO}}"'                                                                            ./.github/deployment/frontend-04-ingress.yml
+                  yq e -i '.spec.rules[0].host="${{secrets.APP_FE_DOMAIN_ONE}}"'                                                                              ./.github/deployment/frontend-04-ingress.yml
+                  yq e -i '.spec.rules[1].host="${{secrets.APP_FE_DOMAIN_TWO}}"'                                                                              ./.github/deployment/frontend-04-ingress.yml
               shell: bash
             - run: |
                   kubectl create namespace "${{ secrets.NAMESPACE }}" || true
