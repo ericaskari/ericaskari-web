@@ -166,14 +166,87 @@ jobs:
                   export VERSION="$(cat .VERSION)"
                   export FE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:$VERSION"
                   export BE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:$VERSION"
-                  yq e -i '.spec.template.spec.containers[0].image=env(BE_TAG)'                                                                           ./.github/deployment/backend-02-deployment.yml
-                  yq e -i ".spec.template.spec.containers[0].image=env(FE_TAG)"                                                                           ./.github/deployment/frontend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].image=env(BE_TAG)'                     ./.github/deployment/backend-02-deployment.yml
+                  yq e -i ".spec.template.spec.containers[0].image=env(FE_TAG)"                     ./.github/deployment/frontend-02-deployment.yml
 
                   # Other configurations          
-                  yq e -i '.spec.tls[0].hosts[0]="${{secrets.APP_FE_DOMAIN_ONE}}"'                                                                            ./.github/deployment/frontend-04-ingress.yml
-                  yq e -i '.spec.tls[0].hosts[1]="${{secrets.APP_FE_DOMAIN_TWO}}"'                                                                            ./.github/deployment/frontend-04-ingress.yml
-                  yq e -i '.spec.rules[0].host="${{secrets.APP_FE_DOMAIN_ONE}}"'                                                                              ./.github/deployment/frontend-04-ingress.yml
-                  yq e -i '.spec.rules[1].host="${{secrets.APP_FE_DOMAIN_TWO}}"'                                                                              ./.github/deployment/frontend-04-ingress.yml
+                  yq e -i '.spec.tls[0].hosts[0]="${{secrets.APP_FE_DOMAIN_ONE}}"'                  ./.github/deployment/frontend-04-ingress.yml
+                  yq e -i '.spec.tls[0].hosts[1]="${{secrets.APP_FE_DOMAIN_TWO}}"'                  ./.github/deployment/frontend-04-ingress.yml
+                  yq e -i '.spec.rules[0].host="${{secrets.APP_FE_DOMAIN_ONE}}"'                    ./.github/deployment/frontend-04-ingress.yml
+                  yq e -i '.spec.rules[1].host="${{secrets.APP_FE_DOMAIN_TWO}}"'                    ./.github/deployment/frontend-04-ingress.yml
+              shell: bash
+            - run: |
+                  kubectl create namespace "${{ secrets.APP_NAMESPACE }}" || true
+                  kubectl delete secret --namespace="${{ secrets.APP_NAMESPACE }}" regcred || true
+                  kubectl create secret docker-registry regcred --namespace="${{ secrets.APP_NAMESPACE }}" --docker-server=438380764554.dkr.ecr.eu-west-1.amazonaws.com --docker-username=AWS --docker-password="$(aws ecr get-login-password)" || true
+                  #kubectl apply  --namespace="${{ secrets.APP_NAMESPACE }}" --filename=./.github/deployment/shared-01-mirror-secret-production.yaml
+                  kubectl apply   --namespace="${{ secrets.APP_NAMESPACE }}" --filename=./.github/deployment/backend-01-secret.yml
+                  kubectl apply   --namespace="${{ secrets.APP_NAMESPACE }}" --filename=./.github/deployment/backend-02-deployment.yml
+                  kubectl apply   --namespace="${{ secrets.APP_NAMESPACE }}" --filename=./.github/deployment/backend-03-service.yml
+                  kubectl apply   --namespace="${{ secrets.APP_NAMESPACE }}" --filename=./.github/deployment/frontend-01-secret.yml
+                  kubectl apply   --namespace="${{ secrets.APP_NAMESPACE }}" --filename=./.github/deployment/frontend-02-deployment.yml
+                  kubectl apply   --namespace="${{ secrets.APP_NAMESPACE }}" --filename=./.github/deployment/frontend-03-service.yml
+                  kubectl apply   --namespace="${{ secrets.APP_NAMESPACE }}" --filename=./.github/deployment/frontend-04-ingress.yml
+                  kubectl apply   --namespace="${{ secrets.APP_NAMESPACE }}" --filename=./.github/deployment/frontend-05-redirect.yml
+              shell: bash
+    DeployToDev:
+        runs-on: self-hosted
+        # needs: [BuildAndPushProdImages]
+        needs: [BuildAndPushDevImages]
+        if: github.ref_name == 'main'
+        environment: development
+        steps:
+            - uses: actions/checkout@v3 # PULL_SOURCE_CODE
+            - uses: actions/setup-python@v3 # CONFIGURE_AWS_CLI
+              with:
+                  python-version: '3.8'
+            - uses: aws-actions/setup-sam@v2 # CONFIGURE_AWS_CLI
+            - uses: aws-actions/configure-aws-credentials@v1 # CONFIGURE_AWS_CLI
+              with:
+                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-region: eu-west-1
+            - uses: ./.github/workflows/configure-kubectl # CONFIGURE_KUBECTL
+              with:
+                  KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+            - run: cp ./.github/tools/.yq/yq_linux_amd64-v4.17.2 /usr/bin/yq && chmod +x /usr/bin/yq # CONFIGURE_YQ
+              shell: bash
+            - run: yq --version
+              shell: bash
+            - name: Download VERSION
+              uses: actions/download-artifact@v3
+              with:
+                  name: VERSION
+                  path: .
+            - run: cat .VERSION
+              shell: bash
+            - run: kubectl get all
+              shell: bash
+            - run: |
+                  # Assign Env variables Backend       
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_NODE_ENV",                         "value": "production"}]'                          ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_HOST_NAME",                        "value": "${{secrets.APP_HOST_NAME}}"}]'         ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_ENABLE_SWAGGER",                   "value": "${{secrets.APP_ENABLE_SWAGGER}}"}]'         ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_NODE_MAILER_HOST",                 "value": "${{secrets.APP_NODE_MAILER_HOST}}"}]'       ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_NODE_MAILER_PORT",                 "value": "${{secrets.APP_NODE_MAILER_PORT}}"}]'       ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_NODE_MAILER_REJECT_UNAUTHORIZED",  "value": "${{secrets.APP_NODE_MAILER_REJECT_UNAUTHORIZED}}"}]' ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_NODE_MAILER_AUTH_USER",            "value": "${{secrets.APP_NODE_MAILER_AUTH_USER}}"}]'  ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_NODE_MAILER_AUTH_PASS",            "value": "${{secrets.APP_NODE_MAILER_AUTH_PASS}}"}]'  ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_NODE_MAILER_SECURE",               "value": "${{secrets.APP_NODE_MAILER_SECURE}}"}]'     ./.github/deployment/backend-02-deployment.yml
+                  yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_IS_SSL_ENABLED",                   "value": "${{secrets.APP_IS_SSL_ENABLED}}"}]'     ./.github/deployment/backend-02-deployment.yml
+
+                  # Assign container images          
+                  export VERSION="$(cat .VERSION)"
+                  export FE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:$VERSION"
+                  export BE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:$VERSION"
+                  yq e -i '.spec.template.spec.containers[0].image=env(BE_TAG)'                     ./.github/deployment/backend-02-deployment.yml
+                  yq e -i ".spec.template.spec.containers[0].image=env(FE_TAG)"                     ./.github/deployment/frontend-02-deployment.yml
+
+                  # Other configurations          
+                  yq e -i '.spec.tls[0].hosts[0]="${{secrets.APP_FE_DOMAIN_ONE}}"'                  ./.github/deployment/frontend-04-ingress.yml
+                  yq e -i '.spec.tls[0].hosts[1]="${{secrets.APP_FE_DOMAIN_TWO}}"'                  ./.github/deployment/frontend-04-ingress.yml
+                  yq e -i '.spec.rules[0].host="${{secrets.APP_FE_DOMAIN_ONE}}"'                    ./.github/deployment/frontend-04-ingress.yml
+                  yq e -i '.spec.rules[1].host="${{secrets.APP_FE_DOMAIN_TWO}}"'                    ./.github/deployment/frontend-04-ingress.yml
               shell: bash
             - run: |
                   kubectl create namespace "${{ secrets.APP_NAMESPACE }}" || true
