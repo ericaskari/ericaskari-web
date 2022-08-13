@@ -174,7 +174,7 @@ jobs:
                   yq e -i '.spec.tls[0].hosts[1]="${{secrets.APP_FE_DOMAIN_TWO}}"'                  ./.github/deployment/frontend-04-ingress.yml
                   yq e -i '.spec.rules[0].host="${{secrets.APP_FE_DOMAIN_ONE}}"'                    ./.github/deployment/frontend-04-ingress.yml
                   yq e -i '.spec.rules[1].host="${{secrets.APP_FE_DOMAIN_TWO}}"'                    ./.github/deployment/frontend-04-ingress.yml
-                  yq e -i '.metadata.annotations.["traefik.ingress.kubernetes.io/router.middlewares"]="${{secrets.APP_NAMESPACE}}@kubernetescrd"' ./.github/deployment/frontend-04-ingress.yml
+                  yq e -i '.metadata.annotations.["traefik.ingress.kubernetes.io/router.middlewares"]="${{secrets.APP_NAMESPACE}}-redirect@kubernetescrd"' ./.github/deployment/frontend-04-ingress.yml
               shell: bash
             - run: |
                   kubectl create namespace "${{ secrets.APP_NAMESPACE }}" || true
@@ -248,7 +248,7 @@ jobs:
                   yq e -i '.spec.tls[0].hosts[1]="${{secrets.APP_FE_DOMAIN_TWO}}"'                  ./.github/deployment/frontend-04-ingress.yml
                   yq e -i '.spec.rules[0].host="${{secrets.APP_FE_DOMAIN_ONE}}"'                    ./.github/deployment/frontend-04-ingress.yml
                   yq e -i '.spec.rules[1].host="${{secrets.APP_FE_DOMAIN_TWO}}"'                    ./.github/deployment/frontend-04-ingress.yml
-                  yq e -i '.metadata.annotations.["traefik.ingress.kubernetes.io/router.middlewares"]="${{secrets.APP_NAMESPACE}}@kubernetescrd"' ./.github/deployment/frontend-04-ingress.yml
+                  yq e -i '.metadata.annotations.["traefik.ingress.kubernetes.io/router.middlewares"]="${{secrets.APP_NAMESPACE}}-redirect@kubernetescrd"' ./.github/deployment/frontend-04-ingress.yml
               shell: bash
             - run: |
                   kubectl create namespace "${{ secrets.APP_NAMESPACE }}" || true
