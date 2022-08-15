@@ -1,10 +1,10 @@
 <ng-template #imageSection>
-    <div class="flex-1 flex justify-center items-center">
+    <div class="flex-1 flex justify-center items-center" id="cv-picture-section">
         <div class="bg-profile w-[200px] h-[200px] bg-cover bg-center bg-no-repeat rounded-full"></div>
     </div>
 </ng-template>
 <ng-template #nameSection>
-    <div class="flex-1 flex flex-col justify-center">
+    <div class="flex-1 flex flex-col justify-center" id="cv-name-section">
         <p class="font-thin text-3xl text-center md:text-4xl md:text-start">
             {{ 'generic.name' | translate }}
         </p>
@@ -15,7 +15,7 @@
 </ng-template>
 
 <ng-template #contactSection>
-    <div class="grid-box">
+    <div class="grid-box" id="cv-contact-section">
         <div class="grid-box-header">
             <span>{{ 'pages.cv.headers.contact' | translate | uppercase }}</span>
             <hr />
@@ -61,7 +61,7 @@
     </div>
 </ng-template>
 <ng-template #aboutMeSection>
-    <div class="grid-box">
+    <div class="grid-box" id="cv-about-me-section">
         <div class="grid-box-header">
             <span>{{ 'pages.cv.headers.about' | translate | uppercase }}</span>
             <hr />
@@ -70,7 +70,7 @@
     </div>
 </ng-template>
 <ng-template #eduSection>
-    <div class="grid-box">
+    <div class="grid-box" id="cv-education-section">
         <div class="grid-box-header">
             <span>{{ 'pages.cv.headers.education' | translate | uppercase }}</span>
             <hr />
@@ -135,7 +135,7 @@
     </div>
 </ng-template>
 
-<div class="grid grid-cols-12 text-white gap-8" *appTextAnimation="translate.currentLang" [@textChangeAnimation]>
+<div class="grid grid-cols-12 text-white gap-8 pt-20" *appTextAnimation="translate.currentLang" [@textChangeAnimation]>
     <div class="col-span-12 md:col-span-6"><ng-container *ngTemplateOutlet="imageSection"></ng-container></div>
     <div class="flex col-span-12 md:col-span-6"><ng-container *ngTemplateOutlet="nameSection"></ng-container></div>
     <div class="col-span-12 md:col-span-6 md:col-start-7 md:row-start-2">

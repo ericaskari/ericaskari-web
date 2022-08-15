@@ -1,7 +1,11 @@
+<app-cookie-consent></app-cookie-consent>
 <app-navbar></app-navbar>
-<main [@fadeAnimation]="getRouterOutletState(o)">
+<main>
     <router-outlet #o="outlet"></router-outlet>
 </main>
-<footer></footer>
+<footer class="bottom-0 left-0 right-0 text-center p-2">
+    <div class="cursor-pointer text-gray-300">© 2022 Mohammad Askari. All rights reserved.</div>
+    <div class="cursor-pointer text-sm" (click)="cookieService.showConsent()">Manage cookie preferences</div>
+</footer>
 <div [@darkenBg]="'visible'" class="landing-bg fixed left-0 right-0 top-0 -z-10 w-[100%] h-[100%]"></div>
 <app-notification></app-notification>

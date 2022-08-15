@@ -28,33 +28,33 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
-import { appModuleEffects, CustomRouterStateSerializer, rootActionReducerMap, rootMetaReducers } from '@ericaskari/web/state';
+import { CustomRouterStateSerializer } from '@ericaskari/web/state';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LangSelectorComponent } from './components/lang-selector/lang-selector.component';
 import { LocalizedDatePipe } from './components/localized-date.pipe';
 import { TextAnimationDirective } from './components/text-animation.directive';
-import { GoogleTagManagerModule } from 'angular-google-tag-manager';
+import { CookieConsentComponent } from './components/cookie-consent/cookie-consent.component';
+import { routerReducer } from '@ngrx/router-store';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http);
 }
 
-const AnalyticsModules: any[] = [
-    GoogleTagManagerModule.forRoot({
-        id: 'asd'
-    })
-];
-
 const store = [
-    EffectsModule.forRoot(appModuleEffects),
-    StoreModule.forRoot(rootActionReducerMap, {
-        metaReducers: rootMetaReducers,
-        runtimeChecks: {
-            strictStateImmutability: true,
-            strictActionImmutability: true
+    EffectsModule.forRoot([]),
+    StoreModule.forRoot(
+        {
+            router: routerReducer
+        },
+        {
+            metaReducers: [],
+            runtimeChecks: {
+                strictStateImmutability: true,
+                strictActionImmutability: true
+            }
         }
-    }),
+    ),
     StoreRouterConnectingModule.forRoot({
         serializer: CustomRouterStateSerializer
     }),
@@ -81,7 +81,8 @@ const store = [
         CvPageComponent,
         LangSelectorComponent,
         LocalizedDatePipe,
-        TextAnimationDirective
+        TextAnimationDirective,
+        CookieConsentComponent
     ],
     imports: [
         HttpClientModule,
@@ -92,7 +93,6 @@ const store = [
         FontAwesomeModule,
         LayoutModule,
         CommonModule,
-        AnalyticsModules,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,

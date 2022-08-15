@@ -5,5 +5,5 @@ import { Subject } from 'rxjs';
     providedIn: 'root'
 })
 export class ClickService {
-    documentClickedTarget: Subject<HTMLElement> = new Subject<HTMLElement>();
+    documentClickedTarget: Subject<EventTarget | null> = new Subject<EventTarget | null>();
 }

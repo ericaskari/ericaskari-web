@@ -10,7 +10,22 @@
         </div>
 
         <div class="flex gap-8" *ngIf="breakpointService.isDesktop$ | async">
-            <ng-container *ngTemplateOutlet="links"></ng-container>
+            <a
+                class="px-3 py-2 rounded-md text-sm font-medium cursor-pointer text-white hover:text-zinc-200 md:hover:text-zinc-400 whitespace-nowrap"
+                routerLinkActive="link-active"
+                routerLink="/contact"
+                (click)="expanded = false"
+            >
+                {{ 'contact-form' | translate }}
+            </a>
+            <a
+                class="px-3 py-2 rounded-md text-sm font-medium cursor-pointer text-white hover:text-zinc-200 md:hover:text-zinc-400 whitespace-nowrap"
+                routerLinkActive="link-active"
+                routerLink="/cv"
+                (click)="expanded = false"
+            >
+                CV
+            </a>
         </div>
     </div>
 
@@ -50,7 +65,22 @@
         tabindex="-1"
     >
         <div class="relative w-56 flex p-2 gap-2 flex flex-col">
-            <ng-container *ngTemplateOutlet="links"></ng-container>
+            <a
+                class="px-3 py-2 rounded-md text-sm font-medium cursor-pointer text-black hover:text-zinc-200 md:text-white md:hover:text-zinc-400"
+                routerLinkActive="link-active"
+                routerLink="/contact"
+                (click)="expanded = false"
+            >
+                {{ 'contact-form' | translate }}
+            </a>
+            <a
+                class="px-3 py-2 rounded-md text-sm font-medium cursor-pointer text-black hover:text-zinc-200 md:text-white md:hover:text-zinc-400"
+                routerLinkActive="link-active"
+                routerLink="/cv"
+                (click)="expanded = false"
+            >
+                CV
+            </a>
         </div>
     </div>
 
@@ -59,8 +89,3 @@
         {{ hideProfilePopupOnCLickOutside$ | async }}
     </div>
 </header>
-
-<ng-template #links>
-    <a class="link" routerLinkActive="link-active" routerLink="/contact" (click)="expanded = false"> {{ 'contact-form' | translate }} </a>
-    <a class="link" routerLinkActive="link-active" routerLink="/cv" (click)="expanded = false"> CV </a>
-</ng-template>

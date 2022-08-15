@@ -1,10 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { Observable, of, tap } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { FrontendRuntimeEnvironment } from '@ericaskari/web/common';
-import { GoogleTagManagerService } from 'angular-google-tag-manager';
+import { AnalyticsService } from './analytics.service';
+import { registerLocaleData } from '@angular/common';
+import localeEn from '@angular/common/locales/en';
+import localeFi from '@angular/common/locales/fi';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +18,7 @@ export class BootstrapService {
         tagManagerContainerId: 'none'
     };
 
-    constructor(private httpClient: HttpClient, private store: Store, private gtmService: GoogleTagManagerService) {}
+    constructor(private httpClient: HttpClient, private analyticsService: AnalyticsService, private translate: TranslateService) {}
 
     static get useFactory(): (appService: BootstrapService) => () => Observable<boolean> {
         return (appService: BootstrapService) => {
@@ -27,7 +30,11 @@ export class BootstrapService {
         return this.httpClient.get<FrontendRuntimeEnvironment>('/assets/runtime-environment.json').pipe(
             catchError(() => of(BootstrapService.runtimeEnvironment)),
             tap((x) => (BootstrapService.runtimeEnvironment = x)),
-            tap((x) => ((this.gtmService as unknown as { config: { id: string } }).config.id = x.tagManagerContainerId)),
+            tap((x) => this.analyticsService.initAnalytics(x.tagManagerContainerId)),
+            tap(() => registerLocaleData(localeEn)),
+            tap(() => registerLocaleData(localeFi)),
+            tap(() => this.translate.setDefaultLang('en')),
+            tap(() => this.translate.use(localStorage.getItem('lang') ?? 'en')),
             map(() => true)
         );
     }

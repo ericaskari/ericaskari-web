@@ -6,12 +6,9 @@ main {
 }
 
 ::ng-deep router-outlet ~ * {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
+    // Header and Footer
+    min-height: calc(100vh - 4rem);
+    padding-top: 4rem;
 }
 
 .landing-bg {
@@ -56,7 +53,8 @@ header {
 }
 
 footer {
-    height: 200px;
+    @apply h-16;
+    border-top: solid 1px rgba(0, 0, 0, 0.1);
     padding: 0 clamp(0rem, 5%, 50%);
     display: flex;
     flex-direction: column;

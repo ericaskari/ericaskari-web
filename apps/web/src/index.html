@@ -9,8 +9,35 @@
         <link href="https://fonts.googleapis.com" rel="preconnect" />
         <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
         <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;300;400;600&display=swap" rel="stylesheet" />
+        <!-- Google Tag Manager -->
+        <script>
+            // Define dataLayer and the gtag function.
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+
+            // Default ad_storage to 'denied'.
+            gtag('consent', 'default', {
+                ad_storage: 'denied',
+                analytics_storage: 'denied'
+            });
+
+            function initGoogleTagManager(window, document, script, dataLayerVariableName, id) {
+                window[dataLayerVariableName] = window[dataLayerVariableName] || [];
+                window[dataLayerVariableName].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+                var f = document.getElementsByTagName(script)[0],
+                    j = document.createElement(script),
+                    dl = dataLayerVariableName != 'dataLayer' ? '&l=' + dataLayerVariableName : '';
+                j.async = true;
+                j.src = 'https://www.googletagmanager.com/gtm.js?id=' + id + dl;
+                f.parentNode.insertBefore(j, f);
+            }
+        </script>
+        <!-- End Google Tag Manager -->
     </head>
     <body>
+        <!-- End Google Tag Manager (noscript) -->
         <app-root></app-root>
     </body>
 </html>

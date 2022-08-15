@@ -16,7 +16,6 @@ import { LangSelectorOption } from '../lang-selector/lang-selector.component';
 export class NavbarComponent {
     @ViewChild('dropdown', { read: ElementRef, static: false }) dropdown: ElementRef | undefined = undefined;
 
-    @HostBinding('class.left-0') leftZero = false;
     faBars = faBars;
     expanded = false;
     hideProfilePopupOnCLickOutside$ = this.clickService.documentClickedTarget.pipe(

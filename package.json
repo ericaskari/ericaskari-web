@@ -41,6 +41,7 @@
     "@nrwl/nest": "^14.3.6",
     "@nrwl/node": "14.3.6",
     "@nrwl/workspace": "14.3.6",
+    "@types/gtag.js": "^0.0.10",
     "@types/jest": "27.4.1",
     "@types/node": "16.11.7",
     "@typescript-eslint/eslint-plugin": "~5.24.0",

@@ -1,4 +1,10 @@
-<form [formGroup]="contactFormService.formGroup" appForm class="grid" *appTextAnimation="translate.currentLang" [@textChangeAnimation]>
+<form
+    [formGroup]="contactFormService.formGroup"
+    appForm
+    class="grid pt-20"
+    *appTextAnimation="translate.currentLang"
+    [@textChangeAnimation]
+>
     <div>
         <h1 class="" appFormHeader style="color: white">{{ 'pages.contact.form' | translate }}</h1>
     </div>

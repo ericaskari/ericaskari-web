@@ -1,0 +1,14 @@
+<div
+    *ngIf="cookieService.showConsentStatus$ | async"
+    class="mx-auto bg-white p-3 drop-shadow-2xl flex gap-4 flex-wrap md:flex-nowrap text-center md:text-left items-center justify-center md:justify-between"
+>
+    <div>This website uses cookies to ensure you get the best experience on our website.</div>
+    <div class="flex gap-4 items-center flex-shrink-0">
+        <button (click)="cookieService.respondCookieConsent(false)" class="text-indigo-600 focus:outline-none hover:underline">
+            Decline
+        </button>
+        <button (click)="cookieService.respondCookieConsent(true)" appButton type="submit" class="col-span-12 md:col-span-2 lg:col-span-1">
+            Allow Cookies
+        </button>
+    </div>
+</div>
