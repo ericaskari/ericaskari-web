@@ -1,13 +1,23 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-
+export enum CookiesConsentResponse {
+    NOT_RESPONDED,
+    GRANTED,
+    DENIED
+}
 @Injectable({ providedIn: 'root' })
 export class CookieService {
-    private cookiesConsent$: BehaviorSubject<boolean> = new BehaviorSubject(this.isCookiesAllowed);
+    private cookiesConsent$ = new BehaviorSubject(CookiesConsentResponse.NOT_RESPONDED);
     private showConsent$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
     constructor() {
-        this.cookiesConsent$.next(this.isCookiesAllowed);
+        this.cookiesConsent$.next(
+            this.isCookiesConsentResponded
+                ? this.isCookiesAllowed
+                    ? CookiesConsentResponse.GRANTED
+                    : CookiesConsentResponse.DENIED
+                : CookiesConsentResponse.NOT_RESPONDED
+        );
         this.showConsent$.next(!this.isCookiesConsentResponded);
     }
 
@@ -35,7 +45,7 @@ export class CookieService {
     public respondCookieConsent(response: boolean): void {
         this.showConsent$.next(false);
         this.setCookie(this.cookieName, response ? 'allow' : 'deny', 365);
-        this.cookiesConsent$.next(response);
+        this.cookiesConsent$.next(response ? CookiesConsentResponse.GRANTED : CookiesConsentResponse.DENIED);
     }
 
     private setCookie(cname: string, cvalue: any, exdays: number) {

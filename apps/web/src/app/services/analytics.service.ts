@@ -2,7 +2,8 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { CookieService } from './cookie.service';
+import { CookiesConsentResponse, CookieService } from './cookie.service';
+
 declare const initGoogleTagManager: (window: any, document: any, script: string, dataLayer: string, code: string) => void;
 
 @Injectable({ providedIn: 'root' })
@@ -13,9 +14,9 @@ export class AnalyticsService implements OnDestroy {
     );
 
     cookiesConsent$ = this.cookieService.cookiesConsentStatus$.subscribe((status) => {
-        if (status) {
+        if (status === CookiesConsentResponse.GRANTED) {
             this.grantAnalytics();
-        } else {
+        } else if (status === CookiesConsentResponse.DENIED) {
             this.denyAnalytics();
         }
     });
