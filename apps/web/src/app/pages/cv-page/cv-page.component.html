@@ -4,18 +4,23 @@
     </div>
 </ng-template>
 <ng-template #nameSection>
-    <div class="flex-1 flex flex-col justify-center" id="cv-name-section">
-        <p class="font-thin text-3xl text-center md:text-4xl md:text-start">
-            {{ 'generic.name' | translate }}
-        </p>
-        <p class="font-thin text-2xl text-center md:text-2xl md:text-start">
-            {{ 'generic.role' | translate }}
+    <div class="flex-1 flex flex-col justify-center gap-4" id="cv-name-section">
+        <div class="flex flex-col justify-center gap-2">
+            <p class="text-center md:text-4xl md:text-start" style="font-size: clamp(1rem, 1vw, 2rem)">
+                {{ 'generic.name' | translate }}
+            </p>
+            <p class="text-2xl text-center md:text-2xl md:text-start">
+                {{ 'generic.role' | translate }}
+            </p>
+        </div>
+        <p class="text-center md:text-start" style="font-size: clamp(0.8rem, 3vw, 1.1rem); max-width: 60ch">
+            {{ 'pages.cv.aboutme' | translate }}
         </p>
     </div>
 </ng-template>
 
 <ng-template #contactSection>
-    <div class="grid-box" id="cv-contact-section">
+    <div class="grid-box target:bg-[#2b3034] rounded" id="cv-contact-section">
         <div class="grid-box-header">
             <span>{{ 'pages.cv.headers.contact' | translate | uppercase }}</span>
             <hr />
@@ -60,15 +65,6 @@
         </div>
     </div>
 </ng-template>
-<ng-template #aboutMeSection>
-    <div class="grid-box" id="cv-about-me-section">
-        <div class="grid-box-header">
-            <span>{{ 'pages.cv.headers.about' | translate | uppercase }}</span>
-            <hr />
-        </div>
-        <p>{{ 'pages.cv.aboutme' | translate }}</p>
-    </div>
-</ng-template>
 <ng-template #eduSection>
     <div class="grid-box" id="cv-education-section">
         <div class="grid-box-header">
@@ -97,7 +93,7 @@
             <hr />
         </div>
         <div>
-            <div *ngFor="let work of workExperiences; let i = index" class="flex flex-col">
+            <div *ngFor="let work of workExperiences; let i = index" class="flex flex-col gap-4">
                 <p class="flex mb-6">
                     <span class="flex-1">
                         {{ work.startDate | date: 'YYYY-MM' }} -
@@ -129,25 +125,25 @@
             <span>{{ 'pages.cv.headers.skills' | translate | uppercase }}</span>
             <hr />
         </div>
-        <ul class="list-disc list-inside px-4">
-            <li *ngFor="let skill of skills">{{ skill }}</li>
-        </ul>
+        <ng-container *ngFor="let skill of skills">
+            <h4 class="py-4">{{ skill.category }}</h4>
+            <ul class="list-disc list-inside px-4">
+                <li *ngFor="let items of skill.items">{{ items }}</li>
+            </ul>
+        </ng-container>
     </div>
 </ng-template>
 
 <div class="grid grid-cols-12 text-white gap-8 pt-20" *appTextAnimation="translate.currentLang" [@textChangeAnimation]>
     <div class="col-span-12 md:col-span-6"><ng-container *ngTemplateOutlet="imageSection"></ng-container></div>
     <div class="flex col-span-12 md:col-span-6"><ng-container *ngTemplateOutlet="nameSection"></ng-container></div>
-    <div class="col-span-12 md:col-span-6 md:col-start-7 md:row-start-2">
-        <ng-container *ngTemplateOutlet="aboutMeSection"></ng-container>
+    <div class="col-span-12 md:col-span-6 md:col-start-7 md:row-start-2 md:row-span-2">
+        <ng-container *ngTemplateOutlet="skillSection"></ng-container>
     </div>
-    <div class="col-span-12 md:col-span-6 md:col-start-1 md:row-start-2">
+    <div class="col-span-12 row-start-3 md:col-span-6 md:col-start-1 md:row-start-2">
         <ng-container *ngTemplateOutlet="contactSection"></ng-container>
     </div>
     <div class="col-span-12 md:col-span-6"><ng-container *ngTemplateOutlet="eduSection"></ng-container></div>
     <div class="col-span-12 md:col-span-6"><ng-container *ngTemplateOutlet="expSection"></ng-container></div>
-    <div class="col-span-12 md:col-span-6 md:col-start-7 md:row-start-4">
-        <ng-container *ngTemplateOutlet="skillSection"></ng-container>
-    </div>
     <div class="col-span-12 md:col-span-6 md:col-start-1 md:row-start-4"><ng-container *ngTemplateOutlet="langSection"></ng-container></div>
 </div>

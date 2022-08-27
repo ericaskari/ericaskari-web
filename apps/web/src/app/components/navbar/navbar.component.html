@@ -1,27 +1,24 @@
-<header class="relative shadow-lg items-center h-16 flex px-4 md:px-8 justify-between">
-    <div class="flex gap-4 justify-start w-1/4 ml-5 mr-4 sm:mr-0 sm:right-auto items-center">
+<header class="relative shadow-lg items-center h-16 flex px-2 md:px-8 justify-between">
+    <div class="flex gap-4 justify-start items-center">
         <div class="flex gap-8">
-            <button
-                class="link text-white bg-home-icon bg-center bg-contain bg-no-repeat w-8 h-8 invert"
+            <a
+                class="px-3 py-2 rounded-md cursor-pointer text-white whitespace-nowrap uppercase font-bold"
                 routerLinkActive="link-active"
                 routerLink="/"
+                style="font-size: 0.8rem"
                 [routerLinkActiveOptions]="{ exact: true }"
-            ></button>
+                (click)="expanded = false"
+            >
+                ericaskari.com
+            </a>
         </div>
 
         <div class="flex gap-8" *ngIf="breakpointService.isDesktop$ | async">
             <a
-                class="px-3 py-2 rounded-md text-sm font-medium cursor-pointer text-white hover:text-zinc-200 md:hover:text-zinc-400 whitespace-nowrap"
-                routerLinkActive="link-active"
-                routerLink="/contact"
-                (click)="expanded = false"
-            >
-                {{ 'contact-form' | translate }}
-            </a>
-            <a
-                class="px-3 py-2 rounded-md text-sm font-medium cursor-pointer text-white hover:text-zinc-200 md:hover:text-zinc-400 whitespace-nowrap"
+                class="px-3 py-2 rounded-md cursor-pointer text-white hover:text-zinc-200 md:hover:text-zinc-400 whitespace-nowrap"
                 routerLinkActive="link-active"
                 routerLink="/cv"
+                style="font-size: 0.8rem"
                 (click)="expanded = false"
             >
                 CV
@@ -65,14 +62,6 @@
         tabindex="-1"
     >
         <div class="relative w-56 flex p-2 gap-2 flex flex-col">
-            <a
-                class="px-3 py-2 rounded-md text-sm font-medium cursor-pointer text-black hover:text-zinc-200 md:text-white md:hover:text-zinc-400"
-                routerLinkActive="link-active"
-                routerLink="/contact"
-                (click)="expanded = false"
-            >
-                {{ 'contact-form' | translate }}
-            </a>
             <a
                 class="px-3 py-2 rounded-md text-sm font-medium cursor-pointer text-black hover:text-zinc-200 md:text-white md:hover:text-zinc-400"
                 routerLinkActive="link-active"

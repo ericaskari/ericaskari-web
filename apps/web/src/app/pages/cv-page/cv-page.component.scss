@@ -1,5 +1,5 @@
 :host {
-    @apply block;
+    @apply block pb-20;
 }
 
 .grid-box {
@@ -27,4 +27,8 @@
             @apply col-span-5 text-white;
         }
     }
+}
+
+div {
+    transition: background-color 0.4s;
 }

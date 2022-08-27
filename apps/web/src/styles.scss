@@ -17,10 +17,11 @@ app-root {
     scroll-behavior: smooth;
     width: 100%;
     min-height: 100%;
+    background-color: #1c1f25;
 }
 
 html {
-    font-family: 'Titillium Web', sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 router-outlet {

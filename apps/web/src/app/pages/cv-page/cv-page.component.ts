@@ -39,14 +39,17 @@ export class CvPageComponent {
         description: string[];
     }[] = [];
     educations: { startDate: Date; endDate: Date | null; endDateStr: string; degree: string; location: string }[] = [];
-    skills: string[] = [];
+    skills: {
+        category: string;
+        items: string[];
+    }[] = [];
     languages: string[] = [];
 
     constructor(public breakpointService: BreakpointService, public translate: TranslateService) {
         this.educations = [
             {
                 startDate: new Date(2021, Month.AUG),
-                endDate: new Date(2025, Month.AUG),
+                endDate: new Date(2024, Month.AUG),
                 endDateStr: '',
                 degree: `pages.cv.education-degree-2`,
                 location: 'pages.cv.education-degree-2-place'
@@ -92,19 +95,22 @@ export class CvPageComponent {
         ];
 
         this.skills = [
-            'HTML/JS/CSS/SCSS',
-            'Typescript',
-            'C# (Basic)',
-            'React',
-            'Linux/Docker',
-            'Angular (Expert)',
-            'RxJs',
-            'Redux/NgRx',
-            'ExpressJs/Nestjs',
-            'DevOps/AWS (Basic)',
-            'CI/CD, Github Actions, Bitbucket pipelines',
-            'SQL, TypeORM and Postgress',
-            'MongoDb and Mongoose'
+            {
+                category: 'Frontend skills:',
+                items: ['HTML / JS / CSS / SCSS', 'Javascript / Typescript', 'React', 'Angular (Expert)', 'RxJs', 'Redux/NgRx']
+            },
+            {
+                category: 'Backend skills:',
+                items: ['ExpressJs / Nestjs', 'C#', '.Net']
+            },
+            {
+                category: 'CI/CD skills:',
+                items: ['Linux / Bash', 'Docker', 'AWS (Basic knowledge)', 'Github Actions / Bitbucket pipelines']
+            },
+            {
+                category: 'Database skills:',
+                items: ['SQL', 'TypeORM']
+            }
         ];
         this.languages = ['pages.cv.languages.en', 'pages.cv.languages.fi', 'pages.cv.languages.fa'];
     }

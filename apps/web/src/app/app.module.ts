@@ -12,7 +12,6 @@ import { frontendEnvironment } from '../environments/frontend-environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing-module';
 import { ButtonDirective } from './components/button/button.directive';
-import { ContactPageComponent } from './pages/contact-page/contact-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { BootstrapService } from './services/bootstrap.service';
 import { CommonModule } from '@angular/common';
@@ -69,7 +68,6 @@ const store = [
     declarations: [
         AppComponent,
         HomePageComponent,
-        ContactPageComponent,
         NotificationComponent,
         ButtonDirective,
         InputDirective,
