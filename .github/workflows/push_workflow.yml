@@ -52,7 +52,7 @@ jobs:
                   node-version: 16
             - name: Install dependencies
               shell: bash
-              run: rm -rf ~/.cache/Cypress && npm install
+              run: CYPRESS_CACHE_FOLDER=/cy/.cache npm install
             - name: Test
               shell: bash
               run: npm run test:all
