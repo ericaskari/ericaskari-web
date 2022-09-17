@@ -1,10 +1,15 @@
 inputs:
-    KUBE_CONFIG:
-        description: 'KUBE_CONFIG'
+    AWS_ACCESS_KEY_ID:
+        description: 'AWS_ACCESS_KEY_ID'
         required: true
-        default: 'KUBE_CONFIG'
-name: ConfigureKubectl
-description: ConfigureKubectl
+    AWS_SECRET_ACCESS_KEY:
+        description: 'AWS_SECRET_ACCESS_KEY'
+        required: true
+    AWS_REGION:
+        description: 'AWS_REGION'
+        required: true
+name: ConfigureAwsCli
+description: ConfigureAwsCli
 runs:
     using: 'composite'
     steps:
@@ -18,7 +23,7 @@ runs:
           shell: bash
         - run: kubectl version --client
           shell: bash
-        - run: sudo mkdir -p /.kube && touch /.kube/config
+        - run: sudo mkdir -p /.kube && sudo touch /.kube/config
           shell: bash
         - run: export KUBECONFIG=/.kube/config
           shell: bash
