@@ -1,15 +1,10 @@
 inputs:
-    AWS_ACCESS_KEY_ID:
-        description: 'AWS_ACCESS_KEY_ID'
+    KUBE_CONFIG:
+        description: 'KUBE_CONFIG'
         required: true
-    AWS_SECRET_ACCESS_KEY:
-        description: 'AWS_SECRET_ACCESS_KEY'
-        required: true
-    AWS_REGION:
-        description: 'AWS_REGION'
-        required: true
-name: ConfigureAwsCli
-description: ConfigureAwsCli
+        default: 'KUBE_CONFIG'
+name: ConfigureKubectl
+description: ConfigureKubectl
 runs:
     using: 'composite'
     steps:
