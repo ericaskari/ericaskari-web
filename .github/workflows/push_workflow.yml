@@ -9,6 +9,8 @@ jobs:
         # if: github.ref_name == 'main'
         steps:
             - uses: actions/checkout@v3
+            - run: cd ./.github/tools/awscli && unzip awscliv2.zip && ./aws/install # CONFIGURE_AWS_CLI
+              shell: bash
             - uses: actions/setup-python@v3 # CONFIGURE_AWS_CLI
               with:
                   python-version: '3.8'
