@@ -18,7 +18,7 @@ runs:
           shell: bash
         - run: kubectl version --client
           shell: bash
-        - run: mkdir -p /.kube && touch /.kube/config
+        - run: sudo mkdir -p /.kube && touch /.kube/config
           shell: bash
         - run: export KUBECONFIG=/.kube/config
           shell: bash
