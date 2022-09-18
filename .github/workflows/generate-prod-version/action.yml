@@ -8,9 +8,11 @@ description: STEP_GENERATE_PROD_RELEASE_VERSION
 runs:
     using: 'composite'
     steps:
+        - run: aws configure get region
+          shell: bash
         - run: chmod +x ./.github/scripts/STEP_GENERATE_PROD_RELEASE_VERSION.sh
           shell: bash
-        - run: sudo ./.github/scripts/STEP_GENERATE_PROD_RELEASE_VERSION.sh
+        - run: ./.github/scripts/STEP_GENERATE_PROD_RELEASE_VERSION.sh
           shell: bash
         - run: echo $(cat .PROD_PULL_VERSION)
           shell: bash
