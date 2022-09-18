@@ -8,8 +8,10 @@ jobs:
         runs-on: self-hosted
         # if: github.ref_name == 'main'
         steps:
-            - uses: actions/checkout@v3
-            - uses: ./.github/workflows/configure-awscli # CONFIGURE_AWS_CLI
+            - name: Pull Source Code
+              uses: actions/checkout@v3
+            - name: Configure Aws CLI
+              uses: ./.github/workflows/configure-awscli
               with:
                 AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
                 AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -37,7 +39,8 @@ jobs:
     BuildAndTest:
         runs-on: self-hosted
         steps:
-            - uses: actions/checkout@v3 # PULL_SOURCE_CODE
+            - name: Pull Source Code
+              uses: actions/checkout@v3
             - uses: actions/setup-node@v3 # INSTALL_NODEJS
               with:
                   node-version: 16
@@ -60,23 +63,19 @@ jobs:
         #if: github.ref_name == 'dev'
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
-            - uses: ./.github/workflows/configure-awscli # CONFIGURE_AWS_CLI
+            - name: Pull Source Code
+              uses: actions/checkout@v3
+            - name: Configure Aws CLI
+              uses: ./.github/workflows/configure-awscli
               with:
                 AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
                 AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                 AWS_REGION: ${{ secrets.AWS_REGION }}
-            - name: Debug
-              shell: bash
-              run: ls -la
             - name: Download dist
               uses: actions/download-artifact@v3
               with:
                   name: dist
                   path: dist
-            - name: Debug
-              shell: bash
-              run: ls -la
             - name: Login
               shell: bash
               run: docker login -u AWS -p $(aws ecr get-login-password --region eu-west-1) 438380764554.dkr.ecr.eu-west-1.amazonaws.com
@@ -98,22 +97,32 @@ jobs:
         if: github.ref_name == 'main'
         environment: production
         steps:
-            - uses: actions/checkout@v3 # PULL_SOURCE_CODE
-            - uses: ./.github/workflows/configure-awscli # CONFIGURE_AWS_CLI
+            - name: Pull Source Code
+              uses: actions/checkout@v3
+            - name: Configure Aws CLI
+              uses: ./.github/workflows/configure-awscli
               with:
                 AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
                 AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                 AWS_REGION: ${{ secrets.AWS_REGION }}
-            - uses: ./.github/workflows/configure-kubectl # CONFIGURE_KUBECTL
+            - name: Configure Kubectl CLI
+              uses: ./.github/workflows/configure-kubectl
               with:
                   KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-            - run: sudo sh -c 'cp ./.github/tools/.yq/yq_linux_amd64-v4.17.2 /usr/bin/yq && chmod +x /usr/bin/yq' # CONFIGURE_YQ
+            - name: Configure yq CLI
               shell: bash
-            - run: yq --version
+              run: sudo sh -c 'cp ./.github/tools/.yq/yq_linux_amd64-v4.17.2 /usr/bin/yq && chmod +x /usr/bin/yq'
+            - name: Debug
               shell: bash
-            - uses: ./.github/workflows/deploy # CONFIGURE_AWS_CLI
+              run: |
+                echo NEW_DEV_RELEASE ${{ needs.GenerateVersion.outputs.NEW_DEV_RELEASE }}
+                aws --version
+                kubectl version
+                yq --version
+            - name: Deploy
+              uses: ./.github/workflows/deploy
               with:
-                VERSION: ${{needs.GenerateVersion.outputs.NEW_DEV_RELEASE}}
+                VERSION: ${{ needs.GenerateVersion.outputs.NEW_DEV_RELEASE }}
                 APP_NAMESPACE: ericaskari-prod
                 APP_NODE_ENV: production
                 APP_HOST_NAME: www.ericaskari.com
@@ -135,24 +144,32 @@ jobs:
         if: github.ref_name == 'main'
         environment: development
         steps:
-            - uses: actions/checkout@v3 # PULL_SOURCE_CODE
-            - uses: ./.github/workflows/configure-awscli # CONFIGURE_AWS_CLI
-              with:
-                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                AWS_REGION: ${{ secrets.AWS_REGION }}
-            - uses: ./.github/workflows/configure-kubectl # CONFIGURE_KUBECTL
-              with:
-                  KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-            - run: sudo sh -c 'cp ./.github/tools/.yq/yq_linux_amd64-v4.17.2 /usr/bin/yq && chmod +x /usr/bin/yq' # CONFIGURE_YQ
-              shell: bash
-            - run: yq --version
-              shell: bash
-            - run: kubectl get all
-              shell: bash
-            - uses: ./.github/workflows/deploy # CONFIGURE_AWS_CLI
-              with:
-                VERSION: ${{needs.GenerateVersion.outputs.NEW_DEV_RELEASE}}
+          - name: Pull Source Code
+            uses: actions/checkout@v3
+          - name: Configure Aws CLI
+            uses: ./.github/workflows/configure-awscli
+            with:
+              AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+              AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+              AWS_REGION: ${{ secrets.AWS_REGION }}
+          - name: Configure Kubectl CLI
+            uses: ./.github/workflows/configure-kubectl
+            with:
+              KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+          - name: Configure yq CLI
+            shell: bash
+            run: sudo sh -c 'cp ./.github/tools/.yq/yq_linux_amd64-v4.17.2 /usr/bin/yq && chmod +x /usr/bin/yq'
+          - name: Debug
+            shell: bash
+            run: |
+              echo NEW_DEV_RELEASE ${{ needs.GenerateVersion.outputs.NEW_DEV_RELEASE }}
+              aws --version
+              kubectl version
+              yq --version
+          - name: Deploy
+            uses: ./.github/workflows/deploy
+            with:
+                VERSION: ${{ needs.GenerateVersion.outputs.NEW_DEV_RELEASE }}
                 APP_NAMESPACE: ericaskari-dev
                 APP_NODE_ENV: development
                 APP_HOST_NAME: test.ericaskari.com
