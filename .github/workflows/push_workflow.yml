@@ -135,7 +135,7 @@ jobs:
                 path: .
             - run: cat .VERSION
               shell: bash
-            - run: sudo kubectl get all
+            - run: kubectl get all
               shell: bash
             - run: |
                 export VERSION="$(cat .VERSION)"
@@ -209,7 +209,7 @@ jobs:
                   path: .
             - run: cat .VERSION
               shell: bash
-            - run: sudo kubectl get all
+            - run: kubectl get all
               shell: bash
             - run: |
                   export VERSION="$(cat .VERSION)"
