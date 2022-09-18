@@ -38,14 +38,17 @@ export class BootstrapService {
                 .get<ApiRuntimeEnvironment>('/api/runtime-environment')
                 .pipe(catchError(() => of(BootstrapService.apiRuntimeEnvironment)))
         ]).pipe(
-            tap(([webRuntimeEnvs]) => (BootstrapService.webRuntimeEnvironment = webRuntimeEnvs)),
-            tap(([webRuntimeEnvs]) => this.analyticsService.initAnalytics(webRuntimeEnvs.tagManagerContainerId)),
-            tap(() => registerLocaleData(localeEn)),
-            tap(() => registerLocaleData(localeFi)),
-            tap(() => this.translate.setDefaultLang('en')),
-            tap(() => this.translate.use(localStorage.getItem('lang') ?? 'en')),
-            tap(([webRuntimeEnvs]) => console.log(`webBuildVersion: ${webRuntimeEnvs.buildVersion}`)),
-            tap(([_, apiRuntimeEnvs]) => console.log(`apiBuildVersion: ${apiRuntimeEnvs.buildVersion}`)),
+            tap(([webRuntimeEnvs, apiRuntimeEnvs]) => {
+                BootstrapService.webRuntimeEnvironment = webRuntimeEnvs;
+                BootstrapService.apiRuntimeEnvironment = apiRuntimeEnvs;
+                console.log(`webRuntimeEnvironment buildVersion: ${webRuntimeEnvs.buildVersion}`);
+                console.log(`apiRuntimeEnvironment buildVersion: ${apiRuntimeEnvs.buildVersion}`);
+                this.analyticsService.initAnalytics(webRuntimeEnvs.tagManagerContainerId);
+                registerLocaleData(localeEn);
+                registerLocaleData(localeFi);
+                this.translate.setDefaultLang('en');
+                this.translate.use(localStorage.getItem('lang') ?? 'en');
+            }),
             map(() => true)
         );
     }
