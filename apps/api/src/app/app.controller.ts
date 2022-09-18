@@ -9,7 +9,7 @@ export class AppController {
 
     constructor(private environmentService: EnvironmentService) {}
 
-    @Get()
+    @Get('/runtime-environment')
     getVersion(): GetVersionResponse {
         return GetVersionResponse.fromJson({
             buildVersion: this.environmentService.environment.APP_BUILD_VERSION

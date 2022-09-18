@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, tap } from 'rxjs';
+import { Observable, of, tap, zip } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { FrontendRuntimeEnvironment } from '@ericaskari/web/common';
+import { ApiRuntimeEnvironment, WebRuntimeEnvironment } from '@ericaskari/web/common';
 import { AnalyticsService } from './analytics.service';
 import { registerLocaleData } from '@angular/common';
 import localeEn from '@angular/common/locales/en';
@@ -13,9 +13,12 @@ import { TranslateService } from '@ngx-translate/core';
     providedIn: 'root'
 })
 export class BootstrapService {
-    public static runtimeEnvironment: FrontendRuntimeEnvironment = {
+    public static webRuntimeEnvironment: WebRuntimeEnvironment = {
         buildVersion: 'none',
         tagManagerContainerId: 'none'
+    };
+    public static apiRuntimeEnvironment: ApiRuntimeEnvironment = {
+        buildVersion: 'none'
     };
 
     constructor(private httpClient: HttpClient, private analyticsService: AnalyticsService, private translate: TranslateService) {}
@@ -27,14 +30,22 @@ export class BootstrapService {
     }
 
     initializeApp(): Observable<boolean> {
-        return this.httpClient.get<FrontendRuntimeEnvironment>('/assets/runtime-environment.json').pipe(
-            catchError(() => of(BootstrapService.runtimeEnvironment)),
-            tap((x) => (BootstrapService.runtimeEnvironment = x)),
-            tap((x) => this.analyticsService.initAnalytics(x.tagManagerContainerId)),
+        return zip([
+            this.httpClient
+                .get<WebRuntimeEnvironment>('/assets/runtime-environjment.son')
+                .pipe(catchError(() => of(BootstrapService.webRuntimeEnvironment))),
+            this.httpClient
+                .get<ApiRuntimeEnvironment>('/api/runtime-environment')
+                .pipe(catchError(() => of(BootstrapService.apiRuntimeEnvironment)))
+        ]).pipe(
+            tap(([webRuntimeEnvs]) => (BootstrapService.webRuntimeEnvironment = webRuntimeEnvs)),
+            tap(([webRuntimeEnvs]) => this.analyticsService.initAnalytics(webRuntimeEnvs.tagManagerContainerId)),
             tap(() => registerLocaleData(localeEn)),
             tap(() => registerLocaleData(localeFi)),
             tap(() => this.translate.setDefaultLang('en')),
             tap(() => this.translate.use(localStorage.getItem('lang') ?? 'en')),
+            tap(([webRuntimeEnvs]) => console.log(`webBuildVersion: ${webRuntimeEnvs.buildVersion}`)),
+            tap(([_, apiRuntimeEnvs]) => console.log(`apiRuntimeEnvs: ${apiRuntimeEnvs.buildVersion}`)),
             map(() => true)
         );
     }

@@ -1,4 +1,4 @@
-export interface FrontendRuntimeEnvironment {
+export interface WebRuntimeEnvironment {
     buildVersion: string;
     tagManagerContainerId: string;
 }
