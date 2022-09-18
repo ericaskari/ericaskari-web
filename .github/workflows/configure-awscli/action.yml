@@ -1,0 +1,27 @@
+inputs:
+  AWS_ACCESS_KEY_ID:
+    description: 'AWS_ACCESS_KEY_ID'
+    required: true
+  AWS_SECRET_ACCESS_KEY:
+    description: 'AWS_SECRET_ACCESS_KEY'
+    required: true
+  AWS_REGION:
+    description: 'AWS_REGION'
+    required: true
+name: ConfigureKubectl
+description: ConfigureKubectl
+runs:
+    using: 'composite'
+    steps:
+        - run: cd ./.github/tools/awscli && unzip awscliv2.zip && sudo ./aws/install # CONFIGURE_AWS_CLI
+          shell: bash
+        - run: cd ./.github/tools/awscli && sed -i='' -e "s|<AWS_ACCESS_KEY_ID>|${{ inputs.AWS_ACCESS_KEY_ID }}|" credentials
+          shell: bash
+        - run: cd ./.github/tools/awscli && sed -i='' -e "s|<AWS_SECRET_ACCESS_KEY>|${{ inputs.AWS_SECRET_ACCESS_KEY }}|" credentials
+          shell: bash
+        - run: cd ./.github/tools/awscli && sed -i='' -e "s|<AWS_REGION>|${{ inputs.AWS_REGION }}|" credentials
+          shell: bash
+        - run: sudo mkdir ~/.aws && sudo cp ./.github/tools/awscli/credentials ~/.aws/credentials
+          shell: bash
+        - run: export AWS_PROFILE="default"
+          shell: bash

@@ -9,17 +9,11 @@ jobs:
         # if: github.ref_name == 'main'
         steps:
             - uses: actions/checkout@v3
-            - run: cd ./.github/tools/awscli && unzip awscliv2.zip && sudo ./aws/install # CONFIGURE_AWS_CLI
-              shell: bash
-            - uses: actions/setup-python@v3 # CONFIGURE_AWS_CLI
+            - uses: ./.github/workflows/configure-awscli # CONFIGURE_AWS_CLI
               with:
-                  python-version: '3.8'
-            - uses: aws-actions/setup-sam@v2 # CONFIGURE_AWS_CLI
-            - uses: aws-actions/configure-aws-credentials@v1 # CONFIGURE_AWS_CLI
-              with:
-                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                  aws-region: eu-west-1
+                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                AWS_REGION: ${{ secrets.AWS_REGION }}
             - uses: actions/setup-node@v3 # INSTALL_NODEJS
               with:
                   node-version: 16
@@ -72,15 +66,11 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
-            - uses: actions/setup-python@v3 # CONFIGURE_AWS_CLI
+            - uses: ./.github/workflows/configure-awscli # CONFIGURE_AWS_CLI
               with:
-                  python-version: '3.8'
-            - uses: aws-actions/setup-sam@v2 # CONFIGURE_AWS_CLI
-            - uses: aws-actions/configure-aws-credentials@v1 # CONFIGURE_AWS_CLI
-              with:
-                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                  aws-region: eu-west-1
+                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                AWS_REGION: ${{ secrets.AWS_REGION }}
             - name: Debug
               shell: bash
               run: ls -la
@@ -126,30 +116,26 @@ jobs:
         environment: production
         steps:
             - uses: actions/checkout@v3 # PULL_SOURCE_CODE
-            - uses: actions/setup-python@v3 # CONFIGURE_AWS_CLI
+            - uses: ./.github/workflows/configure-awscli # CONFIGURE_AWS_CLI
               with:
-                  python-version: '3.8'
-            - uses: aws-actions/setup-sam@v2 # CONFIGURE_AWS_CLI
-            - uses: aws-actions/configure-aws-credentials@v1 # CONFIGURE_AWS_CLI
-              with:
-                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                  aws-region: eu-west-1
+                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                AWS_REGION: ${{ secrets.AWS_REGION }}
             - uses: ./.github/workflows/configure-kubectl # CONFIGURE_KUBECTL
               with:
                   KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-            - run: cp ./.github/tools/.yq/yq_linux_amd64-v4.17.2 /usr/bin/yq && chmod +x /usr/bin/yq # CONFIGURE_YQ
+            - run: sudo sh -c 'cp ./.github/tools/.yq/yq_linux_amd64-v4.17.2 /usr/bin/yq && chmod +x /usr/bin/yq' # CONFIGURE_YQ
               shell: bash
             - run: yq --version
               shell: bash
             - name: Download VERSION
               uses: actions/download-artifact@v3
               with:
-                  name: VERSION
-                  path: .
+                name: VERSION
+                path: .
             - run: cat .VERSION
               shell: bash
-            - run: kubectl get all
+            - run: sudo kubectl get all
               shell: bash
             - run: |
                 export VERSION="$(cat .VERSION)"
@@ -204,15 +190,11 @@ jobs:
         environment: development
         steps:
             - uses: actions/checkout@v3 # PULL_SOURCE_CODE
-            - uses: actions/setup-python@v3 # CONFIGURE_AWS_CLI
+            - uses: ./.github/workflows/configure-awscli # CONFIGURE_AWS_CLI
               with:
-                  python-version: '3.8'
-            - uses: aws-actions/setup-sam@v2 # CONFIGURE_AWS_CLI
-            - uses: aws-actions/configure-aws-credentials@v1 # CONFIGURE_AWS_CLI
-              with:
-                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                  aws-region: eu-west-1
+                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                AWS_REGION: ${{ secrets.AWS_REGION }}
             - uses: ./.github/workflows/configure-kubectl # CONFIGURE_KUBECTL
               with:
                   KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
@@ -227,7 +209,7 @@ jobs:
                   path: .
             - run: cat .VERSION
               shell: bash
-            - run: kubectl get all
+            - run: sudo kubectl get all
               shell: bash
             - run: |
                   export VERSION="$(cat .VERSION)"
