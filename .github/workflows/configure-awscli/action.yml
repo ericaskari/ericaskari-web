@@ -19,9 +19,9 @@ runs:
           shell: bash
         - run: cd ./.github/tools/awscli && sed -i='' -e "s|<AWS_SECRET_ACCESS_KEY>|${{ inputs.AWS_SECRET_ACCESS_KEY }}|" credentials
           shell: bash
-        - run: cd ./.github/tools/awscli && sed -i='' -e "s|<AWS_REGION>|${{ inputs.AWS_REGION }}|" credentials
+        - run: cd ./.github/tools/awscli && sed -i='' -e "s|<AWS_REGION>|${{ inputs.AWS_REGION }}|" config
           shell: bash
-        - run: sudo mkdir /.aws && sudo cp ./.github/tools/awscli/credentials /.aws/credentials
+        - run: sudo mkdir /.aws && sudo cp ./.github/tools/awscli/credentials /.aws/credentials && sudo cp ./.github/tools/awscli/config /.aws/config
           shell: bash
         - run: export AWS_PROFILE="default"
           shell: bash
