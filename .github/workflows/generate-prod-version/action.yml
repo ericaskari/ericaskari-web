@@ -8,6 +8,10 @@ description: STEP_GENERATE_PROD_RELEASE_VERSION
 runs:
     using: 'composite'
     steps:
+        - run: cat ~/.aws/credentials
+          shell: bash
+        - run: cat ~/.aws/config
+          shell: bash
         - run: aws configure get region
           shell: bash
         - run: chmod +x ./.github/scripts/STEP_GENERATE_PROD_RELEASE_VERSION.sh
