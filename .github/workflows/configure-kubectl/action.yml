@@ -18,9 +18,9 @@ runs:
           shell: bash
         - run: kubectl version --client
           shell: bash
-        - run: sudo -i && mkdir -p /.kube && touch /.kube/config
+        - run: sudo sh -c 'mkdir -p /.kube && touch /.kube/config'
           shell: bash
         - run: export KUBECONFIG=/.kube/config
           shell: bash
-        - run: sudo -i && echo "${{ inputs.KUBE_CONFIG }}" | base64 --decode > /.kube/config
+        - run: sudo sh -c 'echo "${{ inputs.KUBE_CONFIG }}" | base64 --decode > /.kube/config'
           shell: bash
