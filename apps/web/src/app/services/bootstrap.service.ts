@@ -32,7 +32,7 @@ export class BootstrapService {
     initializeApp(): Observable<boolean> {
         return zip([
             this.httpClient
-                .get<WebRuntimeEnvironment>('/assets/runtime-environjment.son')
+                .get<WebRuntimeEnvironment>('/assets/runtime-environment.json')
                 .pipe(catchError(() => of(BootstrapService.webRuntimeEnvironment))),
             this.httpClient
                 .get<ApiRuntimeEnvironment>('/api/runtime-environment')
