@@ -20,7 +20,7 @@ if [ "$OLD_DEV_RELEASE" = 'null' ]; then
 fi
 
 sed -i='backup' -e "s|$(cat ./package.json | jq -r '.version')|${OLD_DEV_RELEASE}|" ./package.json
-NEW_DEV_RELEASE="$(npm version minor --allow-same-version --git-tag-version false --preid $BRANCH_NAME)"
+NEW_DEV_RELEASE="$(npm version prerelease --allow-same-version --git-tag-version false --preid $BRANCH_NAME)"
 
 sed -i='backup' -e "s|$(cat ./package.json | jq -r '.version')|${OLD_PROD_RELEASE}|" ./package.json
 NEW_PROD_RELEASE="$(npm version minor --allow-same-version --git-tag-version false)"
