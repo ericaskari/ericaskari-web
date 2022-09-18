@@ -17,7 +17,7 @@ jobs:
             - uses: actions/setup-node@v3 # INSTALL_NODEJS
               with:
                   node-version: 16
-            - run: chmod +x ./.github/scripts/STEP_GENERATE_PROD_RELEASE_VERSION.sh
+            - run: chmod +x ./.github/scripts/STEP_GENERATE_VERSION.sh
               shell: bash
             - run: ./.github/scripts/STEP_GENERATE_VERSION.sh
               id: versions
