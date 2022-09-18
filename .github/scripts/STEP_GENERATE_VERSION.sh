@@ -2,8 +2,9 @@
 set -e
 git config --global --add safe.directory '*'
 
-DEV_BRANCH_NAME="dev"
-BRANCH_NAME="$(git rev-parse --abbrev-ref HEAD)"
+PRE_ID="dev"
+#BRANCH_NAME="$(git rev-parse --abbrev-ref HEAD)"
+
 ALL_RELEASES="$(aws ecr describe-images --repository-name ericaskari-backend --query 'sort_by(imageDetails,& imagePushedAt)[*].imageTags' --output json)"
 OLD_PROD_RELEASE="$(echo "$ALL_RELEASES" | jq --arg reg_exp "^([v])(\d+)(\.)(\d+)(\.)(\d+)$" -r '. | add | reverse | map(select(. | test($reg_exp))) | .[0]')"
 
@@ -12,22 +13,21 @@ if [ "$OLD_PROD_RELEASE" = 'null' ]; then
     OLD_PROD_RELEASE="v1.0.0"
 fi
 
-OLD_DEV_RELEASE="$(echo "$ALL_RELEASES" | jq --arg reg_exp "^($OLD_PROD_RELEASE)(\-)($DEV_BRANCH_NAME)(\.)(\d+)$" -r '. | add | reverse | map(select(. | test($reg_exp))) | .[0]')"
+OLD_DEV_RELEASE="$(echo "$ALL_RELEASES" | jq --arg reg_exp "^($OLD_PROD_RELEASE)(\-)($PRE_ID)(\.)(\d+)$" -r '. | add | reverse | map(select(. | test($reg_exp))) | .[0]')"
 
 if [ "$OLD_DEV_RELEASE" = 'null' ]; then
     printf "No dev releases after last prod release. Creating first tag.\n\n"
-    OLD_DEV_RELEASE="$OLD_PROD_RELEASE-$DEV_BRANCH_NAME.0"
+    OLD_DEV_RELEASE="$OLD_PROD_RELEASE-$PRE_ID.0"
 fi
 
 sed -i='backup' -e "s|$(cat ./package.json | jq -r '.version')|${OLD_DEV_RELEASE}|" ./package.json
-NEW_DEV_RELEASE="$(npm version prerelease --allow-same-version --git-tag-version false --preid $BRANCH_NAME)"
+NEW_DEV_RELEASE="$(npm version prerelease --allow-same-version --git-tag-version false --preid $PRE_ID)"
 
 sed -i='backup' -e "s|$(cat ./package.json | jq -r '.version')|${OLD_PROD_RELEASE}|" ./package.json
 NEW_PROD_RELEASE="$(npm version minor --allow-same-version --git-tag-version false)"
 
-
-echo "DEV BRANCH:         $DEV_BRANCH_NAME"
-echo "CURRENT BRANCH:     $BRANCH_NAME"
+echo "PRE_ID:               $PRE_ID"
+#echo "CURRENT BRANCH:      $BRANCH_NAME"
 
 echo "OLD_PROD_RELEASE:   $OLD_PROD_RELEASE"
 echo "NEW_PROD_RELEASE:   $NEW_PROD_RELEASE"
