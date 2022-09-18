@@ -22,7 +22,7 @@ jobs:
             - run: ./.github/scripts/STEP_GENERATE_VERSION.sh
               id: versions
               shell: bash
-            - name: Get color
+            - name: Log Outputs
               shell: bash
               run: |
                 echo "OLD_PROD_RELEASE  ${{ steps.versions.outputs.OLD_PROD_RELEASE }}"
@@ -55,7 +55,7 @@ jobs:
               with:
                   name: dist
                   path: dist
-    BuildAndPushDevImages:
+    BuildAndPushDockerImages:
         needs: [GenerateVersion, BuildAndTest]
         #if: github.ref_name == 'dev'
         runs-on: ubuntu-latest
@@ -94,7 +94,7 @@ jobs:
     DeployToProd:
         runs-on: self-hosted
         # needs: [BuildAndPushProdImages]
-        needs: [BuildAndPushDevImages]
+        needs: [GenerateVersion,BuildAndPushDockerImages]
         if: github.ref_name == 'main'
         environment: production
         steps:
@@ -131,7 +131,7 @@ jobs:
     DeployToDev:
         runs-on: self-hosted
         # needs: [BuildAndPushProdImages]
-        needs: [BuildAndPushDevImages]
+        needs: [GenerateVersion,BuildAndPushDockerImages]
         if: github.ref_name == 'main'
         environment: development
         steps:
