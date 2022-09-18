@@ -137,20 +137,20 @@ jobs:
               shell: bash
             - uses: ./.github/workflows/deploy # CONFIGURE_AWS_CLI
               with:
-                APP_NAMESPACE: ${{ secrets.APP_NAMESPACE }}
+                APP_NAMESPACE: ericaskari-prod
                 APP_NODE_ENV: production
-                APP_HOST_NAME: ${{ secrets.APP_HOST_NAME }}
-                APP_ENABLE_SWAGGER: ${{ secrets.APP_ENABLE_SWAGGER }}
-                APP_NODE_MAILER_HOST: ${{ secrets.APP_NODE_MAILER_HOST }}
-                APP_NODE_MAILER_PORT: ${{ secrets.APP_NODE_MAILER_PORT }}
-                APP_NODE_MAILER_REJECT_UNAUTHORIZED: ${{ secrets.APP_NODE_MAILER_REJECT_UNAUTHORIZED }}
+                APP_HOST_NAME: www.ericaskari.com
+                APP_ENABLE_SWAGGER: false
+                APP_NODE_MAILER_HOST: smtppro.zoho.eu
+                APP_NODE_MAILER_PORT: 465
+                APP_NODE_MAILER_REJECT_UNAUTHORIZED: true
                 APP_NODE_MAILER_AUTH_USER: ${{ secrets.APP_NODE_MAILER_AUTH_USER }}
                 APP_NODE_MAILER_AUTH_PASS: ${{ secrets.APP_NODE_MAILER_AUTH_PASS }}
-                APP_NODE_MAILER_SECURE: ${{ secrets.APP_NODE_MAILER_SECURE }}
-                APP_IS_SSL_ENABLED: ${{ secrets.APP_IS_SSL_ENABLED }}
-                APP_GOOGLE_TAG_MANAGER_ID: ${{ secrets.APP_GOOGLE_TAG_MANAGER_ID }}
-                APP_FE_DOMAIN_ONE: ${{ secrets.APP_FE_DOMAIN_ONE }}
-                APP_FE_DOMAIN_TWO: ${{ secrets.APP_FE_DOMAIN_TWO }}
+                APP_NODE_MAILER_SECURE: true
+                APP_IS_SSL_ENABLED: true
+                APP_GOOGLE_TAG_MANAGER_ID: GTM-MXC7C6F
+                APP_FE_DOMAIN_ONE: ericaskari.com
+                APP_FE_DOMAIN_TWO: www.ericaskari.com
     DeployToDev:
         runs-on: self-hosted
         # needs: [BuildAndPushProdImages]
@@ -182,17 +182,17 @@ jobs:
               shell: bash
             - uses: ./.github/workflows/deploy # CONFIGURE_AWS_CLI
               with:
-                APP_NAMESPACE: ${{ secrets.APP_NAMESPACE }}
+                APP_NAMESPACE: ericaskari-dev
                 APP_NODE_ENV: development
-                APP_HOST_NAME: ${{ secrets.APP_HOST_NAME }}
-                APP_ENABLE_SWAGGER: ${{ secrets.APP_ENABLE_SWAGGER }}
-                APP_NODE_MAILER_HOST: ${{ secrets.APP_NODE_MAILER_HOST }}
-                APP_NODE_MAILER_PORT: ${{ secrets.APP_NODE_MAILER_PORT }}
-                APP_NODE_MAILER_REJECT_UNAUTHORIZED: ${{ secrets.APP_NODE_MAILER_REJECT_UNAUTHORIZED }}
+                APP_HOST_NAME: test.ericaskari.com
+                APP_ENABLE_SWAGGER: true
+                APP_NODE_MAILER_HOST: smtppro.zoho.eu
+                APP_NODE_MAILER_PORT: 465
+                APP_NODE_MAILER_REJECT_UNAUTHORIZED: true
                 APP_NODE_MAILER_AUTH_USER: ${{ secrets.APP_NODE_MAILER_AUTH_USER }}
                 APP_NODE_MAILER_AUTH_PASS: ${{ secrets.APP_NODE_MAILER_AUTH_PASS }}
-                APP_NODE_MAILER_SECURE: ${{ secrets.APP_NODE_MAILER_SECURE }}
-                APP_IS_SSL_ENABLED: ${{ secrets.APP_IS_SSL_ENABLED }}
-                APP_GOOGLE_TAG_MANAGER_ID: ${{ secrets.APP_GOOGLE_TAG_MANAGER_ID }}
-                APP_FE_DOMAIN_ONE: ${{ secrets.APP_FE_DOMAIN_ONE }}
-                APP_FE_DOMAIN_TWO: ${{ secrets.APP_FE_DOMAIN_TWO }}
+                APP_NODE_MAILER_SECURE: true
+                APP_IS_SSL_ENABLED: true
+                APP_GOOGLE_TAG_MANAGER_ID: GTM-W5235KZ
+                APP_FE_DOMAIN_ONE: test.ericaskari.com
+                APP_FE_DOMAIN_TWO: staging.ericaskari.com
