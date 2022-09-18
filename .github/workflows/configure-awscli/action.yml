@@ -21,7 +21,7 @@ runs:
           shell: bash
         - run: cd ./.github/tools/awscli && sed -i='' -e "s|<AWS_REGION>|${{ inputs.AWS_REGION }}|" credentials
           shell: bash
-        - run: sudo mkdir ~/.aws && sudo cp ./.github/tools/awscli/credentials ~/.aws/credentials
+        - run: sudo mkdir ~/.aws && sudo cp ./.github/tools/awscli/credentials /.aws/credentials
           shell: bash
         - run: export AWS_PROFILE="default"
           shell: bash
