@@ -1,0 +1,11 @@
+# Resources: https://github.com/actions-runner-controller/actions-runner-controller
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: RunnerDeployment
+metadata:
+  name: ericaskari-web-github-runners
+spec:
+  # This will deploy 2 runners now
+  replicas: 4
+  template:
+    spec:
+      repository: ericaskari/ericaskari-web
