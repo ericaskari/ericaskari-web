@@ -10,9 +10,6 @@ jobs:
             - uses: actions/setup-node@v3 # INSTALL_NODEJS
               with:
                   node-version: 16
-            - name: debug
-              shell: bash
-              run: echo $(cat .DEV_VERSION)
             - name: Install dependencies
               shell: bash
               run: npm install

@@ -1,4 +1,7 @@
 inputs:
+  VERSION:
+    description: 'VERSION'
+    required: true
   APP_NAMESPACE:
     description: 'APP_NAMESPACE'
     required: true
@@ -53,9 +56,8 @@ runs:
         - run: kubectl get all
           shell: bash
         - run: |
-            export VERSION="$(cat .VERSION)"
-            export FE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:$VERSION"
-            export BE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:$VERSION"
+            export FE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{ inputs.VERSION }}"
+            export BE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{ inputs.VERSION }}"
             
             # Assign container images    
             yq e -i '.spec.template.spec.containers[0].image=env(BE_TAG)'                     ./.github/deployment/backend-02-deployment.yml
