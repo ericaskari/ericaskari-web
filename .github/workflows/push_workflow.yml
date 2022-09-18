@@ -39,6 +39,7 @@ jobs:
           NEW_DEV_RELEASE: ${{ steps.versions.outputs.NEW_DEV_RELEASE }}
     BuildAndTest:
         runs-on: self-hosted
+        if: github.ref_name != 'production'
         steps:
             - name: Pull Source Code
               uses: actions/checkout@v3
