@@ -25,5 +25,5 @@ runs:
           shell: bash
         - run: cd ./.github/tools/awscli && sed -i='' -e "s|<AWS_REGION>|${{ inputs.AWS_REGION }}|" config
           shell: bash
-        - run: sudo mkdir ~/.aws && cp ./.github/tools/awscli/credentials ~/.aws/credentials && cp ./.github/tools/awscli/config ~/.aws/config
+        - run: mkdir ~/.aws && cp ./.github/tools/awscli/credentials ~/.aws/credentials && cp ./.github/tools/awscli/config ~/.aws/config
           shell: bash
