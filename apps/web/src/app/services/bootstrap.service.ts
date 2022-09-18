@@ -45,7 +45,7 @@ export class BootstrapService {
             tap(() => this.translate.setDefaultLang('en')),
             tap(() => this.translate.use(localStorage.getItem('lang') ?? 'en')),
             tap(([webRuntimeEnvs]) => console.log(`webBuildVersion: ${webRuntimeEnvs.buildVersion}`)),
-            tap(([_, apiRuntimeEnvs]) => console.log(`apiRuntimeEnvs: ${apiRuntimeEnvs.buildVersion}`)),
+            tap(([_, apiRuntimeEnvs]) => console.log(`apiBuildVersion: ${apiRuntimeEnvs.buildVersion}`)),
             map(() => true)
         );
     }
