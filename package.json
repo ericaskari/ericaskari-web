@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start:api": "nx serve api --no-inspect",
+    "start:meet": "nx serve meet --public-host meet.ericaskari.localnet",
     "start:web": "nx serve web --public-host ericaskari.localnet",
     "build:all": "nx run-many --target=build --all",
     "test:all": "nx run-many --target=test --all",
