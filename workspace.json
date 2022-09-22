@@ -11,6 +11,7 @@
     "shared-common": "libs/shared/common",
     "shared-enum": "libs/shared/enum",
     "shared-model": "libs/shared/model",
+    "meet": "apps/meet",
     "web": "apps/web",
     "web-common": "libs/web/common",
     "web-endpoints": "libs/web/endpoints",
