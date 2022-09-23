@@ -1,34 +1,24 @@
-<div className="flex flex-col gap-2 p-4">
-    <div>
-        <h3>Local</h3>
+<div class="flex justify-center">
+    <button class="p-4 m-4" (click)="openWebcam()" [disabled]="!isWebcamClosed">Allow Webcam and Audio access</button>
+</div>
+<div class="grid grid-cols-12 p-4 gap-2">
+    <div class="col-span-6 grid grid-cols-12">
+        <h3 class="col-span-12">Local</h3>
         <video
             [srcObject]="roomService.localStream"
-            width="400"
-            height="300"
             autoplay
             playsinline
-            class="p-2 border border-white border-solid"
-            src=""
+            muted
+            class="col-span-12 p-2 border border-white border-solid"
         ></video>
     </div>
-    <div>
-        <h3>Rmeote</h3>
-        <video
-            [srcObject]="roomService.remoteStream"
-            width="400"
-            height="300"
-            autoplay
-            playsinline
-            class="p-2 border border-white border-solid"
-            src=""
-        ></video>
+    <div class="grid col-span-6 grid-cols-12">
+        <h3 class="col-span-12">Rmeote</h3>
+        <video [srcObject]="roomService.remoteStream" autoplay playsinline class="col-span-12 p-2 border border-white border-solid"></video>
     </div>
 </div>
 <div class="flex flex-col gap-2">
-    <button (click)="openWebcam()">Open Webcam</button>
     <button (click)="createRoom()" [disabled]="isWebcamClosed">Create Room</button>
-    <input type="text" placeholder="Room Id" [formControl]="roomId" />
-    <button (click)="joinRoom(roomId.value ?? '')" [disabled]="isWebcamClosed">Join Room</button>
 </div>
 
 <div>Rooms</div>

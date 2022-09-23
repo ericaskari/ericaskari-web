@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
     name: deployment-ericaskari-backend
 spec:
-    replicas: 3
+    replicas: 1
     selector:
         matchLabels:
             app.kubernetes.io/name: deployment-ericaskari-backend
