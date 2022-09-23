@@ -2,6 +2,8 @@
 
 import { ContactRequest } from './request-responses/contact.request';
 import { ContactResponse } from './request-responses/contact.response';
+import { CreateRoomRequest } from './request-responses/create-room.request';
+import { CreateRoomResponse } from './request-responses/create-room.response';
 import { GetVersionRequest } from './request-responses/get-version.request';
 import { GetVersionResponse } from './request-responses/get-version.response';
 
@@ -11,6 +13,8 @@ import { GetVersionResponse } from './request-responses/get-version.response';
 
 export { ContactRequest };
 export { ContactResponse };
+export { CreateRoomRequest };
+export { CreateRoomResponse };
 export { GetVersionRequest };
 export { GetVersionResponse };
 
@@ -19,6 +23,8 @@ export { GetVersionResponse };
 export const requestResponseModels = [
     ContactRequest,
     ContactResponse,
+    CreateRoomRequest,
+    CreateRoomResponse,
     GetVersionRequest,
     GetVersionResponse
 ];
