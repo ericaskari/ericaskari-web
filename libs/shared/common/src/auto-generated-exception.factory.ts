@@ -3,7 +3,8 @@ import { HttpException } from "./http-exception";
 // Auto generated file with generate:exports npm command
 
 import {
-    InternalServerErrorException
+    InternalServerErrorException,
+    FormValidationErrorException
 } from './exception.list';
 
 export const ExceptionFactory = (
@@ -13,6 +14,9 @@ export const ExceptionFactory = (
 ) => {
     if (exceptionName === 'InternalServerErrorException') {
         return new InternalServerErrorException(formFieldValidationErrors, formValidationErrors);
+    }
+    if (exceptionName === 'FormValidationErrorException') {
+        return new FormValidationErrorException(formFieldValidationErrors, formValidationErrors);
     }
     return new HttpException();
 };

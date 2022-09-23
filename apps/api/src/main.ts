@@ -23,7 +23,7 @@ async function bootstrap() {
     app.use(urlencoded({ limit: '50mb', extended: true }));
     app.useGlobalFilters(new HttpExceptionFilter());
     app.enableCors();
-    app.useGlobalPipes(app.get(AppValidationPipe));
+    // app.useGlobalPipes(app.get(AppValidationPipe));
 
     if (app.get(EnvironmentService).environment.APP_ENABLE_SWAGGER) {
         const documentBuilder = new DocumentBuilder().setVersion(app.get(EnvironmentService).environment.APP_BUILD_VERSION).build();
