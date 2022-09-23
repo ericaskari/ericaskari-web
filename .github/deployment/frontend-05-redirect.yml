@@ -6,3 +6,8 @@ spec:
   redirectScheme:
     scheme: https
     permanent: true
+  headers:
+    customRequestHeaders:
+      X-Forwarded-Proto: "https"
+    customResponseHeaders:
+      X-Forwarded-Proto: "https"

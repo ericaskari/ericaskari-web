@@ -239,4 +239,4 @@ jobs:
                 APP_GOOGLE_TAG_MANAGER_ID: GTM-W5235KZ
                 APP_FE_DOMAIN_ONE: test.ericaskari.com
                 APP_FE_DOMAIN_TWO: staging.ericaskari.com
-                APP_MEET_FE_DOMAIN_ONE: test.meet.ericaskari.com
+                APP_MEET_FE_DOMAIN_ONE: test-meet.ericaskari.com
