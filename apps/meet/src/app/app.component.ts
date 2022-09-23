@@ -125,15 +125,11 @@ export class AppComponent {
         });
 
         {
-            const unsub$ = new Subject();
-            this.socketService.rooms$.pipe(takeUntil(unsub$)).subscribe(async (rooms) => {
+            this.socketService.rooms$.subscribe(async (rooms) => {
                 const room = rooms[roomId];
                 console.log(room.calleeCandidates);
-                // if (room.calleeCandidates.length === 0) {
-                //     return;
-                // }
+
                 const calleeCandidates = room.calleeCandidates.map((item) => {
-                    console.log(item);
                     return this.roomService.peerConnection.addIceCandidate(new RTCIceCandidate(item));
                 });
 
@@ -141,7 +137,6 @@ export class AppComponent {
                 for await (const contents of calleeCandidates) {
                 }
                 log(`calleeCandidates: new IceCandidates added. (${calleeCandidates.length})`);
-                unsub$.next(true);
             });
         }
     }
@@ -243,8 +238,7 @@ export class AppComponent {
         }
 
         {
-            const unsub$ = new Subject();
-            this.socketService.rooms$.pipe(takeUntil(unsub$)).subscribe(async (rooms) => {
+            this.socketService.rooms$.subscribe(async (rooms) => {
                 const room = rooms[roomId];
 
                 const callerCandidates = room.callerCandidates.map((item) => {
@@ -255,7 +249,6 @@ export class AppComponent {
                 for await (const contents of callerCandidates) {
                 }
                 log(`callerCandidates: new IceCandidates added. (${callerCandidates.length})`);
-                unsub$.next(true);
             });
         }
     }
