@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RoomService } from './room.service';
-import { firstValueFrom, map } from 'rxjs';
+import { firstValueFrom, fromEvent, map, reduce, Subject, takeUntil, tap } from 'rxjs';
 import { SocketService } from './socket.service';
 import { RoomModel } from '@ericaskari/shared/model';
 
@@ -11,6 +11,8 @@ import { RoomModel } from '@ericaskari/shared/model';
 })
 export class AppComponent {
     rooms$ = this.socketService.rooms$.pipe(map((x) => Object.values(x)));
+    createRoomLogs: string[] = [];
+    joinRoomLogs: string[] = [];
 
     isWebcamClosed = true;
     constructor(public roomService: RoomService, private socketService: SocketService) {}
@@ -25,14 +27,18 @@ export class AppComponent {
     }
 
     async createRoom() {
+        const log = (item: string) => this.createRoomLogs.push(item);
+        this.createRoomLogs = [];
+        log('Creating room.');
         const { room: emptyRoom } = await firstValueFrom(this.roomService.createRoom({ offer: {} }));
+        log('Room created.');
 
         this.roomService.peerConnection = new RTCPeerConnection(this.roomService.rtcPeerConnectionConfiguration);
+        log('new RTCPeerConnection created.');
 
-        this.roomService.peerConnection.addEventListener('track', (event) => {
-            console.log('Got remote track:', event.streams[0]);
+        fromEvent<RTCTrackEvent>(this.roomService.peerConnection, 'track').subscribe((event) => {
+            log('a remote track received.');
             event.streams[0].getTracks().forEach((track) => {
-                console.log('Add a track to the remoteStream:');
                 this.roomService.remoteStream.addTrack(track);
             });
         });
@@ -59,28 +65,51 @@ export class AppComponent {
             this.roomService.peerConnection.addTrack(track, this.roomService.localStream);
         });
 
-        this.roomService.peerConnection.addEventListener('icecandidate', (event) => {
-            if (!event.candidate) {
-                console.log('Got final candidate!');
-                return;
-            }
-            console.log('Got candidate: ');
-            firstValueFrom(this.roomService.addCaller(emptyRoom.id, event.candidate.toJSON())).then(({ id }) => {
-                console.log('createCallerCandidate: ', { id });
+        const icecandidateFinished$ = new Subject<boolean>();
+        fromEvent<RTCPeerConnectionIceEvent>(this.roomService.peerConnection, 'icecandidate')
+            .pipe(
+                takeUntil(icecandidateFinished$),
+                tap((event) => {
+                    if (!event.candidate) {
+                        icecandidateFinished$.next(true);
+                    }
+                }),
+                reduce((prev, curr) => {
+                    return [...prev, curr];
+                }, [] as RTCPeerConnectionIceEvent[])
+            )
+            .subscribe({
+                next: async (data) => {
+                    log(`Saving RTCPeerConnectionIceEvents to db ${data.length}`);
+
+                    console.log('RTCPeerConnectionIceEvent DATA: ', data);
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    const callers = data.map((x) => x.candidate!.toJSON());
+                    await firstValueFrom(this.roomService.addCaller(emptyRoom.id, callers));
+                    log('RTCPeerConnectionIceEvents saved to db.');
+                },
+                error: (error) => {
+                    console.log('RTCPeerConnectionIceEvent ERROR: ', error);
+                },
+                complete: () => {
+                    console.log('RTCPeerConnectionIceEvent COMPLETE: ');
+                }
             });
-        });
 
         const offer = await this.roomService.peerConnection.createOffer();
+        log('offer created.');
 
         await this.roomService.peerConnection.setLocalDescription(offer);
         console.log('Created offer:', offer);
 
+        log('saving offer');
         const room = await firstValueFrom(
             this.roomService.addOffer(emptyRoom.id, {
                 type: offer.type,
                 sdp: offer.sdp
             })
         );
+        log('offer saved.');
 
         const roomId = room.id;
 
@@ -95,35 +124,42 @@ export class AppComponent {
             }
         });
 
-        let addedIndex = -1;
-        this.socketService.rooms$.subscribe(async (rooms) => {
-            const room = rooms[roomId];
-            const calleeCandidates = room.calleeCandidates ?? [];
+        {
+            const unsub$ = new Subject();
+            this.socketService.rooms$.pipe(takeUntil(unsub$)).subscribe(async (rooms) => {
+                const room = rooms[roomId];
+                console.log(room.calleeCandidates);
+                // if (room.calleeCandidates.length === 0) {
+                //     return;
+                // }
+                const calleeCandidates = room.calleeCandidates.map((item) => {
+                    console.log(item);
+                    return this.roomService.peerConnection.addIceCandidate(new RTCIceCandidate(item));
+                });
 
-            for (const item of calleeCandidates) {
-                const index = calleeCandidates.indexOf(item);
-                if (index > addedIndex) {
-                    const data = calleeCandidates[index];
-                    console.log(`Got new remote ICE candidate:`);
-                    await this.roomService.peerConnection.addIceCandidate(new RTCIceCandidate(data));
-                    addedIndex = index;
+                // eslint-disable-next-line no-empty
+                for await (const contents of calleeCandidates) {
                 }
-            }
-        });
+                log(`calleeCandidates: new IceCandidates added. (${calleeCandidates.length})`);
+                unsub$.next(true);
+            });
+        }
     }
 
     async joinRoom(roomId: string) {
-        console.log('Joining...');
+        const log = (item: string) => this.joinRoomLogs.push(item);
+        this.joinRoomLogs = [];
+
+        log('Joining');
         const rooms = await firstValueFrom(this.socketService.rooms$);
-        console.log('rooms');
 
         if (!rooms[roomId]) {
             console.log('Room does not exist.');
             return;
         }
 
-        console.log('Create PeerConnection with configuration: ', this.roomService.rtcPeerConnectionConfiguration);
         this.roomService.peerConnection = new RTCPeerConnection(this.roomService.rtcPeerConnectionConfiguration);
+        log('new RTCPeerConnection created');
 
         this.roomService.peerConnection.addEventListener('icegatheringstatechange', () => {
             console.log(`ICE gathering state changed: ${this.roomService.peerConnection.iceGatheringState}`);
@@ -145,20 +181,39 @@ export class AppComponent {
             this.roomService.peerConnection.addTrack(track, this.roomService.localStream);
         });
 
-        this.roomService.peerConnection.addEventListener('icecandidate', async (event) => {
-            if (!event.candidate) {
-                console.log('Got final candidate!');
-                return;
-            }
-            console.log('Got candidate: ', event.candidate);
+        const icecandidateFinished$ = new Subject<boolean>();
+        fromEvent<RTCPeerConnectionIceEvent>(this.roomService.peerConnection, 'icecandidate')
+            .pipe(
+                takeUntil(icecandidateFinished$),
+                tap((event) => {
+                    if (!event.candidate) {
+                        icecandidateFinished$.next(true);
+                    }
+                }),
+                reduce((prev, curr) => {
+                    return [...prev, curr];
+                }, [] as RTCPeerConnectionIceEvent[])
+            )
+            .subscribe({
+                next: async (data) => {
+                    log(`Saving RTCPeerConnectionIceEvents to db ${data.length}`);
 
-            await firstValueFrom(this.roomService.addCallee(roomId, event.candidate.toJSON()));
-        });
+                    console.log('RTCPeerConnectionIceEvent DATA: ', data);
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    const callee: RTCIceCandidateInit[] = data.map((x) => x.candidate!.toJSON());
+                    await firstValueFrom(this.roomService.addCallee(roomId, callee));
+                    log('RTCPeerConnectionIceEvents saved to db.');
+                },
+                error: (error) => {
+                    log('RTCPeerConnectionIceEvent ERROR ');
+                },
+                complete: () => {
+                    log('RTCPeerConnectionIceEvent COMPLETE: ');
+                }
+            });
 
-        console.log('this.roomService.peerConnection.addEventListener');
-
-        this.roomService.peerConnection.addEventListener('track', (event) => {
-            console.log('Got remote track:');
+        fromEvent<RTCTrackEvent>(this.roomService.peerConnection, 'track').subscribe((event) => {
+            log('a remote track received.');
             event.streams[0].getTracks().forEach((track) => {
                 this.roomService.remoteStream.addTrack(track);
             });
@@ -170,11 +225,13 @@ export class AppComponent {
             // Code for creating SDP answer below
             const offer = room.offer;
 
-            console.log('Got offer:', offer);
             await this.roomService.peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+            log('RTCSessionDescription is set.');
+
             const answer = await this.roomService.peerConnection.createAnswer();
-            console.log('Created answer:', answer);
+            log('Answer is created.');
             await this.roomService.peerConnection.setLocalDescription(answer);
+            log('LocalDescription is set.');
 
             await firstValueFrom(
                 this.roomService.addAnswer(room.id, {
@@ -182,23 +239,23 @@ export class AppComponent {
                     sdp: answer.sdp
                 })
             );
+            log('Answer is saved to db.');
         }
 
         {
-            let addedIndex = -1;
-            this.socketService.rooms$.subscribe(async (rooms) => {
+            const unsub$ = new Subject();
+            this.socketService.rooms$.pipe(takeUntil(unsub$)).subscribe(async (rooms) => {
                 const room = rooms[roomId];
-                const callerCandidates = room.callerCandidates ?? [];
 
-                for (const item of callerCandidates) {
-                    const index = callerCandidates.indexOf(item);
-                    if (index > addedIndex) {
-                        const data = callerCandidates[index];
-                        console.log(`Got new remote ICE candidate ${index}/${addedIndex}`);
-                        await this.roomService.peerConnection.addIceCandidate(new RTCIceCandidate(data));
-                        addedIndex = index;
-                    }
+                const callerCandidates = room.callerCandidates.map((item) => {
+                    return this.roomService.peerConnection.addIceCandidate(new RTCIceCandidate(item));
+                });
+
+                // eslint-disable-next-line no-empty
+                for await (const contents of callerCandidates) {
                 }
+                log(`callerCandidates: new IceCandidates added. (${callerCandidates.length})`);
+                unsub$.next(true);
             });
         }
     }

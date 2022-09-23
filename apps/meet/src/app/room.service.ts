@@ -38,11 +38,11 @@ export class RoomService {
         return this.httpClient.patch<RoomModel>(`/api/meet/${roomId}`, request);
     }
 
-    public addCaller(roomId: string, body: any) {
+    public addCaller(roomId: string, body: RTCIceCandidateInit[]) {
         return this.httpClient.post<any>(`/api/meet/${roomId}/addCaller`, body);
     }
 
-    public addCallee(roomId: string, body: any) {
+    public addCallee(roomId: string, body: RTCIceCandidateInit[]) {
         return this.httpClient.post<any>(`/api/meet/${roomId}/addCallee`, body);
     }
 

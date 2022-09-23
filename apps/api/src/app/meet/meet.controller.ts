@@ -106,7 +106,7 @@ export class MeetController {
             throw new NotFoundException();
         }
 
-        room.callerCandidates = [...(room.callerCandidates ?? []), bodyRequest];
+        room.callerCandidates = bodyRequest;
         rooms[roomId] = room;
         this.service.rooms.next(rooms);
 
@@ -128,7 +128,7 @@ export class MeetController {
             throw new NotFoundException();
         }
 
-        room.calleeCandidates = [...(room.calleeCandidates ?? []), bodyRequest];
+        room.calleeCandidates = bodyRequest;
         rooms[roomId] = room;
         this.service.rooms.next(rooms);
 
