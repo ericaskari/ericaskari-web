@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { RoomService } from './room.service';
 import { firstValueFrom, map } from 'rxjs';
 import { SocketService } from './socket.service';
@@ -11,8 +10,6 @@ import { RoomModel } from '@ericaskari/shared/model';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    roomId = new FormControl<string>('');
-
     rooms$ = this.socketService.rooms$.pipe(map((x) => Object.values(x)));
 
     isWebcamClosed = true;
@@ -85,7 +82,7 @@ export class AppComponent {
             })
         );
 
-        this.roomId.setValue(room.id);
+        const roomId = room.id;
 
         console.log(`New room created with SDP offer. Room ID: ${room.id}`);
 
@@ -100,7 +97,7 @@ export class AppComponent {
 
         let addedIndex = -1;
         this.socketService.rooms$.subscribe(async (rooms) => {
-            const room = rooms[this.roomId.value ?? ''];
+            const room = rooms[roomId];
             const calleeCandidates = room.calleeCandidates ?? [];
 
             for (const item of calleeCandidates) {
