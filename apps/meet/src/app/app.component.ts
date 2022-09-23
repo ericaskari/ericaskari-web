@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { RoomService } from './room.service';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, map } from 'rxjs';
 import { SocketService } from './socket.service';
 import { RoomModel } from '@ericaskari/shared/model';
 
@@ -13,6 +13,9 @@ import { RoomModel } from '@ericaskari/shared/model';
 export class AppComponent {
     roomId = new FormControl<string>('');
 
+    rooms$ = this.socketService.rooms$.pipe(map((x) => Object.values(x)));
+
+    isWebcamClosed = true;
     constructor(public roomService: RoomService, private socketService: SocketService) {}
 
     async openWebcam() {
@@ -21,6 +24,7 @@ export class AppComponent {
             audio: true
         });
         this.roomService.remoteStream = new MediaStream();
+        this.isWebcamClosed = false;
     }
 
     async createRoom() {
@@ -85,7 +89,7 @@ export class AppComponent {
 
         console.log(`New room created with SDP offer. Room ID: ${room.id}`);
 
-        this.socketService.rooms.subscribe(async (data) => {
+        this.socketService.rooms$.subscribe(async (data) => {
             const currentRoom = data[room.id];
             if (!this.roomService.peerConnection.currentRemoteDescription && currentRoom && currentRoom.answer) {
                 console.log('Got remote description: ', currentRoom.answer);
@@ -95,7 +99,7 @@ export class AppComponent {
         });
 
         let addedIndex = -1;
-        this.socketService.rooms.subscribe(async (rooms) => {
+        this.socketService.rooms$.subscribe(async (rooms) => {
             const room = rooms[this.roomId.value ?? ''];
             const calleeCandidates = room.calleeCandidates ?? [];
 
@@ -111,12 +115,12 @@ export class AppComponent {
         });
     }
 
-    async joinRoom() {
+    async joinRoom(roomId: string) {
         console.log('Joining...');
-        const rooms = await firstValueFrom(this.socketService.rooms);
+        const rooms = await firstValueFrom(this.socketService.rooms$);
         console.log('rooms');
 
-        if (!rooms[this.roomId.value ?? '']) {
+        if (!rooms[roomId]) {
             console.log('Room does not exist.');
             return;
         }
@@ -151,7 +155,7 @@ export class AppComponent {
             }
             console.log('Got candidate: ', event.candidate);
 
-            await firstValueFrom(this.roomService.addCallee(this.roomId.value ?? '', event.candidate.toJSON()));
+            await firstValueFrom(this.roomService.addCallee(roomId, event.candidate.toJSON()));
         });
 
         console.log('this.roomService.peerConnection.addEventListener');
@@ -164,7 +168,7 @@ export class AppComponent {
         });
 
         {
-            const room: RoomModel = rooms[this.roomId.value ?? ''];
+            const room: RoomModel = rooms[roomId];
 
             // Code for creating SDP answer below
             const offer = room.offer;
@@ -185,8 +189,8 @@ export class AppComponent {
 
         {
             let addedIndex = -1;
-            this.socketService.rooms.subscribe(async (rooms) => {
-                const room = rooms[this.roomId.value ?? ''];
+            this.socketService.rooms$.subscribe(async (rooms) => {
+                const room = rooms[roomId];
                 const callerCandidates = room.callerCandidates ?? [];
 
                 for (const item of callerCandidates) {

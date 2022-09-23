@@ -1,4 +1,4 @@
-import { Body, Controller, NotFoundException, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, NotFoundException, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateRoomRequest, CreateRoomResponse, RoomModel } from '@ericaskari/shared/model';
 import { v4 as uuid } from 'uuid';
@@ -33,6 +33,20 @@ export class MeetController {
             })
         );
     }
+
+    @Delete(':roomId')
+    async deleteRoom(@Param('roomId') roomId: string): Promise<void> {
+        console.log('deleteRoom');
+
+        const rooms = await firstValueFrom(this.service.rooms);
+
+        delete rooms[roomId];
+
+        this.service.rooms.next(rooms);
+
+        return;
+    }
+
     @Patch(':roomId')
     async updateRoom(@Param('roomId') roomId: string, @Body() bodyRequest: RoomModel): Promise<Observable<RoomModel>> {
         console.log('updateRoom');

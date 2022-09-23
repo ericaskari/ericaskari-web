@@ -13,14 +13,14 @@ export class SocketService {
 
     // Connect data source to ngrx
 
-    rooms = fromEvent<Record<string, RoomModel>>(this.socket, SocketEvents.RoomsUpdated).pipe(shareReplay(1));
+    rooms$ = fromEvent<Record<string, RoomModel>>(this.socket, SocketEvents.RoomsUpdated).pipe(shareReplay(1));
 
     constructor() {
         this.socket.on('connect', () => this.onConnect(this.socket));
         // this.socket.onAny((args) => {
         //     console.log('Any: ', args);
         // });
-        this.rooms.subscribe();
+        this.rooms$.subscribe();
     }
     /**
      * Get initial values needed from server

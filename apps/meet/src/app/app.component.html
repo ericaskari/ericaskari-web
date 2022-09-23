@@ -26,7 +26,26 @@
 </div>
 <div class="flex flex-col gap-2">
     <button (click)="openWebcam()">Open Webcam</button>
-    <button (click)="createRoom()">Create Room</button>
+    <button (click)="createRoom()" [disabled]="isWebcamClosed">Create Room</button>
     <input type="text" placeholder="Room Id" [formControl]="roomId" />
-    <button (click)="joinRoom()">Join Room</button>
+    <button (click)="joinRoom(roomId.value ?? '')" [disabled]="isWebcamClosed">Join Room</button>
+</div>
+
+<div>Rooms</div>
+<div class="flex flex-col">
+    <div *ngFor="let room of rooms$ | async" class="border p-4">
+        <div>
+            <b>{{ room.id }}</b>
+            <button (click)="roomService.deleteRoom(room.id).subscribe()">Delete</button>
+            <button (click)="joinRoom(room.id)" [disabled]="isWebcamClosed">Join</button>
+        </div>
+        <div>
+            {{ room.offer ? 'Has offer' : 'No Offer' }}
+        </div>
+        <div>
+            {{ room.answer ? 'Has answer' : 'No answer' }}
+        </div>
+        <div>callerCandidates: {{ room.callerCandidates.length }}</div>
+        <div>calleeCandidates: {{ room.calleeCandidates.length }}</div>
+    </div>
 </div>
