@@ -16,11 +16,11 @@ export class MeetController {
         console.log('createRoom');
 
         const id = uuid();
-        const { offer } = bodyRequest;
+        const { offer, name } = bodyRequest;
 
         const rooms = await firstValueFrom(this.service.rooms);
 
-        rooms[id] = { id, offer, answer: null, calleeCandidates: [], callerCandidates: [] };
+        rooms[id] = { id, name, offer, answer: null, calleeCandidates: [], callerCandidates: [] };
 
         this.service.rooms.next(rooms);
 

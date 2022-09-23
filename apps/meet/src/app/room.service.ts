@@ -11,6 +11,8 @@ export class RoomService {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     remoteStream: MediaStream = null!;
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    remoteStream2: MediaStream = null!;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     peerConnection: RTCPeerConnection = null!;
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
