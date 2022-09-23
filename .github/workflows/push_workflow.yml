@@ -87,12 +87,16 @@ jobs:
               run: |
                   BE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{needs.GenerateVersion.outputs.NEW_DEV_RELEASE}}"
                   FE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GenerateVersion.outputs.NEW_DEV_RELEASE}}"
+                  MEET_FE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-meet-frontend:${{needs.GenerateVersion.outputs.NEW_DEV_RELEASE}}"
                   echo BE_TAG: $BE_TAG
                   echo FE_TAG: $FE_TAG
+                  echo MEET_FE_TAG: $MEET_FE_TAG
                   docker build -f ./.github/Backend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GenerateVersion.outputs.NEW_DEV_RELEASE}}" --tag "$BE_TAG" .
                   docker build -f ./.github/Frontend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GenerateVersion.outputs.NEW_DEV_RELEASE}}" --tag "$FE_TAG" .
+                  docker build -f ./.github/Meet-Frontend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GenerateVersion.outputs.NEW_DEV_RELEASE}}" --tag "$MEET_FE_TAG" .
                   docker push "$BE_TAG"
                   docker push "$FE_TAG"
+                  docker push "$MEET_FE_TAG"
     PullAndUpdateImageTag:
         needs: [GenerateVersion]
         if: github.ref_name == 'production'
@@ -113,19 +117,35 @@ jobs:
               shell: bash
               run: |
                   BackendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{needs.GenerateVersion.outputs.OLD_DEV_RELEASE}}"
-                  FrontendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GenerateVersion.outputs.OLD_DEV_RELEASE}}"
                   NewBackendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{needs.GenerateVersion.outputs.NEW_PROD_RELEASE}}"
+
+                  FrontendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GenerateVersion.outputs.OLD_DEV_RELEASE}}"
                   NewFrontendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GenerateVersion.outputs.NEW_PROD_RELEASE}}"
+
+                  MeetFrontendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-meet-frontend:${{needs.GenerateVersion.outputs.OLD_DEV_RELEASE}}"
+                  MeetNewFrontendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-meet-frontend:${{needs.GenerateVersion.outputs.NEW_PROD_RELEASE}}"
+                
                   echo BackendImage: $BackendImage
-                  echo FrontendImage: $FrontendImage
                   echo NewBackendImage: $NewBackendImage
+                
+                  echo FrontendImage: $FrontendImage
                   echo NewFrontendImage: $NewFrontendImage
+                
+                  echo MeetFrontendImage: $MeetFrontendImage
+                  echo NewMeetFrontendImage: $NewMeetFrontendImage
+                
                   docker pull $BackendImage
-                  docker pull $FrontendImage
                   docker tag $BackendImage $NewBackendImage
-                  docker tag $FrontendImage $NewFrontendImage
                   docker push "$NewBackendImage"
+                
+                  docker pull $FrontendImage
+                  docker tag $FrontendImage $NewFrontendImage
                   docker push "$NewFrontendImage"
+                
+                  docker pull $MeetFrontendImage
+                  docker tag $MeetFrontendImage $MeetNewFrontendImage
+                  docker push "$MeetNewFrontendImage"
+
     DeployToProd:
         runs-on: self-hosted
         needs: [GenerateVersion,PullAndUpdateImageTag]
@@ -172,6 +192,7 @@ jobs:
                 APP_GOOGLE_TAG_MANAGER_ID: GTM-MXC7C6F
                 APP_FE_DOMAIN_ONE: ericaskari.com
                 APP_FE_DOMAIN_TWO: www.ericaskari.com
+                APP_MEET_FE_DOMAIN_ONE: meet.ericaskari.com
     DeployToDev:
         runs-on: self-hosted
         needs: [GenerateVersion,BuildAndPushDockerImages]
@@ -218,3 +239,4 @@ jobs:
                 APP_GOOGLE_TAG_MANAGER_ID: GTM-W5235KZ
                 APP_FE_DOMAIN_ONE: test.ericaskari.com
                 APP_FE_DOMAIN_TWO: staging.ericaskari.com
+                APP_MEET_FE_DOMAIN_ONE: test.meet.ericaskari.com

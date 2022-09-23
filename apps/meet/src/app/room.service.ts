@@ -45,6 +45,9 @@ export class RoomService {
     public createRoom(request: CreateRoomRequest) {
         return this.httpClient.post<CreateRoomResponse>('/api/meet/room', request);
     }
+    public deleteRoom(roomId: string) {
+        return this.httpClient.delete<void>(`/api/meet/${roomId}`);
+    }
 
     public patchRoom(roomId: string, request: Partial<RoomModel>) {
         return this.httpClient.patch<RoomModel>(`/api/meet/${roomId}`, request);
