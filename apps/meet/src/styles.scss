@@ -10,7 +10,11 @@ button {
 input {
     @apply bg-transparent appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-white leading-tight focus:outline-none focus:border-blue-500;
 }
-
+.mirrored-video {
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg); /* Safari and Chrome */
+    -moz-transform: rotateY(180deg); /* Firefox */
+}
 html,
 body,
 app-root {
