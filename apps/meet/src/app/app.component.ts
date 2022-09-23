@@ -30,8 +30,13 @@ export class AppComponent {
         const log = (item: string) => this.createRoomLogs.push(item);
         this.createRoomLogs = [];
         log('Creating room.');
-        const { room: emptyRoom } = await firstValueFrom(this.roomService.createRoom({ offer: {} }));
+        const { room: emptyRoom } = await firstValueFrom(this.roomService.createRoom({ offer: {}, name: '' }));
         log('Room created.');
+
+        this.roomService.peerConnection?.removeAllListeners?.('icegatheringstatechange');
+        this.roomService.peerConnection?.removeAllListeners?.('connectionstatechange');
+        this.roomService.peerConnection?.removeAllListeners?.('signalingstatechange');
+        this.roomService.peerConnection?.removeAllListeners?.('iceconnectionstatechange');
 
         this.roomService.peerConnection = new RTCPeerConnection(this.roomService.rtcPeerConnectionConfiguration);
         log('new RTCPeerConnection created.');
@@ -42,8 +47,6 @@ export class AppComponent {
                 this.roomService.remoteStream.addTrack(track);
             });
         });
-
-        // Reference Firestore collections for signaling
 
         this.roomService.peerConnection.addEventListener('icegatheringstatechange', () => {
             console.log(`createRoom: ICE gathering state changed: ${this.roomService.peerConnection.iceGatheringState}`);
@@ -60,7 +63,6 @@ export class AppComponent {
         this.roomService.peerConnection.addEventListener('iceconnectionstatechange ', () => {
             console.log(`createRoom: ICE connection state change: ${this.roomService.peerConnection.iceConnectionState}`);
         });
-
         this.roomService.localStream.getTracks().forEach((track) => {
             this.roomService.peerConnection.addTrack(track, this.roomService.localStream);
         });
@@ -152,6 +154,11 @@ export class AppComponent {
             console.log('Room does not exist.');
             return;
         }
+
+        this.roomService.peerConnection?.removeAllListeners?.('icegatheringstatechange');
+        this.roomService.peerConnection?.removeAllListeners?.('connectionstatechange');
+        this.roomService.peerConnection?.removeAllListeners?.('signalingstatechange');
+        this.roomService.peerConnection?.removeAllListeners?.('iceconnectionstatechange');
 
         this.roomService.peerConnection = new RTCPeerConnection(this.roomService.rtcPeerConnectionConfiguration);
         log('new RTCPeerConnection created');
