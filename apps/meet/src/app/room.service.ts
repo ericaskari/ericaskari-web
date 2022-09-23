@@ -1,8 +1,4 @@
 import { Injectable } from '@angular/core';
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
-import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
 import { HttpClient } from '@angular/common/http';
 import { CreateRoomRequest, CreateRoomResponse, RoomModel } from '@ericaskari/shared/model';
 
@@ -28,17 +24,6 @@ export class RoomService {
         ],
         iceCandidatePoolSize: 10
     };
-
-    public app = firebase.initializeApp({
-        apiKey: 'AIzaSyDrPF-xbFIFUM1uvDjYQt7P2L_duhVhEII',
-        authDomain: 'aska-meet.firebaseapp.com',
-        projectId: 'aska-meet',
-        storageBucket: 'aska-meet.appspot.com',
-        messagingSenderId: '448085315306',
-        appId: '1:448085315306:web:d506b94794425643cb5193',
-        measurementId: 'G-G9R45B1NTR'
-    });
-    public db = getFirestore(this.app);
 
     constructor(private httpClient: HttpClient) {}
 
