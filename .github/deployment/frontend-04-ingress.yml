@@ -47,29 +47,3 @@ spec:
                             name: service-ericaskari-backend
                             port:
                                 number: 80
-
-
-        - host: meet.ericaskari.com
-          http:
-              paths:
-                  - path: /
-                    pathType: Prefix
-                    backend:
-                        service:
-                            name: service-ericaskari-meet-frontend
-                            port:
-                                number: 80
-                  - path: /api
-                    pathType: Prefix
-                    backend:
-                        service:
-                            name: service-ericaskari-backend
-                            port:
-                                number: 80
-                  - path: /wss
-                    pathType: Prefix
-                    backend:
-                        service:
-                            name: service-ericaskari-backend
-                            port:
-                                number: 80

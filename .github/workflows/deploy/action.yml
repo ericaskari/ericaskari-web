@@ -60,13 +60,11 @@ runs:
           shell: bash
         - run: |
             export FE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{ inputs.VERSION }}"
-            export MEET_FE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-meet-frontend:${{ inputs.VERSION }}"
             export BE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{ inputs.VERSION }}"
             
             # Assign container images    
             yq e -i '.spec.template.spec.containers[0].image=env(BE_TAG)'                     ./.github/deployment/backend-02-deployment.yml
             yq e -i ".spec.template.spec.containers[0].image=env(FE_TAG)"                     ./.github/deployment/frontend-02-deployment.yml
-            yq e -i ".spec.template.spec.containers[0].image=env(MEET_FE_TAG)"                ./.github/deployment/meet-frontend-02-deployment.yml
             
             # Assign Env variables Backend       
             yq e -i '.spec.template.spec.containers[0].env += [{"name": "APP_NODE_ENV",                         "value": "${{ inputs.APP_NODE_ENV }}"}]'                        ./.github/deployment/backend-02-deployment.yml
@@ -102,9 +100,7 @@ runs:
             kubectl apply   --namespace="${{ inputs.APP_NAMESPACE }}" --filename=./.github/deployment/backend-03-service.yml
             kubectl apply   --namespace="${{ inputs.APP_NAMESPACE }}" --filename=./.github/deployment/frontend-01-secret.yml
             kubectl apply   --namespace="${{ inputs.APP_NAMESPACE }}" --filename=./.github/deployment/frontend-02-deployment.yml
-            kubectl apply   --namespace="${{ inputs.APP_NAMESPACE }}" --filename=./.github/deployment/meet-frontend-02-deployment.yml
             kubectl apply   --namespace="${{ inputs.APP_NAMESPACE }}" --filename=./.github/deployment/frontend-03-service.yml
-            kubectl apply   --namespace="${{ inputs.APP_NAMESPACE }}" --filename=./.github/deployment/meet-frontend-03-service.yml
             kubectl apply   --namespace="${{ inputs.APP_NAMESPACE }}" --filename=./.github/deployment/frontend-04-ingress.yml
             kubectl apply   --namespace="${{ inputs.APP_NAMESPACE }}" --filename=./.github/deployment/frontend-05-redirect.yml
           shell: bash
