@@ -4,7 +4,6 @@
   "license": "MIT",
   "scripts": {
     "start:api": "nx serve api --no-inspect",
-    "start:meet": "nx serve meet --public-host meet.ericaskari.localnet",
     "start:web": "nx serve web --public-host ericaskari.localnet",
     "build:all": "nx run-many --target=build --all",
     "test:all": "nx run-many --target=test --all",
@@ -69,9 +68,6 @@
     "@angular/platform-browser": "~14.0.0",
     "@angular/platform-browser-dynamic": "~14.0.0",
     "@angular/router": "~14.0.0",
-    "@nestjs/websockets": "^8.4.7",
-    "@nestjs/platform-socket.io": "^8.4.7",
-    "socket.io-client": "^4.5.1",
     "@fortawesome/angular-fontawesome": "^0.11.1",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
