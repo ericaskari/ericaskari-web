@@ -9,12 +9,10 @@ import { ContactService } from '@ericaskari/api/core';
 @ApiTags('Contact')
 @Controller('contact')
 export class ContactController {
-
-constructor(private service: ContactService) {}
+    constructor(private service: ContactService) {}
 
     @Post()
     sendContactForm(@Body() bodyRequest: ContactRequest): Promise<ContactResponse> {
         return this.service.sendContactForm(bodyRequest);
     }
-
 }
