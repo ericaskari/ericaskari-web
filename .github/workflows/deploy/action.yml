@@ -44,9 +44,6 @@ inputs:
   APP_FE_DOMAIN_TWO:
     description: 'APP_FE_DOMAIN_TWO'
     required: true
-  APP_MEET_FE_DOMAIN_ONE:
-    description: 'APP_MEET_FE_DOMAIN_ONE'
-    required: true
 name: ConfigureKubectl
 description: ConfigureKubectl
 runs:
@@ -84,10 +81,8 @@ runs:
             # Other configurations          
             yq e -i '.spec.tls[0].hosts[0]="${{ inputs.APP_FE_DOMAIN_ONE }}"'                  ./.github/deployment/frontend-04-ingress.yml
             yq e -i '.spec.tls[0].hosts[1]="${{ inputs.APP_FE_DOMAIN_TWO }}"'                  ./.github/deployment/frontend-04-ingress.yml
-            yq e -i '.spec.tls[0].hosts[2]="${{ inputs.APP_MEET_FE_DOMAIN_ONE }}"'             ./.github/deployment/frontend-04-ingress.yml
             yq e -i '.spec.rules[0].host="${{ inputs.APP_FE_DOMAIN_ONE }}"'                    ./.github/deployment/frontend-04-ingress.yml
             yq e -i '.spec.rules[1].host="${{ inputs.APP_FE_DOMAIN_TWO }}"'                    ./.github/deployment/frontend-04-ingress.yml
-            yq e -i '.spec.rules[2].host="${{ inputs.APP_MEET_FE_DOMAIN_ONE }}"'               ./.github/deployment/frontend-04-ingress.yml
             yq e -i '.metadata.annotations.["traefik.ingress.kubernetes.io/router.middlewares"]="${{ inputs.APP_NAMESPACE }}-redirect@kubernetescrd"' ./.github/deployment/frontend-04-ingress.yml
           shell: bash
         - run: |
