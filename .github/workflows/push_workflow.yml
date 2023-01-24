@@ -3,40 +3,6 @@ on:
     push:
         branches: [main, production]
 jobs:
-    GenerateVersion:
-        runs-on: self-hosted
-        steps:
-            - name: Pull Source Code
-              uses: actions/checkout@v3
-            - name: Configure Aws CLI
-              uses: ./.github/workflows/configure-awscli
-              with:
-                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                AWS_REGION: ${{ secrets.AWS_REGION }}
-            - name: Configure Nodejs
-              uses: actions/setup-node@v3
-              with:
-                  node-version: 16
-            - name: Make executable
-              run: chmod +x ./.github/scripts/STEP_GENERATE_VERSION.sh
-              shell: bash
-            - name: Execute
-              run: ./.github/scripts/STEP_GENERATE_VERSION.sh
-              id: versions
-              shell: bash
-            - name: Debug
-              shell: bash
-              run: |
-                echo "OLD_PROD_RELEASE  ${{ steps.versions.outputs.OLD_PROD_RELEASE }}"
-                echo "NEW_PROD_RELEASE  ${{ steps.versions.outputs.NEW_PROD_RELEASE }}"
-                echo "OLD_DEV_RELEASE   ${{ steps.versions.outputs.OLD_DEV_RELEASE }}"
-                echo "NEW_DEV_RELEASE   ${{ steps.versions.outputs.NEW_DEV_RELEASE }}"
-        outputs:
-          OLD_PROD_RELEASE: ${{ steps.versions.outputs.OLD_PROD_RELEASE }}
-          NEW_PROD_RELEASE: ${{ steps.versions.outputs.NEW_PROD_RELEASE }}
-          OLD_DEV_RELEASE: ${{ steps.versions.outputs.OLD_DEV_RELEASE }}
-          NEW_DEV_RELEASE: ${{ steps.versions.outputs.NEW_DEV_RELEASE }}
     GetLatestTag:
         runs-on: self-hosted
         steps:
@@ -72,6 +38,9 @@ jobs:
                 git_commit_sha: ${{ github.sha }}
                 version: ${{ steps.nextsemver.outputs.patch }}
                 git_tag_prefix: "v"
+        outputs:
+          oldversion: ${{ steps.previoussemver.outputs.tag }}
+          version: ${{ steps.nextsemver.outputs.patch }}
 
     BuildAndTest:
         runs-on: self-hosted
@@ -98,7 +67,7 @@ jobs:
                   name: dist
                   path: dist
     BuildAndPushDockerImages:
-        needs: [GenerateVersion, BuildAndTest]
+        needs: [GetLatestTag, BuildAndTest]
         if: github.ref_name == 'main'
         runs-on: ubuntu-latest
         steps:
@@ -121,16 +90,16 @@ jobs:
             - name: Build And Push
               shell: bash
               run: |
-                  BE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{needs.GenerateVersion.outputs.NEW_DEV_RELEASE}}"
-                  FE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GenerateVersion.outputs.NEW_DEV_RELEASE}}"
+                  BE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{needs.GetLatestTag.outputs.version}}"
+                  FE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GetLatestTag.outputs.version}}"
                   echo BE_TAG: $BE_TAG
                   echo FE_TAG: $FE_TAG
-                  docker build -f ./.github/Backend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GenerateVersion.outputs.NEW_DEV_RELEASE}}" --tag "$BE_TAG" .
-                  docker build -f ./.github/Frontend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GenerateVersion.outputs.NEW_DEV_RELEASE}}" --tag "$FE_TAG" .
+                  docker build -f ./.github/Backend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$BE_TAG" .
+                  docker build -f ./.github/Frontend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$FE_TAG" .
                   docker push "$BE_TAG"
                   docker push "$FE_TAG"
     PullAndUpdateImageTag:
-        needs: [GenerateVersion]
+        needs: [GetLatestTag]
         if: github.ref_name == 'production'
         runs-on: ubuntu-latest
         steps:
@@ -148,11 +117,11 @@ jobs:
             - name: Build And Push
               shell: bash
               run: |
-                  BackendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{needs.GenerateVersion.outputs.OLD_DEV_RELEASE}}"
-                  NewBackendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{needs.GenerateVersion.outputs.NEW_PROD_RELEASE}}"
+                  BackendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{needs.GetLatestTag.outputs.oldversion}}"
+                  NewBackendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{needs.GetLatestTag.outputs.version}}"
 
-                  FrontendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GenerateVersion.outputs.OLD_DEV_RELEASE}}"
-                  NewFrontendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GenerateVersion.outputs.NEW_PROD_RELEASE}}"
+                  FrontendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GetLatestTag.outputs.oldversion}}"
+                  NewFrontendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GetLatestTag.outputs.version}}"
 
                   echo BackendImage: $BackendImage
                   echo NewBackendImage: $NewBackendImage
@@ -170,7 +139,7 @@ jobs:
                 
     DeployToProd:
         runs-on: self-hosted
-        needs: [GenerateVersion,PullAndUpdateImageTag]
+        needs: [GetLatestTag,PullAndUpdateImageTag]
         if: github.ref_name == 'production'
         environment: production
         steps:
@@ -192,14 +161,14 @@ jobs:
             - name: Debug
               shell: bash
               run: |
-                echo NEW_DEV_RELEASE ${{ needs.GenerateVersion.outputs.NEW_DEV_RELEASE }}
+                echo NEW_DEV_RELEASE ${{ needs.GetLatestTag.outputs.version }}
                 aws --version
                 kubectl version
                 yq --version
             - name: Deploy
               uses: ./.github/workflows/deploy
               with:
-                VERSION: ${{ needs.GenerateVersion.outputs.NEW_PROD_RELEASE }}
+                VERSION: ${{ needs.GetLatestTag.outputs.version }}
                 APP_NAMESPACE: ericaskari-prod
                 APP_NODE_ENV: production
                 APP_HOST_NAME: www.ericaskari.com
@@ -216,7 +185,7 @@ jobs:
                 APP_FE_DOMAIN_TWO: www.ericaskari.com
     DeployToDev:
         runs-on: self-hosted
-        needs: [GenerateVersion,BuildAndPushDockerImages]
+        needs: [GetLatestTag,BuildAndPushDockerImages]
         if: github.ref_name == 'main'
         environment: development
         steps:
@@ -238,14 +207,14 @@ jobs:
           - name: Debug
             shell: bash
             run: |
-              echo NEW_DEV_RELEASE ${{ needs.GenerateVersion.outputs.NEW_DEV_RELEASE }}
+              echo NEW_DEV_RELEASE ${{ needs.GetLatestTag.outputs.version }}
               aws --version
               kubectl version
               yq --version
           - name: Deploy
             uses: ./.github/workflows/deploy
             with:
-                VERSION: ${{ needs.GenerateVersion.outputs.NEW_DEV_RELEASE }}
+                VERSION: ${{ needs.GetLatestTag.outputs.version }}
                 APP_NAMESPACE: ericaskari-dev
                 APP_NODE_ENV: development
                 APP_HOST_NAME: test.ericaskari.com
