@@ -41,11 +41,17 @@ jobs:
         runs-on: self-hosted
         steps:
             - name: Pull Source Code
+              id: previoustag
               uses: actions/checkout@v3
             - name: Get Latest Tag
               uses: WyriHaximus/github-action-get-previous-tag@v1
               with:
                 fallback: 1.0.0
+            - name: Get Next Tag
+              id: semvers
+              uses: "WyriHaximus/github-action-next-semvers@v1"
+              with:
+                version: ${{ steps.previoustag.outputs.tag }}
 
     BuildAndTest:
         runs-on: self-hosted
