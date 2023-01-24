@@ -57,10 +57,13 @@ jobs:
             - name: Debug
               shell: bash
               run: echo ${{ steps.nextsemver.outputs.patch }}
-            - uses: actions-ecosystem/action-push-tag@v1
+            - name: 'Create new milestone'
+              id: createmilestone
+              uses: "WyriHaximus/github-action-create-milestone@v1"
               with:
-                tag: ${{ steps.nextsemver.outputs.patch }}
-                message: "${{ steps.nextsemver.outputs.v_patch }}"
+                title: ${{ steps.nextsemver.outputs.patch }}
+              env:
+                GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
     BuildAndTest:
         runs-on: self-hosted
