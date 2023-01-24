@@ -37,7 +37,7 @@ jobs:
                 github_repo: ${{ github.repository }}
                 git_commit_sha: ${{ github.sha }}
                 version: ${{ steps.nextsemver.outputs.patch }}
-                git_tag_prefix: "v"
+                git_tag_prefix: ""
         outputs:
           oldversion: ${{ steps.previoussemver.outputs.tag }}
           version: ${{ steps.nextsemver.outputs.patch }}
