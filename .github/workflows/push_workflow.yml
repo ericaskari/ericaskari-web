@@ -37,6 +37,14 @@ jobs:
           NEW_PROD_RELEASE: ${{ steps.versions.outputs.NEW_PROD_RELEASE }}
           OLD_DEV_RELEASE: ${{ steps.versions.outputs.OLD_DEV_RELEASE }}
           NEW_DEV_RELEASE: ${{ steps.versions.outputs.NEW_DEV_RELEASE }}
+    GetLatestTag:
+        runs-on: self-hosted
+        steps:
+            - name: Get Latest Tag
+              uses: WyriHaximus/github-action-get-previous-tag@v1
+              with:
+                fallback: 1.0.0
+
     BuildAndTest:
         runs-on: self-hosted
         if: github.ref_name != 'production'
