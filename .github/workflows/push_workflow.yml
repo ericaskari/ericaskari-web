@@ -1,7 +1,7 @@
 name: Docker Image Build
 on:
     push:
-        branches: [main, production]
+        branches: [main, release/production]
 jobs:
     GetLatestTag:
         runs-on: self-hosted
@@ -44,7 +44,7 @@ jobs:
 
     BuildAndTest:
         runs-on: self-hosted
-        if: github.ref_name != 'production'
+        if: github.ref_name != 'release/production'
         steps:
             - name: Pull Source Code
               uses: actions/checkout@v3
@@ -100,7 +100,7 @@ jobs:
                   docker push "$FE_TAG"
     PullAndUpdateImageTag:
         needs: [GetLatestTag]
-        if: github.ref_name == 'production'
+        if: github.ref_name == 'release/production'
         runs-on: ubuntu-latest
         steps:
             - name: Pull Source Code
@@ -140,7 +140,7 @@ jobs:
     DeployToProd:
         runs-on: self-hosted
         needs: [GetLatestTag,PullAndUpdateImageTag]
-        if: github.ref_name == 'production'
+        if: github.ref_name == 'release/production'
         environment: production
         steps:
             - name: Pull Source Code
