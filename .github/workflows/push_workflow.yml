@@ -41,9 +41,9 @@ jobs:
         runs-on: self-hosted
         steps:
             - name: Pull Source Code
-              id: previoustag
               uses: actions/checkout@v3
             - name: Get Latest Tag
+              id: previoustag
               uses: WyriHaximus/github-action-get-previous-tag@v1
               with:
                 fallback: 1.0.0
