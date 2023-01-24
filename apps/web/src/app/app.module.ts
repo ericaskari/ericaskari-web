@@ -35,6 +35,7 @@ import { LocalizedDatePipe } from './components/localized-date.pipe';
 import { TextAnimationDirective } from './components/text-animation.directive';
 import { CookieConsentComponent } from './components/cookie-consent/cookie-consent.component';
 import { routerReducer } from '@ngrx/router-store';
+import { GamesPageComponent } from './pages/games-page/games-page.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http);
@@ -80,7 +81,8 @@ const store = [
         LangSelectorComponent,
         LocalizedDatePipe,
         TextAnimationDirective,
-        CookieConsentComponent
+        CookieConsentComponent,
+        GamesPageComponent
     ],
     imports: [
         HttpClientModule,
