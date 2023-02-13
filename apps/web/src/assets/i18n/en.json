@@ -38,16 +38,15 @@
       "work-experience": {
         "weare": {
           "fulltime": {
-            "sentence-1": "I managed the DevOps side of a few applications to make sure they deploy with correct configurations to Elastic container service (ECS) on Aws.",
-            "sentence-2": "Also, I had a few responsibilities in the productization process and made sure Docker containers' secret management was done in the best way possible.",
-            "sentence-3": "Later I joined the developer’s team to work on migrating multiple react applications’ components to their own npm packages and manage the versions of various npm packages."
+            "sentence-1": "I have hands-on experience in managing the deployment of applications to the Elastic Container Service (ECS) on AWS. My key responsibilities included ensuring the correct configurations for the applications, thereby ensuring their smooth functioning.",
+            "sentence-2": "I closely monitored the DevOps side of a few applications to make sure they were deployed successfully and without any technical glitches.",
+            "sentence-3": "I was also responsible for the successful migration of multiple React application's components to their own npm packages. This involved carefully analyzing the components and ensuring that they functioned properly after the migration. I also managed the versions of various npm packages to ensure that the applications were up-to-date and free from any technical issues."
           },
           "internship": {
-            "sentence-1": "I refactored a quite big Express project to Typescript and at the same refactored the Angular project to have a structure for files and modules and updated it to the latest version."
+            "sentence-1": "I was responsible for the refactoring of a large Express project to Typescript and updating an Angular project to the latest version."
           },
           "parttime": {
-            "sentence-1": "I manage a React component library and update it as needed.",
-            "sentence-2": "Also, I have been working on an accounting project working with an invoicing system."
+            "sentence-1": "I am responsible for developing and maintaining the Frontend interface of various projects."
           }
         }
       }

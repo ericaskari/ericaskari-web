@@ -1,0 +1,61 @@
+:host {
+    @apply block;
+}
+
+.timeline {
+    display: grid;
+
+    &[data-mobile='true'] {
+        grid-template-columns: 30px 1fr 3fr;
+
+        .timeline-data-item-left {
+            grid-column: span 2/4;
+        }
+        .timeline-data-item-right {
+            grid-column: span 2/4;
+        }
+        .timeline-data-item-middle {
+            grid-column: span 1/2;
+            grid-row: span 2;
+        }
+    }
+
+    &[data-mobile='false'] {
+        grid-template-columns: 1fr 30px 3fr;
+    }
+
+    @media screen and (min-width: 1000px) {
+        grid-template-columns: 1fr 30px 3fr;
+    }
+
+    .timeline-data-item {
+        padding: 1rem;
+        display: flex;
+        gap: 0.5rem;
+        flex-direction: column;
+
+        .timeline-data-item-paraghraph {
+            display: flex;
+            gap: 1rem;
+            flex-direction: column;
+        }
+    }
+    .timeline-line {
+        position: relative;
+        display: flex;
+        justify-content: center;
+
+        .vertical-line {
+            background-color: white;
+            width: 3px;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+        }
+        .timeline-line-icon {
+            position: absolute;
+            top: 1rem;
+        }
+    }
+}

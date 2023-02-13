@@ -38,16 +38,15 @@
       "work-experience": {
         "weare": {
           "fulltime": {
-            "sentence-1": "Hallinnoin muutamien sovellusten DevOps-puolta ja varmistin, että ne otetaan käyttöön oikeilla määrityksillä Aws:n Elastic-konttipalveluun (ECS).",
-            "sentence-2": "Lisäksi minulla oli muutama vastuualueita tuotteistamisprosessissa, huolehdin että Docker-konttien salainen hallinta hoidetaan parhaalla mahdollisella tavalla.",
-            "sentence-3": "Myöhemmin liityin kehittäjätiimiin ja siirsin useiden react-sovellusten komponentit niiden omiin npm-paketteihin ja hallinnoin useiden npm-pakettien versioita."
+            "sentence-1": "I have hands-on experience in managing the deployment of applications to the Elastic Container Service (ECS) on AWS. My key responsibilities included ensuring the correct configurations for the applications, thereby ensuring their smooth functioning.",
+            "sentence-2": "I closely monitored the DevOps side of a few applications to make sure they were deployed successfully and without any technical glitches.",
+            "sentence-3": "I was also responsible for the successful migration of multiple React application's components to their own npm packages. This involved carefully analyzing the components and ensuring that they functioned properly after the migration. I also managed the versions of various npm packages to ensure that the applications were up-to-date and free from any technical issues."
           },
           "internship": {
-            "sentence-1": "Muunsin melko suuren Express-projektin Typescriptiksi ja refaktoroin Angular-projektin tiedostojen ja moduulien rakenteen ja päivitin sen uusimpaan versioon."
+            "sentence-1": "I was responsible for the refactoring of a large Express project to Typescript and updating an Angular project to the latest version."
           },
           "parttime": {
-            "sentence-1": "Hallinnoin React-komponenttikirjastoa ja päivitän sitä tarpeen mukaan.",
-            "sentence-2": " "
+            "sentence-1": "I am responsible for developing and maintaining the Frontend interface of various projects."
           }
         }
       }
