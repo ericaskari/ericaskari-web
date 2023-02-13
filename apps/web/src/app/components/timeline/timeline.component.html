@@ -1,0 +1,43 @@
+<div class="timeline" [attr.data-mobile]="breakpointService.isMobile$ | async">
+    <ng-container *ngFor="let timeline of timelines; let i = index">
+        <ng-template #middleSection>
+            <div class="timeline-item timeline-data-item-middle justify-center timeline-line">
+                <div class="vertical-line"></div>
+                <fa-icon class="timeline-line-icon" [icon]="faCircle"></fa-icon>
+            </div>
+        </ng-template>
+
+        <ng-template #leftSection>
+            <div class="timeline-item timeline-data-item timeline-data-item-left">
+                <div>{{ timeline.leftHeader | translate }}</div>
+                <div>{{ timeline.leftSub | translate }}</div>
+                <div>
+                    {{ timeline.startDate | date: 'YYYY' }} - {{ (timeline.endDate | date: 'YYYY') || timeline.endDateStr | translate }}
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template #rightSection>
+            <div class="timeline-item timeline-data-item timeline-data-item-right">
+                <h4 class="font-bold text-green-500">{{ timeline.rightHeader | translate }}</h4>
+                <div class="timeline-data-item-paraghraph">
+                    <p *ngFor="let description of timeline.rightDescription; let i = index" class="flex flex-col gap-3">
+                        {{ description | translate }}
+                    </p>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-container *ngIf="breakpointService.isDesktop$ | async">
+            <ng-container *ngTemplateOutlet="leftSection"></ng-container>
+            <ng-container *ngTemplateOutlet="middleSection"></ng-container>
+            <ng-container *ngTemplateOutlet="rightSection"></ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="breakpointService.isMobile$ | async">
+            <ng-container *ngTemplateOutlet="middleSection"></ng-container>
+            <ng-container *ngTemplateOutlet="leftSection"></ng-container>
+            <ng-container *ngTemplateOutlet="rightSection"></ng-container>
+        </ng-container>
+    </ng-container>
+</div>

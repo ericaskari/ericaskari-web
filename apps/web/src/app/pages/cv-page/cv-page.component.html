@@ -68,21 +68,11 @@
 <ng-template #eduSection>
     <div class="grid-box" id="cv-education-section">
         <div class="grid-box-header">
-            <span>{{ 'pages.cv.headers.education' | translate | uppercase }}</span>
+            pages.cv.headers.education
             <hr />
         </div>
         <div>
-            <div *ngFor="let work of educations; let i = index" class="flex flex-col">
-                <p class="flex flex-col mb-4">{{ work.location | translate }}</p>
-                <p class="flex mb-6">
-                    <span class="flex-1">
-                        {{ work.startDate | date: 'YYYY-MM' }} -
-                        {{ (work.endDate | date: 'YYYY-MM') || work.endDateStr }}
-                    </span>
-                    <span class="flex-1">{{ work.degree | translate }}</span>
-                </p>
-                <hr class="mx-[30%] my-10" *ngIf="i !== educations.length - 1" />
-            </div>
+            <app-timeline [timelines]="educations | educationListToTimelineList"></app-timeline>
         </div>
     </div>
 </ng-template>
@@ -92,19 +82,9 @@
             <span>{{ 'pages.cv.headers.work-experience' | translate | uppercase }}</span>
             <hr />
         </div>
+
         <div>
-            <div *ngFor="let work of workExperiences; let i = index" class="flex flex-col gap-4">
-                <p class="flex mb-6">
-                    <span class="flex-1">
-                        {{ work.startDate | date: 'YYYY-MM' }} -
-                        {{ (work.endDate | date: 'YYYY-MM') || work.endDateStr }}
-                    </span>
-                    <span class="flex-1">{{ work.position }}</span>
-                    <span class="flex-1">{{ work.location }}</span>
-                </p>
-                <p *ngFor="let description of work.description; let i = index" class="flex flex-col gap-3">{{ description | translate }}</p>
-                <hr class="mx-[30%] my-10" *ngIf="i !== workExperiences.length - 1" />
-            </div>
+            <app-timeline [timelines]="workExperiences | workExpListToTimelineList"></app-timeline>
         </div>
     </div>
 </ng-template>
