@@ -59,5 +59,10 @@
       "role": "Full-stack Web developer"
     },
     "home-page-name": "Mohammad (Eric) Askari"
+  },
+  "languages": {
+    "finnish": "Suomi",
+    "english": "English",
+    "persian": "Farsi"
   }
 }
