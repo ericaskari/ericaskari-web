@@ -10,7 +10,7 @@
             aria-expanded="true"
             aria-haspopup="true"
         >
-            <div [ngClass]="getFlagClassName()" class="bg-center bg-cover w-6 h-6"></div>
+            <div class="bg-center bg-cover text-white">{{ getSelectedFlag | translate }}</div>
             <!-- Heroicon name: solid/chevron-down -->
             <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white" aria-hidden="true">
                 <path
@@ -21,26 +21,15 @@
             </svg>
         </button>
     </div>
-
-    <!--
-      Dropdown menu, show/hide based on menu state.
-      Entering: "transition ease-out duration-100"
-        From: "transform opacity-0 scale-95"
-        To: "transform opacity-100 scale-100"
-      Leaving: "transition ease-in duration-75"
-        From: "transform opacity-100 scale-100"
-        To: "transform opacity-0 scale-95"
-    -->
     <div
         [@dropDownAnimation]="expanded ? 'open' : 'closed'"
-        class="origin-top-right absolute right-0 mt-2 w-20 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+        class="origin-top-right absolute right-0 mt-2 w-20 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden"
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="menu-button"
         tabindex="-1"
     >
         <div class="py-1 bg-white bg-opacity-10" role="none">
-            <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
             <button
                 *ngFor="let option of getOptions()"
                 class="text-nowrap text-gray-700 hover:bg-gray-100 block w-full text-left px-4 py-2 text-sm bg-opacity-5 hover:bg-opacity-10"
@@ -52,7 +41,7 @@
                 role="menuitem"
                 tabindex="-1"
             >
-                <div [ngClass]="getOptionFlagClassName(option)" class="bg-center bg-cover w-6 h-6"></div>
+                <div class="bg-center bg-cover text-white">{{ option.name | translate }}</div>
             </button>
         </div>
     </div>

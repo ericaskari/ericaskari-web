@@ -1,12 +1,12 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, Input, Output, ViewChild } from '@angular/core';
 import { tap } from 'rxjs';
+import { DOCUMENT } from '@angular/common';
 import { dropDownAnimation } from './dropdown.animation';
 import { ClickService } from '../../services/click.service';
 
 export interface LangSelectorOption {
     name: string;
     value: string | null;
-    flag: string;
     disabled: boolean;
 }
 
@@ -20,12 +20,12 @@ export interface LangSelectorOption {
 export class LangSelectorComponent {
     @ViewChild('dropdown', { read: ElementRef, static: false }) dropdown: ElementRef | undefined = undefined;
 
-    @Input() selectedValue: string | null = 'EN';
+    @Input() selectedValue: string = this.document.querySelector('html')?.lang ?? 'en';
 
     @Input() options: LangSelectorOption[] = [
-        { disabled: false, name: 'Finnish', value: 'fi', flag: 'bg-flag-finland' },
-        { disabled: false, name: 'English', value: 'en', flag: 'bg-flag-england' },
-        { disabled: true, name: 'Farsi', value: 'fa', flag: 'bg-flag-iran' }
+        { disabled: false, name: 'languages.finnish', value: 'fi' },
+        { disabled: false, name: 'languages.english', value: 'en' },
+        { disabled: true, name: 'languages.persian', value: 'fa' }
     ];
 
     @Input() label: string = '';
@@ -41,32 +41,14 @@ export class LangSelectorComponent {
         })
     );
 
-    constructor(private clickService: ClickService) {}
+    constructor(private clickService: ClickService, @Inject(DOCUMENT) private document: Document) {}
 
-    getSelectedFlag(): string {
+    get getSelectedFlag(): string {
         if (this.selectedValue === null) {
             return '';
         }
 
-        return this.getOptions().find((x) => x.value === this.selectedValue)?.flag ?? '';
-    }
-
-    getFlagClassName(): Record<string, boolean> {
-        if (this.selectedValue === null) {
-            return {};
-        }
-        const selected = this.getOptions().find((x) => x.value === this.selectedValue);
-        if (selected) {
-            return {
-                [selected.flag]: true
-            };
-        } else return {};
-    }
-
-    getOptionFlagClassName(opt: LangSelectorOption): Record<string, boolean> {
-        return {
-            [opt.flag]: true
-        };
+        return this.getOptions().find((x) => x.value === this.selectedValue)?.name ?? '';
     }
 
     getOptions(): LangSelectorOption[] {
