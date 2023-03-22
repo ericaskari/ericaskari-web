@@ -101,7 +101,7 @@ jobs:
                   docker push "$FE_TAG"
                   docker push "$FE_TODO_TAG"
     Release:
-        needs: [GetLatestTag, BuildAndTest]
+        needs: [GetLatestTag, BuildAndPushDockerImages]
         runs-on: ubuntu-latest
         steps:
             - name: Create a GitHub release
