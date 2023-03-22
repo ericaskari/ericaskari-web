@@ -1,7 +1,8 @@
-name: Docker Image Build
+name: Docker Image Build And Release
 on:
     push:
         branches: [staging, main]
+permissions: write-all
 jobs:
     GetLatestTag:
         runs-on: self-hosted
@@ -41,10 +42,8 @@ jobs:
         outputs:
           oldversion: ${{ steps.previoussemver.outputs.tag }}
           version: ${{ steps.nextsemver.outputs.patch }}
-
     BuildAndTest:
         runs-on: self-hosted
-        if: github.ref_name != 'main'
         steps:
             - name: Pull Source Code
               uses: actions/checkout@v3
@@ -68,7 +67,6 @@ jobs:
                   path: dist
     BuildAndPushDockerImages:
         needs: [GetLatestTag, BuildAndTest]
-        if: github.ref_name == 'staging'
         runs-on: ubuntu-latest
         steps:
             - name: Pull Source Code
@@ -92,140 +90,23 @@ jobs:
               run: |
                   BE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{needs.GetLatestTag.outputs.version}}"
                   FE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GetLatestTag.outputs.version}}"
+                  FE_TODO_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-todo-frontend:${{needs.GetLatestTag.outputs.version}}"
                   echo BE_TAG: $BE_TAG
                   echo FE_TAG: $FE_TAG
+                  echo FE_TODO_TAG: $FE_TODO_TAG
                   docker build -f ./.github/Backend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$BE_TAG" .
                   docker build -f ./.github/Frontend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$FE_TAG" .
+                  docker build -f ./.github/TodoFrontend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$FE_TODO_TAG" .
                   docker push "$BE_TAG"
                   docker push "$FE_TAG"
-    PullAndUpdateImageTag:
-        needs: [GetLatestTag]
-        if: github.ref_name == 'main'
+                  docker push "$FE_TODO_TAG"
+    Release:
+        needs: [GetLatestTag, BuildAndPushDockerImages]
         runs-on: ubuntu-latest
         steps:
-            - name: Pull Source Code
-              uses: actions/checkout@v3
-            - name: Configure Aws CLI
-              uses: ./.github/workflows/configure-awscli
+            - name: Create a GitHub release
+              uses: ncipollo/release-action@v1
               with:
-                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                AWS_REGION: ${{ secrets.AWS_REGION }}
-            - name: Login
-              shell: bash
-              run: docker login -u AWS -p $(aws ecr get-login-password --region eu-west-1) 438380764554.dkr.ecr.eu-west-1.amazonaws.com
-            - name: Build And Push
-              shell: bash
-              run: |
-                  BackendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{needs.GetLatestTag.outputs.oldversion}}"
-                  NewBackendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{needs.GetLatestTag.outputs.version}}"
-
-                  FrontendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GetLatestTag.outputs.oldversion}}"
-                  NewFrontendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GetLatestTag.outputs.version}}"
-
-                  echo BackendImage: $BackendImage
-                  echo NewBackendImage: $NewBackendImage
-                
-                  echo FrontendImage: $FrontendImage
-                  echo NewFrontendImage: $NewFrontendImage
-                
-                  docker pull $BackendImage
-                  docker tag $BackendImage $NewBackendImage
-                  docker push "$NewBackendImage"
-                
-                  docker pull $FrontendImage
-                  docker tag $FrontendImage $NewFrontendImage
-                  docker push "$NewFrontendImage"
-                
-    DeployToProd:
-        runs-on: self-hosted
-        needs: [GetLatestTag,PullAndUpdateImageTag]
-        if: github.ref_name == 'main'
-        environment: production
-        steps:
-            - name: Pull Source Code
-              uses: actions/checkout@v3
-            - name: Configure Aws CLI
-              uses: ./.github/workflows/configure-awscli
-              with:
-                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                AWS_REGION: ${{ secrets.AWS_REGION }}
-            - name: Configure Kubectl CLI
-              uses: ./.github/workflows/configure-kubectl
-              with:
-                  KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-            - name: Configure yq CLI
-              shell: bash
-              run: sudo sh -c 'cp ./.github/tools/.yq/yq_linux_amd64-v4.17.2 /usr/bin/yq && chmod +x /usr/bin/yq'
-            - name: Debug
-              shell: bash
-              run: |
-                echo NEW_DEV_RELEASE ${{ needs.GetLatestTag.outputs.version }}
-                aws --version
-                kubectl version
-                yq --version
-            - name: Deploy
-              uses: ./.github/workflows/deploy
-              with:
-                VERSION: ${{ needs.GetLatestTag.outputs.version }}
-                APP_NAMESPACE: ericaskari-prod
-                APP_NODE_ENV: production
-                APP_HOST_NAME: www.ericaskari.com
-                APP_ENABLE_SWAGGER: false
-                APP_NODE_MAILER_HOST: smtppro.zoho.eu
-                APP_NODE_MAILER_PORT: 465
-                APP_NODE_MAILER_REJECT_UNAUTHORIZED: true
-                APP_NODE_MAILER_AUTH_USER: ${{ secrets.APP_NODE_MAILER_AUTH_USER }}
-                APP_NODE_MAILER_AUTH_PASS: ${{ secrets.APP_NODE_MAILER_AUTH_PASS }}
-                APP_NODE_MAILER_SECURE: true
-                APP_IS_SSL_ENABLED: true
-                APP_GOOGLE_TAG_MANAGER_ID: GTM-MXC7C6F
-                APP_FE_DOMAIN_ONE: ericaskari.com
-                APP_FE_DOMAIN_TWO: www.ericaskari.com
-    DeployToDev:
-        runs-on: self-hosted
-        needs: [GetLatestTag,BuildAndPushDockerImages]
-        if: github.ref_name == 'staging'
-        environment: development
-        steps:
-          - name: Pull Source Code
-            uses: actions/checkout@v3
-          - name: Configure Aws CLI
-            uses: ./.github/workflows/configure-awscli
-            with:
-              AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-              AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-              AWS_REGION: ${{ secrets.AWS_REGION }}
-          - name: Configure Kubectl CLI
-            uses: ./.github/workflows/configure-kubectl
-            with:
-              KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-          - name: Configure yq CLI
-            shell: bash
-            run: sudo sh -c 'cp ./.github/tools/.yq/yq_linux_amd64-v4.17.2 /usr/bin/yq && chmod +x /usr/bin/yq'
-          - name: Debug
-            shell: bash
-            run: |
-              echo NEW_DEV_RELEASE ${{ needs.GetLatestTag.outputs.version }}
-              aws --version
-              kubectl version
-              yq --version
-          - name: Deploy
-            uses: ./.github/workflows/deploy
-            with:
-                VERSION: ${{ needs.GetLatestTag.outputs.version }}
-                APP_NAMESPACE: ericaskari-dev
-                APP_NODE_ENV: development
-                APP_HOST_NAME: test.ericaskari.com
-                APP_ENABLE_SWAGGER: true
-                APP_NODE_MAILER_HOST: smtppro.zoho.eu
-                APP_NODE_MAILER_PORT: 465
-                APP_NODE_MAILER_REJECT_UNAUTHORIZED: true
-                APP_NODE_MAILER_AUTH_USER: ${{ secrets.APP_NODE_MAILER_AUTH_USER }}
-                APP_NODE_MAILER_AUTH_PASS: ${{ secrets.APP_NODE_MAILER_AUTH_PASS }}
-                APP_NODE_MAILER_SECURE: true
-                APP_IS_SSL_ENABLED: true
-                APP_GOOGLE_TAG_MANAGER_ID: GTM-W5235KZ
-                APP_FE_DOMAIN_ONE: test.ericaskari.com
-                APP_FE_DOMAIN_TWO: staging.ericaskari.com
+                tag: ${{needs.GetLatestTag.outputs.version}}
+                name: ${{needs.GetLatestTag.outputs.version}}
+                body: ${{needs.GetLatestTag.outputs.version}}
