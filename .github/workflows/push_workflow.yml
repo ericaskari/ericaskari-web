@@ -92,12 +92,16 @@ jobs:
               run: |
                   BE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{needs.GetLatestTag.outputs.version}}"
                   FE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GetLatestTag.outputs.version}}"
+                  FE_TODO_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-todo-frontend:${{needs.GetLatestTag.outputs.version}}"
                   echo BE_TAG: $BE_TAG
                   echo FE_TAG: $FE_TAG
+                  echo FE_TODO_TAG: $FE_TODO_TAG
                   docker build -f ./.github/Backend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$BE_TAG" .
                   docker build -f ./.github/Frontend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$FE_TAG" .
+                  docker build -f ./.github/TodoFrontend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$FE_TODO_TAG" .
                   docker push "$BE_TAG"
                   docker push "$FE_TAG"
+                  docker push "$FE_TODO_TAG"
     PullAndUpdateImageTag:
         needs: [GetLatestTag]
         if: github.ref_name == 'main'
@@ -120,22 +124,32 @@ jobs:
                   BackendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{needs.GetLatestTag.outputs.oldversion}}"
                   NewBackendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{needs.GetLatestTag.outputs.version}}"
 
-                  FrontendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GetLatestTag.outputs.oldversion}}"
-                  NewFrontendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GetLatestTag.outputs.version}}"
+                  WebFrontendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GetLatestTag.outputs.oldversion}}"
+                  WebNewFrontendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GetLatestTag.outputs.version}}"
+
+                  TodoFrontendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-todo-frontend:${{needs.GetLatestTag.outputs.oldversion}}"
+                  NewTodoFrontendImage="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-todo-frontend:${{needs.GetLatestTag.outputs.version}}"
 
                   echo BackendImage: $BackendImage
                   echo NewBackendImage: $NewBackendImage
                 
-                  echo FrontendImage: $FrontendImage
-                  echo NewFrontendImage: $NewFrontendImage
+                  echo WebFrontendImage: $WebFrontendImage
+                  echo NewWebFrontendImage: $NewWebFrontendImage
+                
+                  echo TodoFrontendImage: $TodoFrontendImage
+                  echo NewTodoFrontendImage: $NewTodoFrontendImage
                 
                   docker pull $BackendImage
                   docker tag $BackendImage $NewBackendImage
                   docker push "$NewBackendImage"
                 
-                  docker pull $FrontendImage
-                  docker tag $FrontendImage $NewFrontendImage
-                  docker push "$NewFrontendImage"
+                  docker pull $WebFrontendImage
+                  docker tag $WebFrontendImage $NewWebFrontendImage
+                  docker push "$NewWebFrontendImage"
+                
+                  docker pull $TodoFrontendImage
+                  docker tag $TodoFrontendImage $NewTodoFrontendImage
+                  docker push "$NewTodoFrontendImage"
                 
     DeployToProd:
         runs-on: self-hosted
