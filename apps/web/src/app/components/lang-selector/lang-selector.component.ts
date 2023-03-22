@@ -1,6 +1,5 @@
-import { Component, ElementRef, EventEmitter, Inject, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 import { tap } from 'rxjs';
-import { DOCUMENT } from '@angular/common';
 import { dropDownAnimation } from './dropdown.animation';
 import { ClickService } from '../../services/click.service';
 
@@ -17,15 +16,14 @@ export interface LangSelectorOption {
     providers: [],
     animations: [dropDownAnimation]
 })
-export class LangSelectorComponent {
+export class LangSelectorComponent implements OnDestroy {
     @ViewChild('dropdown', { read: ElementRef, static: false }) dropdown: ElementRef | undefined = undefined;
 
-    @Input() selectedValue: string = this.document.querySelector('html')?.lang ?? 'en';
+    @Input() selectedValue: string = 'en';
 
     @Input() options: LangSelectorOption[] = [
         { disabled: false, name: 'languages.finnish', value: 'fi' },
-        { disabled: false, name: 'languages.english', value: 'en' },
-        { disabled: true, name: 'languages.persian', value: 'fa' }
+        { disabled: false, name: 'languages.english', value: 'en' }
     ];
 
     @Input() label: string = '';
@@ -34,14 +32,20 @@ export class LangSelectorComponent {
 
     expanded = false;
 
-    hideProfilePopupOnCLickOutside$ = this.clickService.documentClickedTarget.pipe(
-        tap((x) => {
-            if (this.dropdown?.nativeElement.contains(x)) return;
-            this.expanded = false;
-        })
-    );
+    hideProfilePopupOnCLickOutside$ = this.clickService.documentClickedTarget
+        .pipe(
+            tap((x) => {
+                if (this.dropdown?.nativeElement.contains(x)) return;
+                this.expanded = false;
+            })
+        )
+        .subscribe();
 
-    constructor(private clickService: ClickService, @Inject(DOCUMENT) private document: Document) {}
+    constructor(private clickService: ClickService) {}
+
+    ngOnDestroy(): void {
+        this.hideProfilePopupOnCLickOutside$.unsubscribe();
+    }
 
     get getSelectedFlag(): string {
         if (this.selectedValue === null) {
@@ -52,7 +56,7 @@ export class LangSelectorComponent {
     }
 
     getOptions(): LangSelectorOption[] {
-        return this.options.filter((x) => !x.disabled);
+        return this.options;
     }
 
     onOptionClick(option: LangSelectorOption) {

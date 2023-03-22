@@ -105,7 +105,7 @@ const store = [
                 useFactory: HttpLoaderFactory,
                 deps: [HttpClient]
             },
-            defaultLanguage: 'en'
+            defaultLanguage: document?.querySelector('html')?.lang ?? 'en'
         }),
         ...store
     ],

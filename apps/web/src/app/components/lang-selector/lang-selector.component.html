@@ -31,7 +31,7 @@
     >
         <div class="py-1 bg-white bg-opacity-10" role="none">
             <button
-                *ngFor="let option of getOptions()"
+                *ngFor="let option of options"
                 class="text-nowrap text-gray-700 hover:bg-gray-100 block w-full text-left px-4 py-2 text-sm bg-opacity-5 hover:bg-opacity-10"
                 [ngClass]="{
                     'bg-opacity-5': option.value === selectedValue
@@ -45,8 +45,4 @@
             </button>
         </div>
     </div>
-</div>
-<!-- SUBSCRIPTIONS -->
-<div class="hidden absolute bg-flag-afghanistan bg-flag-finland bg-flag-england">
-    {{ hideProfilePopupOnCLickOutside$ | async }}
 </div>
