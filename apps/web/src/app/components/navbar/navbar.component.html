@@ -13,7 +13,7 @@
             </a>
         </div>
 
-        <div class="flex gap-8" *ngIf="breakpointService.isDesktop$ | async">
+        <div class="gap-8 none hidden sm:flex">
             <a
                 class="px-3 py-2 rounded-md cursor-pointer text-white hover:text-zinc-200 md:hover:text-zinc-400 whitespace-nowrap"
                 routerLinkActive="link-active"
@@ -24,18 +24,6 @@
                 CV
             </a>
         </div>
-
-        <!--        <div class="flex gap-8" *ngIf="breakpointService.isDesktop$ | async">-->
-        <!--            <a-->
-        <!--                class="px-3 py-2 rounded-md cursor-pointer text-white hover:text-zinc-200 md:hover:text-zinc-400 whitespace-nowrap"-->
-        <!--                routerLinkActive="link-active"-->
-        <!--                routerLink="/games"-->
-        <!--                style="font-size: 0.8rem"-->
-        <!--                (click)="expanded = false"-->
-        <!--            >-->
-        <!--                Bored?-->
-        <!--            </a>-->
-        <!--        </div>-->
     </div>
 
     <div class="flex gap-4 justify-end w-1/4 ml-5 mr-4 sm:mr-0 sm:right-auto items-center">
@@ -43,20 +31,20 @@
             <app-lang-selector (valueChanged)="onLanguageChange($event)" [selectedValue]="translate.currentLang"></app-lang-selector>
         </div>
         <a
-            class="block relative bg-github-light bg-center bg-contain bg-no-repeat w-8 h-8 transition-all scale-90 hover:scale-100"
+            class="relative bg-github-light bg-center bg-contain bg-no-repeat w-8 h-8 transition-all scale-90 hover:scale-100 hidden sm:block"
             style="min-width: 2rem"
             href="https://github.com/ericaskari"
             target="_blank"
         >
         </a>
         <a
-            class="block relative bg-linkedin bg-center bg-contain bg-no-repeat w-8 h-8 transition-all scale-90 hover:scale-100"
+            class="relative bg-linkedin bg-center bg-contain bg-no-repeat w-8 h-8 transition-all scale-90 hover:scale-100 hidden sm:block"
             style="min-width: 2rem"
             href="https://www.linkedin.com/in/ericaskari/"
             target="_blank"
         >
         </a>
-        <div class="flex pl-2" *ngIf="breakpointService.isMobile$ | async">
+        <div class="pl-2 flex sm:hidden">
             <div class="flex items-center gap-8">
                 <button class="text-white hover:text-zinc-400" (click)="expanded = !expanded" #dropdown>
                     <fa-icon size="1x" [icon]="faBars"></fa-icon>
@@ -67,7 +55,7 @@
 
     <div
         [@dropDownAnimation]="expanded ? 'open' : 'closed'"
-        class="absolute right-2 top-[100%] mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+        class="absolute right-2 top-[100%] mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none sm:hidden"
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="menu-button"
@@ -81,6 +69,20 @@
                 (click)="expanded = false"
             >
                 CV
+            </a>
+            <a
+                class="px-3 py-2 rounded-md text-sm font-medium cursor-pointer text-black hover:text-zinc-200 md:text-white md:hover:text-zinc-400"
+                href="https://github.com/ericaskari"
+                target="_blank"
+            >
+                Github
+            </a>
+            <a
+                class="px-3 py-2 rounded-md text-sm font-medium cursor-pointer text-black hover:text-zinc-200 md:text-white md:hover:text-zinc-400"
+                href="https://www.linkedin.com/in/ericaskari/"
+                target="_blank"
+            >
+                LinkedIn
             </a>
         </div>
     </div>

@@ -1,6 +1,5 @@
-import { Component, ElementRef, EventEmitter, Inject, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { tap } from 'rxjs';
-import { DOCUMENT } from '@angular/common';
 import { dropDownAnimation } from './dropdown.animation';
 import { ClickService } from '../../services/click.service';
 
@@ -20,7 +19,7 @@ export interface LangSelectorOption {
 export class LangSelectorComponent {
     @ViewChild('dropdown', { read: ElementRef, static: false }) dropdown: ElementRef | undefined = undefined;
 
-    @Input() selectedValue: string = this.document.querySelector('html')?.lang ?? 'en';
+    @Input() selectedValue: string = 'en';
 
     @Input() options: LangSelectorOption[] = [
         { disabled: false, name: 'languages.finnish', value: 'fi' },
@@ -41,7 +40,7 @@ export class LangSelectorComponent {
         })
     );
 
-    constructor(private clickService: ClickService, @Inject(DOCUMENT) private document: Document) {}
+    constructor(private clickService: ClickService) {}
 
     get getSelectedFlag(): string {
         if (this.selectedValue === null) {
