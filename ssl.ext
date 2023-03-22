@@ -5,3 +5,4 @@ subjectAltName = @alt_names
 
 [alt_names]
 DNS.1 = ericaskari.localnet
+DNS.2 = todo.ericaskari.localnet
