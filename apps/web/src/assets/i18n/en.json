@@ -7,6 +7,11 @@
     "role": "Web developer",
     "show": "Show"
   },
+  "languages": {
+    "english": "English",
+    "finnish": "Suomi",
+    "persian": "فارسی"
+  },
   "pages": {
     "contact": {
       "email": "Email",
@@ -59,10 +64,5 @@
       "role": "Full-stack Web developer"
     },
     "home-page-name": "Mohammad (Eric) Askari"
-  },
-  "languages": {
-    "finnish": "Suomi",
-    "english": "English",
-    "persian": "Farsi"
   }
 }
