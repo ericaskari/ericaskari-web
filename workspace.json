@@ -12,7 +12,7 @@
     "shared-enum": "libs/shared/enum",
     "shared-model": "libs/shared/model",
     "web": "apps/web",
-    "todo": "apps/todo",
+    "todo-web": "apps/todo-web",
     "web-common": "libs/web/common",
     "web-endpoints": "libs/web/endpoints",
     "web-forms": "libs/web/forms",
