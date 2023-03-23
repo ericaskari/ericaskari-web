@@ -1,6 +1,6 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/api/src",
+  "sourceRoot": "apps/root-api/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -9,13 +9,13 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/apps/api",
-        "main": "apps/api/src/main.ts",
-        "tsConfig": "apps/api/tsconfig.app.json",
+        "outputPath": "dist/apps/root-api",
+        "main": "apps/root-api/src/main.ts",
+        "tsConfig": "apps/root-api/tsconfig.app.json",
         "assets": [
-          "apps/api/src/assets"
+          "apps/root-api/src/assets"
         ],
-        "webpackConfig": "apps/api/extended-webpack.config.js",
+        "webpackConfig": "apps/root-api/extended-webpack.config.js",
         "generatePackageJson": true
       },
       "configurations": {
@@ -25,8 +25,8 @@
           "inspect": false,
           "fileReplacements": [
             {
-              "replace": "apps/api/src/environments/environment.ts",
-              "with": "apps/api/src/environments/environment.prod.ts"
+              "replace": "apps/root-api/src/environments/environment.ts",
+              "with": "apps/root-api/src/environments/environment.prod.ts"
             }
           ]
         }
@@ -35,7 +35,7 @@
     "serve": {
       "executor": "@nrwl/node:node",
       "options": {
-        "buildTarget": "api:build"
+        "buildTarget": "root-api:build"
       }
     },
     "lint": {
@@ -45,17 +45,17 @@
       ],
       "options": {
         "lintFilePatterns": [
-          "apps/api/**/*.ts"
+          "apps/root-api/**/*.ts"
         ]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": [
-        "coverage/apps/api"
+        "coverage/apps/root-api"
       ],
       "options": {
-        "jestConfig": "apps/api/jest.config.ts",
+        "jestConfig": "apps/root-api/jest.config.ts",
         "passWithNoTests": true
       }
     }
