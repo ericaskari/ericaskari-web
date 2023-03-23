@@ -100,18 +100,8 @@ jobs:
                   docker push "$BE_TAG"
                   docker push "$FE_TAG"
                   docker push "$FE_TODO_TAG"
-    Release:
-        needs: [GetLatestTag, BuildAndPushDockerImages]
-        runs-on: ubuntu-latest
-        steps:
-            - name: Create a GitHub release
-              uses: ncipollo/release-action@v1
-              with:
-                tag: ${{needs.GetLatestTag.outputs.version}}
-                name: ${{needs.GetLatestTag.outputs.version}}
-                body: ${{needs.GetLatestTag.outputs.version}}
     Deploy:
-        needs: [GetLatestTag, Release]
+        needs: [GetLatestTag, BuildAndPushDockerImages]
         runs-on: ubuntu-latest
         steps:
           - name: Deploy
