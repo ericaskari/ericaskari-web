@@ -51,15 +51,27 @@ jobs:
               uses: actions/setup-node@v3
               with:
                 node-version: 16
+            - name: Setup .NET
+              uses: actions/setup-dotnet@v3
+              with:
+                dotnet-version: 6.0.x
             - name: Install dependencies
               shell: bash
               run: npm install
-            - name: Test
+            - name: Restore dependencies
+              run: dotnet restore
+            - name: Test Node Projects
               shell: bash
-              run: npm run test:all
-            - name: Build
+              run: npm run test:all:node
+            - name: Test .Net Projects
               shell: bash
-              run: npm run build:all
+              run: npm run test:all:net
+            - name: Build Node Projects
+              shell: bash
+              run: npm run build:all:node
+            - name: Build .NET Projects
+              shell: bash
+              run: npm run build:all:net
             - name: Upload dist
               uses: actions/upload-artifact@v3
               with:
