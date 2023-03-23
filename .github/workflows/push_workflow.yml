@@ -42,10 +42,8 @@ jobs:
         outputs:
           oldversion: ${{ steps.previoussemver.outputs.tag }}
           version: ${{ steps.nextsemver.outputs.patch }}
-    BuildAndTest:
+    BuildAndTestNodeApps:
         runs-on: self-hosted
-        env:
-          DOTNET_INSTALL_DIR: "./.dotnet"
         steps:
             - name: Pull Source Code
               uses: actions/checkout@v3
@@ -53,69 +51,110 @@ jobs:
               uses: actions/setup-node@v3
               with:
                 node-version: 16
-            - name: Setup .NET
-              uses: actions/setup-dotnet@v3
-              with:
-                dotnet-version: 6.0.x
             - name: Install dependencies
               shell: bash
               run: npm install
-            - name: Restore dependencies
-              run: dotnet restore
             - name: Test Node Projects
               shell: bash
               run: npm run test:all:node
-            - name: Test .Net Projects
-              shell: bash
-              run: npm run test:all:net
             - name: Build Node Projects
               shell: bash
               run: npm run build:all:node
-            - name: Build .NET Projects
-              shell: bash
-              run: npm run build:all:net
             - name: Upload dist
               uses: actions/upload-artifact@v3
               with:
-                  name: dist
+                  name: node-apps-dist
                   path: dist
-    BuildAndPushDockerImages:
-        needs: [GetLatestTag, BuildAndTest]
-        runs-on: ubuntu-latest
-        steps:
-            - name: Pull Source Code
-              uses: actions/checkout@v3
-            - name: Configure Aws CLI
-              uses: ./.github/workflows/configure-awscli
-              with:
-                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                AWS_REGION: ${{ secrets.AWS_REGION }}
-            - name: Download dist
-              uses: actions/download-artifact@v3
-              with:
-                  name: dist
-                  path: dist
-            - name: Login
-              shell: bash
-              run: docker login -u AWS -p $(aws ecr get-login-password --region eu-west-1) 438380764554.dkr.ecr.eu-west-1.amazonaws.com
-            - name: Build And Push
-              shell: bash
-              run: |
-                  BE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{needs.GetLatestTag.outputs.version}}"
-                  FE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GetLatestTag.outputs.version}}"
-                  FE_TODO_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-todo-frontend:${{needs.GetLatestTag.outputs.version}}"
-                  echo BE_TAG: $BE_TAG
-                  echo FE_TAG: $FE_TAG
-                  echo FE_TODO_TAG: $FE_TODO_TAG
-                  docker build -f ./.github/Backend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$BE_TAG" .
-                  docker build -f ./.github/Frontend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$FE_TAG" .
-                  docker build -f ./.github/TodoFrontend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$FE_TODO_TAG" .
-                  docker push "$BE_TAG"
-                  docker push "$FE_TAG"
-                  docker push "$FE_TODO_TAG"
+    BuildAndTestDotNetApps:
+      runs-on: self-hosted
+      env:
+        DOTNET_INSTALL_DIR: "./.dotnet"
+      steps:
+        - name: Pull Source Code
+          uses: actions/checkout@v3
+        - name: Setup .NET
+          uses: actions/setup-dotnet@v3
+          with:
+            dotnet-version: 6.0.x
+        - name: Restore dependencies
+          run: dotnet restore
+        - name: Test .Net Projects
+          shell: bash
+          run: dotnet test --no-build --verbosity normal
+        - name: Build .NET Projects
+          shell: bash
+          run: |
+            dotnet build --no-restore
+            dotnet publish -c Release -o dist/apps/todo-api
+        - name: Upload dist
+          uses: actions/upload-artifact@v3
+          with:
+            name: dotnet-apps-dist
+            path: dist
+    BuildAndPushNodeAppDockerImages:
+      needs: [GetLatestTag, BuildAndTestNodeApps]
+      runs-on: ubuntu-latest
+      steps:
+        - name: Pull Source Code
+          uses: actions/checkout@v3
+        - name: Configure Aws CLI
+          uses: ./.github/workflows/configure-awscli
+          with:
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_REGION: ${{ secrets.AWS_REGION }}
+        - name: Download dist
+          uses: actions/download-artifact@v3
+          with:
+            name: node-apps-dist
+            path: dist
+        - name: Login
+          shell: bash
+          run: docker login -u AWS -p $(aws ecr get-login-password --region eu-west-1) 438380764554.dkr.ecr.eu-west-1.amazonaws.com
+        - name: Build And Push
+          shell: bash
+          run: |
+            BE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{needs.GetLatestTag.outputs.version}}"
+            FE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GetLatestTag.outputs.version}}"
+            FE_TODO_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-todo-frontend:${{needs.GetLatestTag.outputs.version}}"
+            echo BE_TAG: $BE_TAG
+            echo FE_TAG: $FE_TAG
+            echo FE_TODO_TAG: $FE_TODO_TAG
+            docker build -f ./.github/Backend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$BE_TAG" .
+            docker build -f ./.github/Frontend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$FE_TAG" .
+            docker build -f ./.github/TodoFrontend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$FE_TODO_TAG" .
+            docker push "$BE_TAG"
+            docker push "$FE_TAG"
+            docker push "$FE_TODO_TAG"
+    BuildAndPushDotNetAppDockerImages:
+      needs: [GetLatestTag, BuildAndTestDotNetApps]
+      runs-on: ubuntu-latest
+      steps:
+        - name: Pull Source Code
+          uses: actions/checkout@v3
+        - name: Configure Aws CLI
+          uses: ./.github/workflows/configure-awscli
+          with:
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_REGION: ${{ secrets.AWS_REGION }}
+        - name: Download dist
+          uses: actions/download-artifact@v3
+          with:
+            name: dotnet-apps-dist
+            path: dist
+        - name: Login
+          shell: bash
+          run: docker login -u AWS -p $(aws ecr get-login-password --region eu-west-1) 438380764554.dkr.ecr.eu-west-1.amazonaws.com
+        - name: Build And Push
+          shell: bash
+          run: |
+            BE_TODO_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-todo-backend:${{needs.GetLatestTag.outputs.version}}"
+            echo BE_TODO_TAG: $BE_TODO_TAG
+            docker build -f ./.github/TodoBackend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$BE_TODO_TAG" .
+            docker push "$BE_TODO_TAG"
     Deploy:
-        needs: [GetLatestTag, BuildAndPushDockerImages]
+        needs: [GetLatestTag, BuildAndPushNodeAppDockerImages, BuildAndPushDotNetAppDockerImages]
         runs-on: ubuntu-latest
         steps:
           - name: Deploy
