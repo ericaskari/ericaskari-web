@@ -2,7 +2,7 @@ FROM nginx:1.21.4
 
 WORKDIR /usr/share/nginx/html
 
-COPY dist/apps/web .
+COPY dist/apps/root-web .
 COPY .github/Frontend.Dockerfile.entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh

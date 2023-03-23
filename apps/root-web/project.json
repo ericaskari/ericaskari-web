@@ -1,6 +1,6 @@
 {
   "projectType": "application",
-  "sourceRoot": "apps/web/src",
+  "sourceRoot": "apps/root-web/src",
   "prefix": "app",
   "targets": {
     "build": {
@@ -9,18 +9,18 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/apps/web",
-        "index": "apps/web/src/index.html",
-        "main": "apps/web/src/main.ts",
-        "polyfills": "apps/web/src/polyfills.ts",
-        "tsConfig": "apps/web/tsconfig.app.json",
+        "outputPath": "dist/apps/root-web",
+        "index": "apps/root-web/src/index.html",
+        "main": "apps/root-web/src/main.ts",
+        "polyfills": "apps/root-web/src/polyfills.ts",
+        "tsConfig": "apps/root-web/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
-          "apps/web/src/favicon.ico",
-          "apps/web/src/assets"
+          "apps/root-web/src/favicon.ico",
+          "apps/root-web/src/assets"
         ],
         "styles": [
-          "apps/web/src/styles.scss"
+          "apps/root-web/src/styles.scss"
         ],
         "scripts": []
       },
@@ -40,8 +40,8 @@
           ],
           "fileReplacements": [
             {
-              "replace": "apps/web/src/environments/frontend-environment.ts",
-              "with": "apps/web/src/environments/frontend-environment.prod.ts"
+              "replace": "apps/root-web/src/environments/frontend-environment.ts",
+              "with": "apps/root-web/src/environments/frontend-environment.prod.ts"
             }
           ],
           "outputHashing": "all"
@@ -61,10 +61,10 @@
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "web:build:production"
+          "browserTarget": "root-web:build:production"
         },
         "development": {
-          "browserTarget": "web:build:development"
+          "browserTarget": "root-web:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -72,25 +72,25 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "web:build"
+        "browserTarget": "root-web:build"
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
         "lintFilePatterns": [
-          "apps/web/**/*.ts",
-          "apps/web/**/*.html"
+          "apps/root-web/**/*.ts",
+          "apps/root-web/**/*.html"
         ]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": [
-        "coverage/apps/web"
+        "coverage/apps/root-web"
       ],
       "options": {
-        "jestConfig": "apps/web/jest.config.ts",
+        "jestConfig": "apps/root-web/jest.config.ts",
         "passWithNoTests": true
       }
     }
