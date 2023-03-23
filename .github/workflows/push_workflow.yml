@@ -44,6 +44,8 @@ jobs:
           version: ${{ steps.nextsemver.outputs.patch }}
     BuildAndTest:
         runs-on: self-hosted
+        env:
+          DOTNET_INSTALL_DIR: "./.dotnet"
         steps:
             - name: Pull Source Code
               uses: actions/checkout@v3
