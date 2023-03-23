@@ -121,7 +121,7 @@ Run `docker-compose up -d` for a dev server.
 ### Generate Authority keys for development
 ```bash
 mkdir -p ~/dev-ca && openssl genrsa -des3 -out ~/dev-ca/certificate-authority.key 2048
-mkdir -p ~/dev-ca && openssl req -x509 -new -nodes -key ~/dev-ca/certificate-authority.key -sha256 -days 1825 -out ~/dev-ca/certificate-authority.pem
+mkdir -p ~/dev-ca && openssl req -x509 -config ssl.cnf -new -nodes -key ~/dev-ca/certificate-authority.key -sha256 -days 1825 -out ~/dev-ca/certificate-authority.pem
 ```
 Add the root certificate to keychain and choose always trust.
 
@@ -129,7 +129,7 @@ Add the root certificate to keychain and choose always trust.
 ```bash
 openssl genrsa -out ssl.key 2048
 
-openssl req -new -key ssl.key -out ssl.csr
+openssl req -new -config ssl.cnf -key ssl.key -out ssl.csr
 
 openssl x509 \
 -req \

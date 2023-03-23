@@ -32,7 +32,7 @@ async function bootstrap() {
             extraModels: [...models, ...requestResponseModels]
         });
 
-        SwaggerModule.setup(`docs`, app, document);
+        SwaggerModule.setup(`swagger`, app, document);
     }
 
     const port = 8000;
@@ -52,7 +52,7 @@ async function bootstrap() {
         logger.log(`Server Listening at ${app.get(EnvironmentService).SERVER_URL}/${globalPrefix}`);
 
         if (app.get(EnvironmentService).environment.APP_ENABLE_SWAGGER)
-            logger.log(`Swagger docs at ${app.get(EnvironmentService).SERVER_URL}/docs`);
+            logger.log(`Swagger docs at ${app.get(EnvironmentService).SERVER_URL}/swagger`);
         if (app.get(EnvironmentService).isLocalDevelopment) logger.log(`View Emails at ${app.get(EnvironmentService).SERVER_URL}/mailhog`);
         if (app.get(EnvironmentService).isLocalDevelopment)
             logger.log(`View Email templates at ${app.get(EnvironmentService).SERVER_URL}/${globalPrefix}/email-templates`);
