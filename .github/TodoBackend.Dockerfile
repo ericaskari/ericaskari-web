@@ -6,5 +6,5 @@ ENV APP_BUILD_VERSION=$APP_BUILD_VERSION
 WORKDIR /App
 
 COPY dist/apps/todo-api .
-ENTRYPOINT ["dotnet", "DotNet.Docker.dll"]
+ENTRYPOINT ["dotnet", "todo-api.dll"]
 
