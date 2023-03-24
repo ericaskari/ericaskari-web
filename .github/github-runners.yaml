@@ -7,7 +7,7 @@ metadata:
   namespace: actions-runner
 spec:
   # This will deploy 2 runners now
-  replicas: 4
+  replicas: 6
   template:
     spec:
       repository: ericaskari/ericaskari-web
