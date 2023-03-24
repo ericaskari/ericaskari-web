@@ -11,3 +11,5 @@ spec:
   template:
     spec:
       repository: ericaskari/ericaskari-web
+      image: public.ecr.aws/h1g5n8f9/github-runner:1.0.6
+

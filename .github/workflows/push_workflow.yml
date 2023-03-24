@@ -103,7 +103,7 @@ jobs:
             path: dist/apps/todo-api
     PushTodoApi:
       needs: [GetLatestTag, BuildTodoApi]
-      runs-on: ubuntu-latest
+      runs-on: self-hosted
       steps:
         - name: Pull Source Code
           uses: actions/checkout@v3
@@ -130,7 +130,7 @@ jobs:
             docker push "$BE_TODO_TAG"
     PushRootWeb:
       needs: [GetLatestTag, BuildNodeApps]
-      runs-on: ubuntu-latest
+      runs-on: self-hosted
       steps:
         - name: Pull Source Code
           uses: actions/checkout@v3
@@ -156,7 +156,7 @@ jobs:
             docker push "$FE_TAG"
     PushRootApi:
       needs: [GetLatestTag, BuildNodeApps]
-      runs-on: ubuntu-latest
+      runs-on: self-hosted
       steps:
         - name: Pull Source Code
           uses: actions/checkout@v3
@@ -182,7 +182,7 @@ jobs:
             docker push "$BE_TAG"
     PushTodoWeb:
       needs: [GetLatestTag, BuildNodeApps]
-      runs-on: ubuntu-latest
+      runs-on: self-hosted
       steps:
         - name: Pull Source Code
           uses: actions/checkout@v3
@@ -208,7 +208,7 @@ jobs:
             docker push "$FE_TODO_TAG"
     DeployTodoApp:
         needs: [GetLatestTag, PushTodoWeb, PushTodoApi]
-        runs-on: ubuntu-latest
+        runs-on: self-hosted
         steps:
           - name: Deploy
             shell: bash
@@ -224,7 +224,7 @@ jobs:
 
     DeployRoot:
         needs: [GetLatestTag, PushRootWeb, PushRootApi]
-        runs-on: ubuntu-latest
+        runs-on: self-hosted
         steps:
           - name: Deploy
             shell: bash
