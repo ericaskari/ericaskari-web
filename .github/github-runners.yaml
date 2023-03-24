@@ -3,7 +3,8 @@ apiVersion:
   actions.summerwind.dev/v1alpha1
 kind: RunnerDeployment
 metadata:
-  name: ericaskari-web-github-runners
+  name: action-runner-ericaskari-web
+  namespace: actions-runner
 spec:
   # This will deploy 2 runners now
   replicas: 4
