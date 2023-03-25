@@ -2,7 +2,7 @@ FROM nginx:1.21.4
 
 WORKDIR /usr/share/nginx/html
 
-COPY dist/apps/todo .
+COPY dist/apps/todo-web .
 COPY .github/TodoFrontend.Dockerfile.entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh

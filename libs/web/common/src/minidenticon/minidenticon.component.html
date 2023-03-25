@@ -1,0 +1,13 @@
+<ng-container *ngIf="username">
+    <ng-container *ngIf="username | identicon as identiconValue">
+        <svg viewBox="-1.5 -1.5 8 8" xmlns="http://www.w3.org/2000/svg" [attr.fill]="identiconValue.fill">
+            <rect
+                *ngFor="let rect of identiconValue.rects"
+                [attr.x]="rect.x"
+                [attr.y]="rect.y"
+                [attr.width]="rect.width"
+                [attr.height]="rect.height"
+            ></rect>
+        </svg>
+    </ng-container>
+</ng-container>

@@ -1,112 +1,250 @@
 name: Docker Image Build And Release
 on:
-    push:
-        branches: [staging, main]
+  push:
+    branches: [ staging, main ]
 permissions: write-all
 jobs:
-    GetLatestTag:
-        runs-on: self-hosted
-        steps:
-            - name: Pull Source Code
-              uses: actions/checkout@v3
-              with:
-                fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
-            - name: Get Latest Tag
-              id: previoussemver
-              uses: WyriHaximus/github-action-get-previous-tag@v1
-              with:
-                fallback: 1.0.0
-            - name: Get Next Tag
-              id: nextsemver
-              uses: "WyriHaximus/github-action-next-semvers@v1"
-              with:
-                version: ${{ steps.previoussemver.outputs.tag }}
-            - name: Debug
-              shell: bash
-              run: echo ${{ steps.nextsemver.outputs.patch }}
-            - name: Create new milestone
-              id: createmilestone
-              uses: "WyriHaximus/github-action-create-milestone@v1"
-              with:
-                title: ${{ steps.nextsemver.outputs.patch }}
-              env:
-                GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-            - name: Push new tag
-              uses: pkgdeps/git-tag-action@v2
-              with:
-                github_token: ${{ secrets.GITHUB_TOKEN }}
-                github_repo: ${{ github.repository }}
-                git_commit_sha: ${{ github.sha }}
-                version: ${{ steps.nextsemver.outputs.patch }}
-                git_tag_prefix: ""
-        outputs:
-          oldversion: ${{ steps.previoussemver.outputs.tag }}
+  GetLatestTag:
+    runs-on: self-hosted
+    steps:
+      - name: Pull Source Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
+      - name: Get Latest Tag
+        id: previoussemver
+        uses: WyriHaximus/github-action-get-previous-tag@v1
+        with:
+          fallback: 1.0.0
+      - name: Get Next Tag
+        id: nextsemver
+        uses: "WyriHaximus/github-action-next-semvers@v1"
+        with:
+          version: ${{ steps.previoussemver.outputs.tag }}
+      - name: Debug
+        shell: bash
+        run: echo ${{ steps.nextsemver.outputs.patch }}
+      - name: Create new milestone
+        id: createmilestone
+        uses: "WyriHaximus/github-action-create-milestone@v1"
+        with:
+          title: ${{ steps.nextsemver.outputs.patch }}
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Push new tag
+        uses: pkgdeps/git-tag-action@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_repo: ${{ github.repository }}
+          git_commit_sha: ${{ github.sha }}
           version: ${{ steps.nextsemver.outputs.patch }}
-    BuildAndTest:
-        runs-on: self-hosted
-        steps:
-            - name: Pull Source Code
-              uses: actions/checkout@v3
-            - name: Configure Nodejs
-              uses: actions/setup-node@v3
-              with:
-                node-version: 16
-            - name: Install dependencies
-              shell: bash
-              run: npm install
-            - name: Test
-              shell: bash
-              run: npm run test:all
-            - name: Build
-              shell: bash
-              run: npm run build:all
-            - name: Upload dist
-              uses: actions/upload-artifact@v3
-              with:
-                  name: dist
-                  path: dist
-    BuildAndPushDockerImages:
-        needs: [GetLatestTag, BuildAndTest]
-        runs-on: ubuntu-latest
-        steps:
-            - name: Pull Source Code
-              uses: actions/checkout@v3
-            - name: Configure Aws CLI
-              uses: ./.github/workflows/configure-awscli
-              with:
-                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                AWS_REGION: ${{ secrets.AWS_REGION }}
-            - name: Download dist
-              uses: actions/download-artifact@v3
-              with:
-                  name: dist
-                  path: dist
-            - name: Login
-              shell: bash
-              run: docker login -u AWS -p $(aws ecr get-login-password --region eu-west-1) 438380764554.dkr.ecr.eu-west-1.amazonaws.com
-            - name: Build And Push
-              shell: bash
-              run: |
-                  BE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{needs.GetLatestTag.outputs.version}}"
-                  FE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GetLatestTag.outputs.version}}"
-                  FE_TODO_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-todo-frontend:${{needs.GetLatestTag.outputs.version}}"
-                  echo BE_TAG: $BE_TAG
-                  echo FE_TAG: $FE_TAG
-                  echo FE_TODO_TAG: $FE_TODO_TAG
-                  docker build -f ./.github/Backend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$BE_TAG" .
-                  docker build -f ./.github/Frontend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$FE_TAG" .
-                  docker build -f ./.github/TodoFrontend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$FE_TODO_TAG" .
-                  docker push "$BE_TAG"
-                  docker push "$FE_TAG"
-                  docker push "$FE_TODO_TAG"
-    Release:
-        needs: [GetLatestTag, BuildAndPushDockerImages]
-        runs-on: ubuntu-latest
-        steps:
-            - name: Create a GitHub release
-              uses: ncipollo/release-action@v1
-              with:
-                tag: ${{needs.GetLatestTag.outputs.version}}
-                name: ${{needs.GetLatestTag.outputs.version}}
-                body: ${{needs.GetLatestTag.outputs.version}}
+          git_tag_prefix: ""
+    outputs:
+      oldversion: ${{ steps.previoussemver.outputs.tag }}
+      version: ${{ steps.nextsemver.outputs.patch }}
+  BuildNodeApps:
+    runs-on: self-hosted
+    steps:
+      - name: Pull Source Code
+        uses: actions/checkout@v3
+      - name: Configure Nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-feature-${{ hashFiles('package-lock.json') }}
+      - name: Install dependencies
+        shell: bash
+        run: npm install
+      - name: Test Node Projects
+        shell: bash
+        run: npm run test:all:node
+      - name: Build Node Projects
+        shell: bash
+        run: npm run build:all:node
+      - name: Upload root-api
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-root-api
+          path: dist/apps/root-api
+      - name: Upload root-web
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-root-web
+          path: dist/apps/root-web
+      - name: Upload todo-web
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-todo-web
+          path: dist/apps/todo-web
+  BuildTodoApi:
+    runs-on: self-hosted
+    env:
+      DOTNET_INSTALL_DIR: "./.dotnet"
+    steps:
+      - name: Pull Source Code
+        uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Test .Net Projects
+        shell: bash
+        run: dotnet test --no-build --verbosity normal
+      - name: Build .NET Projects
+        shell: bash
+        run: |
+          dotnet build --no-restore
+          dotnet publish -c Release -o dist/apps/todo-api
+      - name: Upload dist
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-todo-api
+          path: dist/apps/todo-api
+  PushTodoApi:
+    needs: [ GetLatestTag, BuildTodoApi ]
+    runs-on: self-hosted
+    steps:
+      - name: Pull Source Code
+        uses: actions/checkout@v3
+      - name: Configure Aws CLI
+        uses: ./.github/workflows/configure-awscli
+        with:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+      - name: Download dist
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-todo-api
+          path: dist/apps/todo-api
+      - name: Login
+        shell: bash
+        run: docker login -u AWS -p $(aws ecr get-login-password --region eu-west-1) 438380764554.dkr.ecr.eu-west-1.amazonaws.com
+      - name: Build And Push
+        shell: bash
+        run: |
+          BE_TODO_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-todo-backend:${{needs.GetLatestTag.outputs.version}}"
+          echo BE_TODO_TAG: $BE_TODO_TAG
+          docker build -f ./.github/TodoBackend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$BE_TODO_TAG" .
+          docker push "$BE_TODO_TAG"
+  PushRootWeb:
+    needs: [ GetLatestTag, BuildNodeApps ]
+    runs-on: self-hosted
+    steps:
+      - name: Pull Source Code
+        uses: actions/checkout@v3
+      - name: Configure Aws CLI
+        uses: ./.github/workflows/configure-awscli
+        with:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+      - name: Download dist
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-root-web
+          path: dist/apps/root-web
+      - name: Login
+        shell: bash
+        run: docker login -u AWS -p $(aws ecr get-login-password --region eu-west-1) 438380764554.dkr.ecr.eu-west-1.amazonaws.com
+      - name: Build And Push
+        shell: bash
+        run: |
+          FE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-frontend:${{needs.GetLatestTag.outputs.version}}"
+          docker build -f ./.github/Frontend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$FE_TAG" .
+          docker push "$FE_TAG"
+  PushRootApi:
+    needs: [ GetLatestTag, BuildNodeApps ]
+    runs-on: self-hosted
+    steps:
+      - name: Pull Source Code
+        uses: actions/checkout@v3
+      - name: Configure Aws CLI
+        uses: ./.github/workflows/configure-awscli
+        with:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+      - name: Download dist
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-root-api
+          path: dist/apps/root-api
+      - name: Login
+        shell: bash
+        run: docker login -u AWS -p $(aws ecr get-login-password --region eu-west-1) 438380764554.dkr.ecr.eu-west-1.amazonaws.com
+      - name: Build And Push
+        shell: bash
+        run: |
+          BE_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-backend:${{needs.GetLatestTag.outputs.version}}"
+          docker build -f ./.github/Backend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$BE_TAG" .
+          docker push "$BE_TAG"
+  PushTodoWeb:
+    needs: [ GetLatestTag, BuildNodeApps ]
+    runs-on: self-hosted
+    steps:
+      - name: Pull Source Code
+        uses: actions/checkout@v3
+      - name: Configure Aws CLI
+        uses: ./.github/workflows/configure-awscli
+        with:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+      - name: Download dist
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-todo-web
+          path: dist/apps/todo-web
+      - name: Login
+        shell: bash
+        run: docker login -u AWS -p $(aws ecr get-login-password --region eu-west-1) 438380764554.dkr.ecr.eu-west-1.amazonaws.com
+      - name: Build And Push
+        shell: bash
+        run: |
+          FE_TODO_TAG="438380764554.dkr.ecr.eu-west-1.amazonaws.com/ericaskari-todo-frontend:${{needs.GetLatestTag.outputs.version}}"
+          docker build -f ./.github/TodoFrontend.Dockerfile --build-arg APP_BUILD_VERSION="${{needs.GetLatestTag.outputs.version}}" --tag "$FE_TODO_TAG" .
+          docker push "$FE_TODO_TAG"
+  DeployTodoApp:
+    needs: [ GetLatestTag, PushTodoWeb, PushTodoApi ]
+    runs-on: self-hosted
+    steps:
+      - name: Deploy
+        shell: bash
+        env:
+          DEPLOYMENT_TOKEN: ${{ secrets.DEPLOYMENT_TOKEN }}
+        run: |
+          curl -L -X POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer $DEPLOYMENT_TOKEN" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          https://api.github.com/repos/ericaskari/ericaskari-web-deployment/actions/workflows/deploy_application_todo_workflow.yml/dispatches \
+          -d '{"ref":"main","inputs":{"environment":"development","version":"${{needs.GetLatestTag.outputs.version}}"}}'
+
+  DeployRoot:
+    needs: [ GetLatestTag, PushRootWeb, PushRootApi ]
+    runs-on: self-hosted
+    steps:
+      - name: Deploy
+        shell: bash
+        env:
+          DEPLOYMENT_TOKEN: ${{ secrets.DEPLOYMENT_TOKEN }}
+        run: |
+          curl -L -X POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer $DEPLOYMENT_TOKEN" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          https://api.github.com/repos/ericaskari/ericaskari-web-deployment/actions/workflows/deploy_application_ericaskari_workflow.yml/dispatches \
+          -d '{"ref":"main","inputs":{"environment":"development","version":"${{needs.GetLatestTag.outputs.version}}"}}'

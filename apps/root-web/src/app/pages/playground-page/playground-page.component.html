@@ -1,0 +1,50 @@
+<div class="grid grid-cols-12 p-2 gap-2">
+    <div
+        class="col-span-12 lg:col-span-6 p-2 rounded-lg scale-99 hover:scale-100 transition text-white bg-opacity-5 bg-white hover:bg-opacity-10 flex flex-col gap-1"
+        *ngFor="let project of projects"
+    >
+        <div class="flex p-2 flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex gap-2">
+                <div class="w-14 aspect-square">
+                    <app-minidenticon
+                        class="w-14 aspect-square bg-white bg-opacity-10 p-2 rounded-lg"
+                        [username]="project.name"
+                    ></app-minidenticon>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <h1 class="text-lg font-light">{{ project.name }}</h1>
+                    <p class="text-gray-200 text-sm">{{ project.description }}</p>
+                </div>
+            </div>
+        </div>
+        <hr class="border-green-500" />
+        <div class="flex gap-3 flex-col py-2 flex-1">
+            <a
+                *ngFor="let env of project.environments"
+                [href]="env.url"
+                target="_blank"
+                class="font-light text-gray-400 text-sm lowercase gap-1 grid grid-cols-12"
+            >
+                <div class="col-span-12 md:col-span-3">
+                    <span class="flex gap-2 rounded-lg bg-white bg-opacity-10 p-2 px-4 justify-center text-green-500">{{ env.name }}</span>
+                </div>
+                <div class="col-span-8 md:col-span-6">
+                    <span class="flex gap-2 rounded-lg bg-white bg-opacity-10 p-2 px-4 text-green-500 whitespace-nowrap">{{
+                        env.url
+                    }}</span>
+                </div>
+                <div class="col-span-4 md:col-span-3">
+                    <div class="flex gap-2 rounded-lg bg-white bg-opacity-10 p-2 px-4 justify-center">
+                        <fa-icon
+                            [icon]="env.isPublic ? faLockOpen : faLock"
+                            [ngClass]="{ 'text-green-500': env.isPublic, 'text-white': !env.isPublic }"
+                        ></fa-icon>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="flex flex-wrap gap-2 p-2 rounded-lg">
+            <span class="text-xs rounded-full bg-white bg-opacity-10 px-2 py-1" *ngFor="let pill of project.technologies">{{ pill }}</span>
+        </div>
+    </div>
+</div>
