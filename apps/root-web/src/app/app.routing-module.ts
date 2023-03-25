@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { CvPageComponent } from './pages/cv-page/cv-page.component';
 import { GamesPageComponent } from './pages/games-page/games-page.component';
+import { PlaygroundPageComponent } from './pages/playground-page/playground-page.component';
 
 @NgModule({
     exports: [RouterModule],
@@ -13,7 +14,7 @@ import { GamesPageComponent } from './pages/games-page/games-page.component';
                 {
                     path: '',
                     component: HomePageComponent,
-                    title: 'Eric Askari'
+                    title: 'Eric Askari - Web developer'
                 },
                 {
                     path: 'cv',
@@ -24,6 +25,11 @@ import { GamesPageComponent } from './pages/games-page/games-page.component';
                     path: 'games',
                     component: GamesPageComponent,
                     title: 'Eric Askari - Games'
+                },
+                {
+                    path: 'playground',
+                    component: PlaygroundPageComponent,
+                    title: 'Eric Askari - Playground'
                 },
                 {
                     path: '**',

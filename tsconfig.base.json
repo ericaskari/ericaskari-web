@@ -45,12 +45,6 @@
       "@ericaskari/web/common": [
         "libs/web/common/src/index.ts"
       ],
-      "@ericaskari/web/endpoints": [
-        "libs/web/endpoints/src/index.ts"
-      ],
-      "@ericaskari/web/forms": [
-        "libs/web/forms/src/index.ts"
-      ],
       "@ericaskari/web/state": [
         "libs/web/state/src/index.ts"
       ]

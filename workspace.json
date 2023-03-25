@@ -14,8 +14,6 @@
     "shared-model": "libs/shared/model",
     "todo-web": "apps/todo-web",
     "web-common": "libs/web/common",
-    "web-endpoints": "libs/web/endpoints",
-    "web-forms": "libs/web/forms",
     "web-state": "libs/web/state",
     "web-theme": "libs/web/theme"
   }

@@ -23,6 +23,15 @@
             >
                 CV
             </a>
+            <a
+                class="px-3 py-2 rounded-md cursor-pointer text-white hover:text-zinc-200 md:hover:text-zinc-400 whitespace-nowrap"
+                routerLinkActive="link-active"
+                routerLink="/playground"
+                style="font-size: 0.8rem"
+                (click)="expanded = false"
+            >
+                Playground
+            </a>
         </div>
     </div>
 
@@ -69,6 +78,14 @@
                 (click)="expanded = false"
             >
                 CV
+            </a>
+            <a
+                class="px-3 py-2 rounded-md text-sm font-medium cursor-pointer text-black hover:text-zinc-200 md:text-white md:hover:text-zinc-400"
+                routerLinkActive="link-active"
+                routerLink="/playground"
+                (click)="expanded = false"
+            >
+                Playground
             </a>
             <a
                 class="px-3 py-2 rounded-md text-sm font-medium cursor-pointer text-black hover:text-zinc-200 md:text-white md:hover:text-zinc-400"

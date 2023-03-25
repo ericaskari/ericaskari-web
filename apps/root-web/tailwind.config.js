@@ -14,7 +14,11 @@ module.exports = {
                 linkedin: "url('/assets/socials/linkedin.png')",
                 profile: "url('/assets/cv/300x320.jpeg')",
                 'home-icon': "url('/assets/icons/home.png')"
-            })
+            }),
+            scale: {
+                98: '0.98',
+                99: '0.99'
+            }
         }
     }
 };
