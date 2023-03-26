@@ -1,0 +1,45 @@
+name: Deploy
+description: Deploy
+inputs:
+  token:
+    description: 'DEPLOYMENT_TOKEN'
+    required: true
+  version:
+    description: 'Version to deploy'
+    required: true
+    default: 1.0.41
+  environment:
+    description: 'Environment to deploy'
+    type: environment
+    required: true
+  application:
+    description: 'Application to deploy'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Deploy Ericaskari Application
+      if: ${{ inputs.application == 'ericaskari' }}
+      shell: bash
+      env:
+        DEPLOYMENT_TOKEN: ${{ inputs.token }}
+      run: |
+        curl -L -X POST \
+        -H "Accept: application/vnd.github+json" \
+        -H "Authorization: Bearer $DEPLOYMENT_TOKEN" \
+        -H "X-GitHub-Api-Version: 2022-11-28" \
+        https://api.github.com/repos/ericaskari/ericaskari-web-deployment/actions/workflows/deploy_application_ericaskari_workflow.yml/dispatches \
+        -d '{"ref":"main","inputs":{"environment":"${{ inputs.environment }}","version":"${{ inputs.version }}"}}'
+
+    - name: Deploy Todo Application
+      if: ${{ inputs.application == 'todo' }}
+      shell: bash
+      env:
+        DEPLOYMENT_TOKEN: ${{ inputs.token }}
+      run: |
+        curl -L -X POST \
+        -H "Accept: application/vnd.github+json" \
+        -H "Authorization: Bearer $DEPLOYMENT_TOKEN" \
+        -H "X-GitHub-Api-Version: 2022-11-28" \
+        https://api.github.com/repos/ericaskari/ericaskari-web-deployment/actions/workflows/deploy_application_todo_workflow.yml/dispatches \
+        -d '{"ref":"main","inputs":{"environment":"${{ inputs.environment }}","version":"${{ inputs.version }}"}}'
