@@ -213,6 +213,8 @@ jobs:
     if: ${{ github.ref == 'refs/heads/development' }}
     runs-on: self-hosted
     steps:
+      - name: Pull Source Code
+        uses: actions/checkout@v3
       - name: Deploy
         uses: ./.github/workflows/deploy
         with:
@@ -226,6 +228,8 @@ jobs:
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: self-hosted
     steps:
+      - name: Pull Source Code
+        uses: actions/checkout@v3
       - name: Deploy
         uses: ./.github/workflows/deploy
         with:
@@ -239,6 +243,8 @@ jobs:
     if: ${{ github.ref == 'refs/heads/development' }}
     runs-on: self-hosted
     steps:
+      - name: Pull Source Code
+        uses: actions/checkout@v3
       - name: Deploy
         uses: ./.github/workflows/deploy
         with:
@@ -252,6 +258,8 @@ jobs:
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: self-hosted
     steps:
+      - name: Pull Source Code
+        uses: actions/checkout@v3
       - name: Deploy
         uses: ./.github/workflows/deploy
         with:
