@@ -51,17 +51,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: Cache node modules
-        id: cache-npm
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-node-modules
-        with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            npm-feature-${{ hashFiles('package-lock.json') }}
+          cache: 'npm'
       - name: Install dependencies
         shell: bash
         run: npm install
@@ -223,66 +213,57 @@ jobs:
     if: ${{ github.ref == 'refs/heads/development' }}
     runs-on: self-hosted
     steps:
+      - name: Pull Source Code
+        uses: actions/checkout@v3
       - name: Deploy
-        shell: bash
-        env:
-          DEPLOYMENT_TOKEN: ${{ secrets.DEPLOYMENT_TOKEN }}
-        run: |
-          curl -L -X POST \
-          -H "Accept: application/vnd.github+json" \
-          -H "Authorization: Bearer $DEPLOYMENT_TOKEN" \
-          -H "X-GitHub-Api-Version: 2022-11-28" \
-          https://api.github.com/repos/ericaskari/ericaskari-web-deployment/actions/workflows/deploy_application_todo_workflow.yml/dispatches \
-          -d '{"ref":"main","inputs":{"environment":"development","version":"${{needs.GetLatestTag.outputs.version}}"}}'
+        uses: ./.github/workflows/deploy
+        with:
+          token: ${{ secrets.DEPLOYMENT_TOKEN }}
+          version: ${{ needs.GetLatestTag.outputs.version }}
+          environment: development
+          application: todo
   DeployTodoAppProduction:
     needs: [ GetLatestTag, PushTodoWeb, PushTodoApi ]
     environment: production
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: self-hosted
     steps:
+      - name: Pull Source Code
+        uses: actions/checkout@v3
       - name: Deploy
-        shell: bash
-        env:
-          DEPLOYMENT_TOKEN: ${{ secrets.DEPLOYMENT_TOKEN }}
-        run: |
-          curl -L -X POST \
-          -H "Accept: application/vnd.github+json" \
-          -H "Authorization: Bearer $DEPLOYMENT_TOKEN" \
-          -H "X-GitHub-Api-Version: 2022-11-28" \
-          https://api.github.com/repos/ericaskari/ericaskari-web-deployment/actions/workflows/deploy_application_todo_workflow.yml/dispatches \
-          -d '{"ref":"main","inputs":{"environment":"production","version":"${{needs.GetLatestTag.outputs.version}}"}}'
+        uses: ./.github/workflows/deploy
+        with:
+          token: ${{ secrets.DEPLOYMENT_TOKEN }}
+          version: ${{ needs.GetLatestTag.outputs.version }}
+          environment: production
+          application: todo
   DeployRootDevelopment:
     needs: [ GetLatestTag, PushRootWeb, PushRootApi ]
     environment: development
     if: ${{ github.ref == 'refs/heads/development' }}
     runs-on: self-hosted
     steps:
+      - name: Pull Source Code
+        uses: actions/checkout@v3
       - name: Deploy
-        shell: bash
-        env:
-          DEPLOYMENT_TOKEN: ${{ secrets.DEPLOYMENT_TOKEN }}
-        run: |
-          curl -L -X POST \
-          -H "Accept: application/vnd.github+json" \
-          -H "Authorization: Bearer $DEPLOYMENT_TOKEN" \
-          -H "X-GitHub-Api-Version: 2022-11-28" \
-          https://api.github.com/repos/ericaskari/ericaskari-web-deployment/actions/workflows/deploy_application_ericaskari_workflow.yml/dispatches \
-          -d '{"ref":"main","inputs":{"environment":"development","version":"${{needs.GetLatestTag.outputs.version}}"}}'
-
+        uses: ./.github/workflows/deploy
+        with:
+          token: ${{ secrets.DEPLOYMENT_TOKEN }}
+          version: ${{ needs.GetLatestTag.outputs.version }}
+          environment: development
+          application: ericaskari
   DeployRootProduction:
     needs: [ GetLatestTag, PushRootWeb, PushRootApi ]
     environment: production
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: self-hosted
     steps:
+      - name: Pull Source Code
+        uses: actions/checkout@v3
       - name: Deploy
-        shell: bash
-        env:
-          DEPLOYMENT_TOKEN: ${{ secrets.DEPLOYMENT_TOKEN }}
-        run: |
-          curl -L -X POST \
-          -H "Accept: application/vnd.github+json" \
-          -H "Authorization: Bearer $DEPLOYMENT_TOKEN" \
-          -H "X-GitHub-Api-Version: 2022-11-28" \
-          https://api.github.com/repos/ericaskari/ericaskari-web-deployment/actions/workflows/deploy_application_ericaskari_workflow.yml/dispatches \
-          -d '{"ref":"main","inputs":{"environment":"production","version":"${{needs.GetLatestTag.outputs.version}}"}}'
+        uses: ./.github/workflows/deploy
+        with:
+          token: ${{ secrets.DEPLOYMENT_TOKEN }}
+          version: ${{ needs.GetLatestTag.outputs.version }}
+          environment: production
+          application: ericaskari
