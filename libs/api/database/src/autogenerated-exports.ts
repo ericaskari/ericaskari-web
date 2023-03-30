@@ -7,8 +7,7 @@ import {
 } from '@ericaskari/api/persistence';
 
 import { 
-    CallerModel,
-    RoomModel } from '@ericaskari/shared/model';
+     } from '@ericaskari/shared/model';
 
 import { Repository } from 'typeorm';
 

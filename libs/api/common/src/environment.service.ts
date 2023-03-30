@@ -10,6 +10,7 @@ export class EnvironmentService {
 
     private static spec = {
         APP_NODE_ENV: str({ choices: ['test', 'development', 'production'] }),
+        APP_FLOWER_API_SECRET: str(),
         APP_BUILD_VERSION: str(),
         APP_ENABLE_SWAGGER: bool(),
         APP_HOST_NAME: host(),

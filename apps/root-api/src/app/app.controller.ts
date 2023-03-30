@@ -1,6 +1,6 @@
 import { EnvironmentService } from '@ericaskari/api/common';
-import { GetVersionResponse } from '@ericaskari/shared/model';
-import { Controller, Get } from '@nestjs/common';
+import { GetVersionResponse, SaveWaterLevelRequest, SaveWaterLevelResponse } from '@ericaskari/shared/model';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { LoggerService } from '@ericaskari/api/core';
 
 @Controller()
@@ -14,5 +14,10 @@ export class AppController {
         return GetVersionResponse.fromJson({
             buildVersion: this.environmentService.environment.APP_BUILD_VERSION
         });
+    }
+
+    @Post('/water-level')
+    saveWaterLevel(@Body() request: SaveWaterLevelRequest): SaveWaterLevelResponse {
+        return SaveWaterLevelResponse.fromJson({});
     }
 }
