@@ -5,11 +5,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { generatedControllers } from './generated-controllers';
 import { CoreModule } from '@ericaskari/api/core';
-import { typeOrmModuleOptions } from '@ericaskari/api/database';
+import { DbModule, typeOrmModuleOptions } from '@ericaskari/api/database';
+import { EnvironmentService } from '@ericaskari/api/common';
 
 @Module({
-    imports: [HttpModule, CoreModule, TypeOrmModule.forRoot(typeOrmModuleOptions)],
+    imports: [HttpModule, CoreModule, DbModule, TypeOrmModule.forRoot(typeOrmModuleOptions)],
     controllers: [AppController, ...generatedControllers],
-    providers: []
+    providers: [EnvironmentService],
+    exports: [EnvironmentService]
 })
 export class AppModule {}

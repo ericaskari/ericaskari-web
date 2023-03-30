@@ -25,7 +25,8 @@ export class EnvironmentService {
         APP_DATABASE_PORT: port(),
         APP_DATABASE_USER: str(),
         APP_DATABASE_PASSWORD: str(),
-        APP_DATABASE_NAME: str()
+        APP_DATABASE_NAME: str(),
+        APP_DATABASE_FAKE_MIGRATION: bool({default: false})
     };
 
     public init(): void {

@@ -1,28 +1,30 @@
 import { Logger, Module, OnModuleInit } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule , InjectDataSource} from '@nestjs/typeorm';
 import { EnvironmentService } from '@ericaskari/api/common';
 import { entities } from './entities';
+import { DataSource } from 'typeorm';
 
-const sharedServices = [];
 export const TypeOrmModuleForFeature = TypeOrmModule.forFeature(entities);
 
 @Module({
     imports: [TypeOrmModuleForFeature],
     controllers: [],
-    providers: [...sharedServices],
-    exports: [...sharedServices]
+    providers: [EnvironmentService],
+    exports: []
 })
 export class DbModule implements OnModuleInit {
     private logger = new Logger(DbModule.name);
 
-    constructor(private environmentService: EnvironmentService) {}
+    constructor(private environmentService: EnvironmentService,  @InjectDataSource() private datasource: DataSource) {}
 
     async onModuleInit(): Promise<void> {
-        // if (!this.environmentService.variables.ENABLE_MIGRATIONS) {
-        //     this.logger.log(`Skipping migrations...`);
-        //     return;
-        // }
-        //
-        // await this.dbService.runMigrations();
+        const migrations = await this.datasource.runMigrations({
+            fake: this.environmentService.variables.APP_DATABASE_FAKE_MIGRATION,
+            transaction: 'each',
+        });
+        this.logger.log(`Applied Database migrations: ${migrations.length}`)
+        if (migrations.length > 0) {
+            this.logger.log(migrations);
+        }
     }
 }

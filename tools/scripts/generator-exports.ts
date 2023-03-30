@@ -45,7 +45,7 @@ import { getClassNameFromFileData, getEnumNameFromFileData } from './shared-scri
         relativeImportBuilder: ({ className, fileNameWithoutType }) => `import { ${className} } from './entities/${fileNameWithoutType}'`,
         extend: (data) => {
             return [
-                data.map(({ className }) => `export type { ${className} };`).join('\n'),
+                data.map(({ className }) => `export { ${className} };`).join('\n'),
                 `export const entities = [ ${data.map(({ className }) => className).join(', ')} ];`
             ];
         },
