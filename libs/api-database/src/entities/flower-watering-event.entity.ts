@@ -9,11 +9,8 @@ export class FlowerWateringEventEntity {
     @CreateDateColumn()
     createdAt!: Date;
 
-    @UpdateDateColumn()
-    updatedAt!: Date;
-
-    @Column({ type: 'varchar' })
-    name!: string;
+    @Column({ type: 'integer' })
+    adcValue!: number;
 
     @ManyToOne(() => FlowerEntity, { eager: false, nullable: false })
     @JoinColumn({ name: 'flower_id' })

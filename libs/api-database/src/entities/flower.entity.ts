@@ -8,9 +8,7 @@ export class FlowerEntity {
     @CreateDateColumn()
     createdAt!: Date;
 
-    @Column({ type: 'integer' })
-    adcValue!: string;
+    @Column({ type: 'varchar' })
+    name!: string;
 
-    @Column({ type: 'uuid' })
-    flowerId!: string;
 }

@@ -26,7 +26,8 @@ export abstract class RepositoryServiceImpl<Entity extends ObjectLiteral, Model 
         protected readonly entity: ClassConstructor<Entity>,
         protected readonly model: ClassConstructor<Model>,
         public readonly modelToEntity: (model: Model) => Entity,
-        public readonly modelFromEntity: (entity: Entity) => Model
+        public readonly modelFromEntity: (entity: Entity) => Model,
+        public readonly modelFromRequest: (entity: Partial<Model>) => Model
     ) {}
 
     public async getAll(transactionalEntityManager?: EntityManager): Promise<Model[]> {
@@ -65,7 +66,8 @@ export abstract class RepositoryServiceImpl<Entity extends ObjectLiteral, Model 
             : await this.repository.count(options);
     }
 
-    public async save(model: Model, transactionalEntityManager?: EntityManager): Promise<Model> {
+    public async save(request: Partial<Model>, transactionalEntityManager?: EntityManager): Promise<Model> {
+        const model = this.modelFromRequest(request);
         const errors = await validate(model);
 
         if (errors.length > 0) throw new FormValidationErrorException(ClassValidatorUtility.validationErrorsToFormError(errors));

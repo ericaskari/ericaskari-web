@@ -6,6 +6,10 @@ export class NotFoundErrorException extends HttpException {
     statusCode = AppHttpStatusEnum.NOT_FOUND;
     name = ExceptionNameFinder(this);
 }
+export class UnauthorizedException extends HttpException {
+    statusCode = AppHttpStatusEnum.UNAUTHORIZED;
+    name = ExceptionNameFinder(this);
+}
 
 export class InternalServerErrorException extends HttpException {
     override statusCode = AppHttpStatusEnum.INTERNAL_SERVER_ERROR;
