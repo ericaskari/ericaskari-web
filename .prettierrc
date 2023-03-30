@@ -8,5 +8,6 @@
   "bracketSpacing": true,
   "jsxBracketSameLine": true,
   "arrowParens": "always",
-  "overrides": []
+  "overrides": [],
+  "parser": "babel"
 }

@@ -5,15 +5,15 @@ import { createTransport } from 'nodemailer';
 @Injectable()
 export class MailService {
     transporter = createTransport({
-        host: this.environmentService.environment.APP_NODE_MAILER_HOST,
-        secure: this.environmentService.environment.APP_NODE_MAILER_SECURE,
-        port: this.environmentService.environment.APP_NODE_MAILER_PORT,
+        host: this.environmentService.variables.APP_NODE_MAILER_HOST,
+        secure: this.environmentService.variables.APP_NODE_MAILER_SECURE,
+        port: this.environmentService.variables.APP_NODE_MAILER_PORT,
         auth: {
-            user: this.environmentService.environment.APP_NODE_MAILER_AUTH_USER,
-            pass: this.environmentService.environment.APP_NODE_MAILER_AUTH_PASS
+            user: this.environmentService.variables.APP_NODE_MAILER_AUTH_USER,
+            pass: this.environmentService.variables.APP_NODE_MAILER_AUTH_PASS
         },
         tls: {
-            rejectUnauthorized: this.environmentService.environment.APP_NODE_MAILER_REJECT_UNAUTHORIZED
+            rejectUnauthorized: this.environmentService.variables.APP_NODE_MAILER_REJECT_UNAUTHORIZED
         }
     });
 

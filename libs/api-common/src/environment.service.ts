@@ -20,7 +20,12 @@ export class EnvironmentService {
         APP_NODE_MAILER_SECURE: bool(),
         APP_NODE_MAILER_REJECT_UNAUTHORIZED: bool(),
         APP_NODE_MAILER_HOST: host(),
-        APP_NODE_MAILER_PORT: port()
+        APP_NODE_MAILER_PORT: port(),
+        APP_DATABASE_HOST: host(),
+        APP_DATABASE_PORT: port(),
+        APP_DATABASE_USER: str(),
+        APP_DATABASE_PASSWORD: str(),
+        APP_DATABASE_NAME: str()
     };
 
     public init(): void {
@@ -35,7 +40,7 @@ export class EnvironmentService {
         }
     }
 
-    public readonly environment = cleanEnv(process.env, EnvironmentService.spec);
+    public readonly variables = cleanEnv(process.env, EnvironmentService.spec);
 
     public static get getInstance(): EnvironmentService {
         if (this.instance) {
@@ -46,19 +51,19 @@ export class EnvironmentService {
     }
 
     public get isLocalDevelopment(): boolean {
-        return this.environment.APP_NODE_ENV === 'development';
+        return this.variables.APP_NODE_ENV === 'development';
     }
 
     public get isProduction(): boolean {
-        return this.environment.APP_NODE_ENV === 'production';
+        return this.variables.APP_NODE_ENV === 'production';
     }
 
     public get NODE_ENV(): string {
-        return this.environment.APP_NODE_ENV;
+        return this.variables.APP_NODE_ENV;
     }
 
     public get SERVER_URL(): string {
-        const prefix = this.environment.APP_IS_SSL_ENABLED ? 'https://' : 'http://';
-        return [prefix, this.environment.APP_HOST_NAME].join('');
+        const prefix = this.variables.APP_IS_SSL_ENABLED ? 'https://' : 'http://';
+        return [prefix, this.variables.APP_HOST_NAME].join('');
     }
 }

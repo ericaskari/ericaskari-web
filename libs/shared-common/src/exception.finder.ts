@@ -1,13 +1,11 @@
-import { HttpException } from "./http-exception";
+import { HttpException } from './http-exception';
 
-import {
-    InternalServerErrorException,
-    FormValidationErrorException
-} from './exception.list';
+import { NotFoundErrorException, InternalServerErrorException, FormValidationErrorException } from './exception.list';
 
 // Auto generated file with generate:exports npm command
 
 export const ExceptionNameFinder = (httpException: HttpException): string => {
+    if (httpException instanceof NotFoundErrorException) return 'NotFoundErrorException';
     if (httpException instanceof InternalServerErrorException) return 'InternalServerErrorException';
     if (httpException instanceof FormValidationErrorException) return 'FormValidationErrorException';
     return 'HttpException';

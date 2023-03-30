@@ -25,8 +25,8 @@ async function bootstrap() {
     app.enableCors();
     // app.useGlobalPipes(app.get(AppValidationPipe));
 
-    if (app.get(EnvironmentService).environment.APP_ENABLE_SWAGGER) {
-        const documentBuilder = new DocumentBuilder().setVersion(app.get(EnvironmentService).environment.APP_BUILD_VERSION).build();
+    if (app.get(EnvironmentService).variables.APP_ENABLE_SWAGGER) {
+        const documentBuilder = new DocumentBuilder().setVersion(app.get(EnvironmentService).variables.APP_BUILD_VERSION).build();
 
         const document = SwaggerModule.createDocument(app, documentBuilder, {
             extraModels: [...models, ...requestResponseModels]
@@ -39,8 +39,8 @@ async function bootstrap() {
 
     const hostname = '0.0.0.0';
 
-    logger.log(`APP_NODE_ENV: ${app.get(EnvironmentService).environment.APP_NODE_ENV}`);
-    logger.log(`APP_BUILD_VERSION: ${app.get(EnvironmentService).environment.APP_BUILD_VERSION}`);
+    logger.log(`APP_NODE_ENV: ${app.get(EnvironmentService).variables.APP_NODE_ENV}`);
+    logger.log(`APP_BUILD_VERSION: ${app.get(EnvironmentService).variables.APP_BUILD_VERSION}`);
 
     app.get(EnvironmentService).init();
 
@@ -51,7 +51,7 @@ async function bootstrap() {
     await app.listen(8000, '0.0.0.0', () => {
         logger.log(`Server Listening at ${app.get(EnvironmentService).SERVER_URL}/${globalPrefix}`);
 
-        if (app.get(EnvironmentService).environment.APP_ENABLE_SWAGGER)
+        if (app.get(EnvironmentService).variables.APP_ENABLE_SWAGGER)
             logger.log(`Swagger docs at ${app.get(EnvironmentService).SERVER_URL}/swagger`);
         if (app.get(EnvironmentService).isLocalDevelopment) logger.log(`View Emails at ${app.get(EnvironmentService).SERVER_URL}/mailhog`);
         if (app.get(EnvironmentService).isLocalDevelopment)

@@ -16,6 +16,7 @@
     ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "keyofStringsOnly": true,
     "baseUrl": ".",
     "paths": {
       "@ericaskari/api/common": [
@@ -26,12 +27,6 @@
       ],
       "@ericaskari/api/database": [
         "libs/api-database/src/index.ts"
-      ],
-      "@ericaskari/api/persistence": [
-        "libs/api-persistence/src/index.ts"
-      ],
-      "@ericaskari/api/seed-data": [
-        "libs/api-seed-data/src/index.ts"
       ],
       "@ericaskari/shared/common": [
         "libs/shared-common/src/index.ts"

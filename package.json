@@ -19,9 +19,14 @@
         "tsnode": "ts-node --project ./tools/scripts/tsconfig.json",
         "typeorm": "npm run tsnode -- ./node_modules/typeorm/cli.js",
         "pretypeorm:d": "npm run generate:exports",
-        "typeorm:d": "npm run typeorm -- -d libs/api/database/src/data-source.ts",
+        "typeorm:d": "npm run typeorm -- -d libs/api-database/src/data-source.ts",
         "posttypeorm:d": "npm run generate:exports",
-        "postpostinstall": "npm run generate:env"
+        "postpostinstall": "npm run generate:env",
+        "db:migration:show": "npm run typeorm:d -- migration:show",
+        "db:migration:run": "npm run typeorm:d -- migration:run",
+        "db:migration:revert": "npm run typeorm:d -- migration:revert",
+        "db:migration:generate": "npm run typeorm:d -- migration:generate libs/api-database/src/migrations/migrations --pretty",
+        "db:migration:create": "npm run typeorm -- migration:create libs/api-database/src/migrations/[Name]"
     },
     "private": true,
     "devDependencies": {
@@ -95,6 +100,7 @@
         "dotenv": "^16.0.1",
         "envalid": "^7.3.1",
         "nodemailer": "^6.7.5",
+        "pg": "^8.10.0",
         "reflect-metadata": "^0.1.13",
         "rxjs": "~7.5.0",
         "swagger-ui-express": "^4.4.0",

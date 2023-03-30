@@ -12,7 +12,7 @@ export class AppController {
     @Get('/runtime-environment')
     getVersion(): GetVersionResponse {
         return GetVersionResponse.fromJson({
-            buildVersion: this.environmentService.environment.APP_BUILD_VERSION
+            buildVersion: this.environmentService.variables.APP_BUILD_VERSION
         });
     }
 
