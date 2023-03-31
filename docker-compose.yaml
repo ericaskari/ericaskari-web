@@ -9,6 +9,8 @@ services:
       - ericaskari-network
     extra_hosts:
       - 'host.docker.internal:host-gateway'
+    ports:
+      - '5432:5432'
     volumes:
       - ericaskari-postgres:/var/lib/postgresql/data
     env_file:

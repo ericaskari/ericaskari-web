@@ -16,37 +16,32 @@
     ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "keyofStringsOnly": true,
     "baseUrl": ".",
     "paths": {
       "@ericaskari/api/common": [
-        "libs/api/common/src/index.ts"
+        "libs/api-common/src/index.ts"
       ],
       "@ericaskari/api/core": [
-        "libs/api/core/src/index.ts"
+        "libs/api-core/src/index.ts"
       ],
       "@ericaskari/api/database": [
-        "libs/api/database/src/index.ts"
-      ],
-      "@ericaskari/api/persistence": [
-        "libs/api/persistence/src/index.ts"
-      ],
-      "@ericaskari/api/seed-data": [
-        "libs/api/seed-data/src/index.ts"
+        "libs/api-database/src/index.ts"
       ],
       "@ericaskari/shared/common": [
-        "libs/shared/common/src/index.ts"
+        "libs/shared-common/src/index.ts"
       ],
       "@ericaskari/shared/enum": [
-        "libs/shared/enum/src/index.ts"
+        "libs/shared-enum/src/index.ts"
       ],
       "@ericaskari/shared/model": [
-        "libs/shared/model/src/index.ts"
+        "libs/shared-model/src/index.ts"
       ],
       "@ericaskari/web/common": [
-        "libs/web/common/src/index.ts"
+        "libs/web-common/src/index.ts"
       ],
       "@ericaskari/web/state": [
-        "libs/web/state/src/index.ts"
+        "libs/web-state/src/index.ts"
       ]
     }
   },

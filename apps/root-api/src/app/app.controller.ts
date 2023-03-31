@@ -1,18 +1,76 @@
 import { EnvironmentService } from '@ericaskari/api/common';
-import { GetVersionResponse } from '@ericaskari/shared/model';
-import { Controller, Get } from '@nestjs/common';
+import {
+    CreateFlowerRequest,
+    CreateFlowerResponse,
+    GetVersionResponse,
+    SaveWaterLevelRequest,
+    SaveWaterLevelResponse
+} from '@ericaskari/shared/model';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { LoggerService } from '@ericaskari/api/core';
+import { NotFoundErrorException, UnauthorizedException } from "@ericaskari/shared/common";
+import {
+    FlowerEntityRepositoryService,
+    FlowerWateringEventEntityRepositoryService
+} from "@ericaskari/api/database";
+import { v4 as uuid } from 'uuid';
 
 @Controller()
 export class AppController {
     private logger = new LoggerService(AppController.name);
 
-    constructor(private environmentService: EnvironmentService) {}
+    constructor(private environmentService: EnvironmentService, private flowerWateringEventEntityRepositoryService: FlowerWateringEventEntityRepositoryService, private flowerEntityRepositoryService: FlowerEntityRepositoryService) {}
 
     @Get('/runtime-environment')
     getVersion(): GetVersionResponse {
         return GetVersionResponse.fromJson({
-            buildVersion: this.environmentService.environment.APP_BUILD_VERSION
+            buildVersion: this.environmentService.variables.APP_BUILD_VERSION
+        });
+    }
+
+    @Post('/water-level')
+    async saveWaterLevel(@Body() request: SaveWaterLevelRequest): Promise<SaveWaterLevelResponse> {
+        const {secret, flowerId, adcValue} = request;
+
+        if (secret !== this.environmentService.variables.APP_FLOWER_API_SECRET) {
+            throw new UnauthorizedException()
+        }
+        const flower = await this.flowerEntityRepositoryService.findOne({
+            where: {
+                id: flowerId
+            }
+        });
+
+        if (!flower) {
+            throw new NotFoundErrorException();
+        }
+
+        const flowerWateringEvent = await this.flowerWateringEventEntityRepositoryService.save({
+            adcValue: adcValue,
+            flowerId,
+            createdAt: new Date(),
+            id: uuid()
+        });
+
+        return SaveWaterLevelResponse.fromJson({flowerWateringEvent});
+    }
+
+    @Post('/add-flower')
+    async addFlower(@Body() request: CreateFlowerRequest): Promise<CreateFlowerResponse> {
+        const {name, secret} = request;
+
+        if (secret !== this.environmentService.variables.APP_FLOWER_API_SECRET) {
+            throw new UnauthorizedException()
+        }
+        const flower = await this.flowerEntityRepositoryService.save({
+            name,
+            id: uuid(),
+            createdAt: new Date()
+        });
+
+
+        return CreateFlowerResponse.fromJson({
+            flower: this.flowerEntityRepositoryService.modelFromEntity(flower),
         });
     }
 }

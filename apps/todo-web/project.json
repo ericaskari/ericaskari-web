@@ -1,104 +1,92 @@
 {
-  "projectType": "application",
-  "sourceRoot": "apps/todo-web/src",
-  "prefix": "app",
-  "targets": {
-    "build": {
-      "executor": "@angular-devkit/build-angular:browser",
-      "outputs": [
-        "{options.outputPath}"
-      ],
-      "options": {
-        "outputPath": "dist/apps/todo-web",
-        "index": "apps/todo-web/src/index.html",
-        "main": "apps/todo-web/src/main.ts",
-        "polyfills": "apps/todo-web/src/polyfills.ts",
-        "tsConfig": "apps/todo-web/tsconfig.app.json",
-        "inlineStyleLanguage": "scss",
-        "assets": [
-          "apps/todo-web/src/favicon.ico",
-          "apps/todo-web/src/assets"
-        ],
-        "styles": [
-          "apps/todo-web/src/styles.scss"
-        ],
-        "stylePreprocessorOptions": {
-          "includePaths": [
-            "libs/web/theme/src"
-          ]
-        },
-        "scripts": []
-      },
-      "configurations": {
-        "production": {
-          "budgets": [
-            {
-              "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
+    "name": "todo-web",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "projectType": "application",
+    "sourceRoot": "apps/todo-web/src",
+    "prefix": "app",
+    "targets": {
+        "build": {
+            "executor": "@angular-devkit/build-angular:browser",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/apps/todo-web",
+                "index": "apps/todo-web/src/index.html",
+                "main": "apps/todo-web/src/main.ts",
+                "polyfills": "apps/todo-web/src/polyfills.ts",
+                "tsConfig": "apps/todo-web/tsconfig.app.json",
+                "inlineStyleLanguage": "scss",
+                "assets": ["apps/todo-web/src/favicon.ico", "apps/todo-web/src/assets"],
+                "styles": ["apps/todo-web/src/styles.scss"],
+                "stylePreprocessorOptions": {
+                    "includePaths": ["libs/web/theme/src"]
+                },
+                "scripts": []
             },
-            {
-              "type": "anyComponentStyle",
-              "maximumWarning": "2kb",
-              "maximumError": "4kb"
-            }
-          ],
-          "fileReplacements": [
-            {
-              "replace": "apps/todo-web/src/environments/frontend-environment.ts",
-              "with": "apps/todo-web/src/environments/frontend-environment.prod.ts"
-            }
-          ],
-          "outputHashing": "all"
+            "configurations": {
+                "production": {
+                    "budgets": [
+                        {
+                            "type": "initial",
+                            "maximumWarning": "500kb",
+                            "maximumError": "1mb"
+                        },
+                        {
+                            "type": "anyComponentStyle",
+                            "maximumWarning": "2kb",
+                            "maximumError": "4kb"
+                        }
+                    ],
+                    "fileReplacements": [
+                        {
+                            "replace": "apps/todo-web/src/environments/frontend-environment.ts",
+                            "with": "apps/todo-web/src/environments/frontend-environment.prod.ts"
+                        }
+                    ],
+                    "outputHashing": "all"
+                },
+                "development": {
+                    "buildOptimizer": false,
+                    "optimization": false,
+                    "vendorChunk": true,
+                    "extractLicenses": false,
+                    "sourceMap": true,
+                    "namedChunks": true
+                }
+            },
+            "defaultConfiguration": "production"
         },
-        "development": {
-          "buildOptimizer": false,
-          "optimization": false,
-          "vendorChunk": true,
-          "extractLicenses": false,
-          "sourceMap": true,
-          "namedChunks": true
-        }
-      },
-      "defaultConfiguration": "production"
-    },
-    "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
-      "configurations": {
-        "production": {
-          "browserTarget": "todo-web:build:production"
+        "serve": {
+            "executor": "@angular-devkit/build-angular:dev-server",
+            "configurations": {
+                "production": {
+                    "browserTarget": "todo-web:build:production"
+                },
+                "development": {
+                    "browserTarget": "todo-web:build:development"
+                }
+            },
+            "defaultConfiguration": "development"
         },
-        "development": {
-          "browserTarget": "todo-web:build:development"
+        "extract-i18n": {
+            "executor": "@angular-devkit/build-angular:extract-i18n",
+            "options": {
+                "browserTarget": "todo-web:build"
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "options": {
+                "lintFilePatterns": ["apps/todo-web/**/*.ts", "apps/todo-web/**/*.html"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["{workspaceRoot}/coverage/apps/todo-web"],
+            "options": {
+                "jestConfig": "apps/todo-web/jest.config.ts",
+                "passWithNoTests": true
+            }
         }
-      },
-      "defaultConfiguration": "development"
     },
-    "extract-i18n": {
-      "executor": "@angular-devkit/build-angular:extract-i18n",
-      "options": {
-        "browserTarget": "todo-web:build"
-      }
-    },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "options": {
-        "lintFilePatterns": [
-          "apps/todo-web/**/*.ts",
-          "apps/todo-web/**/*.html"
-        ]
-      }
-    },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/apps/todo-web"
-      ],
-      "options": {
-        "jestConfig": "apps/todo-web/jest.config.ts",
-        "passWithNoTests": true
-      }
-    }
-  },
-  "tags": []
+    "tags": []
 }

@@ -66,6 +66,22 @@ export function getClassNameFromFileData(fileData: string): string | null {
     return str.split(' ')[0];
 }
 
+export function pascalCaseToKebabCase(name: string): string {
+    return name.replace(/([a-z0–9])([A-Z])/g, '$1-$2').toLowerCase();
+}
+
+export function getEnumNameFromFileData(fileData: string): string | null {
+    const startSearchStr = 'export enum ';
+    const endSearchStr = '{';
+    if (fileData.indexOf(startSearchStr) === -1) {
+        return null;
+    }
+    const cutStart = fileData.indexOf(startSearchStr) + startSearchStr.length;
+    const cutEnd = fileData.indexOf(endSearchStr, cutStart);
+    const str = fileData.substring(cutStart, cutEnd);
+    return str.split(' ')[0];
+}
+
 export function getInterfaceNameFromFileData(fileData: string): string | null {
     const startSearchStr = 'export interface ';
     const endSearchStr = '{';
