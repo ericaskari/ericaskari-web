@@ -13,6 +13,7 @@ import {
     FlowerEntityRepositoryService,
     FlowerWateringEventEntityRepositoryService
 } from "@ericaskari/api/database";
+import { v4 as uuid } from 'uuid';
 
 @Controller()
 export class AppController {
@@ -46,7 +47,9 @@ export class AppController {
 
         const flowerWateringEvent = await this.flowerWateringEventEntityRepositoryService.save({
             adcValue: adcValue,
-            flowerId
+            flowerId,
+            createdAt: new Date(),
+            id: uuid()
         });
 
         return SaveWaterLevelResponse.fromJson({flowerWateringEvent});
@@ -60,7 +63,9 @@ export class AppController {
             throw new UnauthorizedException()
         }
         const flower = await this.flowerEntityRepositoryService.save({
-            name
+            name,
+            id: uuid(),
+            createdAt: new Date()
         });
 
 
