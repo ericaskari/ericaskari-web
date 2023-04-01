@@ -14,7 +14,7 @@ export const typeOrmModuleOptions: DataSourceOptions = {
     migrationsTableName: 'migration',
     entities,
     migrations,
-    ssl: EnvironmentService.getInstance.isProduction
+    ssl: EnvironmentService.getInstance.variables.APP_DATABASE_SSL
 };
 
 // export const typeOrmTestModuleOptions: TypeOrmModuleOptions = {
