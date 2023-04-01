@@ -2,7 +2,9 @@
 
 import { FlowerWateringEventModel } from './models/flower-watering-event.model';
 import { FlowerModel } from './models/flower.model';
+import { WaterEvent } from './models/water-event.model';
 
 export { FlowerWateringEventModel };
 export { FlowerModel };
-export const models = [FlowerWateringEventModel, FlowerModel];
+export { WaterEvent };
+export const models = [FlowerWateringEventModel, FlowerModel, WaterEvent];

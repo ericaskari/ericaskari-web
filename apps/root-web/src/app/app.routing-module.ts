@@ -3,7 +3,6 @@ import { RouterModule } from '@angular/router';
 
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { CvPageComponent } from './pages/cv-page/cv-page.component';
-import { GamesPageComponent } from './pages/games-page/games-page.component';
 import { PlaygroundPageComponent } from './pages/playground-page/playground-page.component';
 
 @NgModule({
@@ -22,14 +21,14 @@ import { PlaygroundPageComponent } from './pages/playground-page/playground-page
                     title: 'Eric Askari - CV'
                 },
                 {
-                    path: 'games',
-                    component: GamesPageComponent,
-                    title: 'Eric Askari - Games'
-                },
-                {
                     path: 'playground',
                     component: PlaygroundPageComponent,
                     title: 'Eric Askari - Playground'
+                },
+                {
+                    path: 'plants',
+                    loadComponent: () => import('./pages/plants-page/plants-page.component').then((mod) => mod.PlantsPageComponent),
+                    title: 'Eric Askari - Plants'
                 },
                 {
                     path: '**',
