@@ -2,11 +2,14 @@ import { IsNumber, IsString, IsUUID } from 'class-validator';
 
 export class SaveWaterLevelRequest {
     @IsString()
-    secret: string;
+    secret!: string;
 
     @IsUUID()
-    flowerId: string;
+    flowerId!: string;
 
     @IsNumber()
-    adcValue: number;
+    adcValue!: number;
+
+    @IsNumber()
+    wateredAt!: number;
 }

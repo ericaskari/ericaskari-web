@@ -1,5 +1,5 @@
 import { plainToClass, Transform, Type } from "class-transformer";
-import { IsDate, IsNumber, IsObject, IsOptional, IsString, IsUUID } from "class-validator";
+import { IsDate, IsString, IsUUID } from "class-validator";
 
 export class FlowerModel {
     @IsUUID()

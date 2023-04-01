@@ -9,6 +9,9 @@ export class FlowerWateringEventEntity {
     @CreateDateColumn()
     createdAt!: Date;
 
+    @Column({ type: 'timestamp with time zone' })
+    wateredAt!: Date;
+
     @Column({ type: 'integer' })
     adcValue!: number;
 

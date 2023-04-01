@@ -35,7 +35,6 @@ import { LocalizedDatePipe } from './components/localized-date.pipe';
 import { TextAnimationDirective } from './components/text-animation.directive';
 import { CookieConsentComponent } from './components/cookie-consent/cookie-consent.component';
 import { routerReducer } from '@ngrx/router-store';
-import { GamesPageComponent } from './pages/games-page/games-page.component';
 import { TimelineComponent } from './components/timeline/timeline.component';
 import { EducationListToTimelineListPipe } from './pipes/education-list-to-timeline-list.pipe';
 import { WorkExpListToTimelineListPipe } from './pipes/work-exp-list-to-timeline-list.pipe';
@@ -86,7 +85,6 @@ const store = [
         LocalizedDatePipe,
         TextAnimationDirective,
         CookieConsentComponent,
-        GamesPageComponent,
         EducationListToTimelineListPipe,
         WorkExpListToTimelineListPipe
     ],
