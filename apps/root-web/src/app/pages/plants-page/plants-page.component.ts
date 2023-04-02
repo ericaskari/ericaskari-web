@@ -44,7 +44,6 @@ export class PlantsPageComponent implements OnInit {
                 ...waterEvents.map(({ time }) => new Date(time).toISOString())
             ],
             datasets: [
-
                 {
                     label: 'Plant watering data',
                     borderColor: CHART_COLORS.green,
@@ -83,7 +82,8 @@ export class PlantsPageComponent implements OnInit {
                         title: {
                             display: true,
                             text: 'value'
-                        }
+                        },
+                        reverse: true
                     }
                 }
             }
