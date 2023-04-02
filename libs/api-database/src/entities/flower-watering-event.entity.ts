@@ -1,4 +1,11 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    PrimaryGeneratedColumn
+} from 'typeorm';
 import { FlowerEntity } from './flower.entity';
 
 @Entity()
@@ -9,7 +16,7 @@ export class FlowerWateringEventEntity {
     @CreateDateColumn()
     createdAt!: Date;
 
-    @Column({ type: 'timestamp with time zone' })
+    @Column({ type: 'timestamp without time zone' })
     wateredAt!: Date;
 
     @Column({ type: 'integer' })

@@ -47,8 +47,8 @@
 
 ### Built With
 
--   [Angular](https://angular.io/)
--   [NestJs](https://nestjs.com/)
+- [Angular](https://angular.io/)
+- [NestJs](https://nestjs.com/)
 
 <!-- GETTING STARTED -->
 
@@ -56,8 +56,8 @@
 
 ### Prerequisites
 
--   node
--   docker
+- node
+- docker
 
 ### Installation
 
@@ -94,7 +94,6 @@ Mohammad Askari (Eric) - [@Erikaskari](https://twitter.com/Erikaskari) - me@eric
 
 Project Link: [https://github.com/ericaskari/ericaskari-web](https://github.com/ericaskari/ericaskari-web)
 
-
 - [Angular](https://angular.io)
     - `npm install --save-dev @nrwl/angular`
 - [Nest](https://nestjs.com)
@@ -116,16 +115,24 @@ Run `nx g @nrwl/nest:lib    my-lib` to generate a library.
 
 Run `docker-compose up -d` for a dev server.
 
+## Port forwarding
+
+    kubectl port-forward database-ericaskari-dev-postgresql-0 -n databases 5432:5432
+    kubectl port-forward database-ericaskari-prod-postgresql-0 -n databases 5432:5432
+
 ## Create Local SSL
 
 ### Generate Authority keys for development
+
 ```bash
 mkdir -p ~/dev-ca && openssl genrsa -des3 -out ~/dev-ca/certificate-authority.key 2048
 mkdir -p ~/dev-ca && openssl req -x509 -config ssl.cnf -new -nodes -key ~/dev-ca/certificate-authority.key -sha256 -days 1825 -out ~/dev-ca/certificate-authority.pem
 ```
+
 Add the root certificate to keychain and choose always trust.
 
 ### Generate Domain Certificate
+
 ```bash
 openssl genrsa -out ssl.key 2048
 
@@ -143,11 +150,15 @@ openssl x509 \
 -extfile ssl.ext
 ```
 
-
 [contributors-shield]: https://img.shields.io/github/contributors/ericaskari/ericaskari-web.svg?style=for-the-badge
+
 [contributors-url]: https://github.com/ericaskari/ericaskari-web/graphs/contributors
+
 [issues-shield]: https://img.shields.io/github/issues/ericaskari/ericaskari-web.svg?style=for-the-badge
+
 [issues-url]: https://github.com/ericaskari/ericaskari-web/issues
+
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+
 [linkedin-url]: https://linkedin.com/in/linkedin_username
 
