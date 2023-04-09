@@ -31,21 +31,54 @@ export class AppController {
 
     @Get('/water-events')
     async fetchWateringEvents(): Promise<GetWaterLevelResponse> {
-        const dateAfter = new Date(Date.now() - 604_800_000).toISOString().split('T')[0];
-        const query = `SELECT DATE_TRUNC('hour', "wateredAt") time, AVG("adcValue") value
-                       FROM flower_watering_event_entity
-                       WHERE "wateredAt" >= '${ dateAfter }'
-                       GROUP BY DATE_TRUNC('hour', "wateredAt")
-                       ORDER BY DATE_TRUNC('hour', "wateredAt") ASC
-        `
-        const results: WaterEvent[] = await this.flowerWateringEventEntityRepositoryService.repository.query(query);
+        const queries: { name: keyof GetWaterLevelResponse, query: string; }[] =
+            [
+                {
+                    name: 'last30Days',
+                    query: `SELECT DATE_TRUNC('day', "wateredAt") time, AVG("adcValue") value
+                            FROM flower_watering_event_entity
+                            WHERE "wateredAt" >= NOW() - '30 day'::INTERVAL
+                            GROUP BY DATE_TRUNC('day', "wateredAt")
+                            ORDER BY DATE_TRUNC('day', "wateredAt") ASC
+                    `
+                },
+                {
+                    name: 'last7Days',
+                    query: `SELECT DATE_TRUNC('hour', "wateredAt") time, AVG("adcValue") value
+                            FROM flower_watering_event_entity
+                            WHERE "wateredAt" >= NOW() - '7 day'::INTERVAL
+                            GROUP BY DATE_TRUNC('hour', "wateredAt")
+                            ORDER BY DATE_TRUNC('hour', "wateredAt") ASC
+                    `
+                },
+                {
+                    name: 'last24Hours',
+                    query: `SELECT DATE_TRUNC('hour', "wateredAt") time, AVG("adcValue") value
+                            FROM flower_watering_event_entity
+                            WHERE "wateredAt" >= NOW() - '1 day'::INTERVAL
+                            GROUP BY DATE_TRUNC('hour', "wateredAt")
+                            ORDER BY DATE_TRUNC('hour', "wateredAt") ASC
+                    `
+                }
+            ]
+        const queryResults: { name: string, result: { value: number, time: string }[]; }[] =
+            await Promise.all(queries.map(
+                async ({ query, name }) => {
+                    return {
+                        name,
+                        result: await this.flowerWateringEventEntityRepositoryService.repository.query(query)
+                    }
+                }
+            ))
 
-        return GetWaterLevelResponse.fromJson({
-            items: results.map((item) => {
+        const output: Record<string, any> = queryResults.reduce((previousValue, currentValue) => {
+            previousValue[currentValue.name] = currentValue.result.map((item) => {
                 item.value = Math.trunc(item.value);
                 return item;
-            })
-        })
+            });
+            return previousValue;
+        }, {});
+        return GetWaterLevelResponse.fromJson(output)
     }
 
     @Post('/water-level')
