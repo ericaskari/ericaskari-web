@@ -32,6 +32,7 @@ export const CHART_COLORS = {
 })
 export class PlantsPageComponent implements OnInit {
 
+    @ViewChild('allTime', { static: true }) allTime!: ElementRef<HTMLCanvasElement>;
     @ViewChild('last30Days', { static: true }) last30Days!: ElementRef<HTMLCanvasElement>;
     @ViewChild('last7Days', { static: true }) last7Days!: ElementRef<HTMLCanvasElement>;
     @ViewChild('last24Hours', { static: true }) last24Hours!: ElementRef<HTMLCanvasElement>;
@@ -85,7 +86,7 @@ export class PlantsPageComponent implements OnInit {
                             display: true,
                             text: 'value'
                         },
-                        reverse: true
+                        reverse: false
                     }
                 }
             }
@@ -94,7 +95,8 @@ export class PlantsPageComponent implements OnInit {
 
     ngOnInit(): void {
         this.httpClient.get<GetWaterLevelResponse>('/api/water-events').subscribe(response => {
-            const { last24Hours, last30Days, last7Days } = response;
+            const { last24Hours, last30Days, last7Days, allTime } = response;
+            new Chart(this.allTime.nativeElement, this.config(allTime, 'allTime'));
             new Chart(this.last30Days.nativeElement, this.config(last30Days, 'last30Days'));
             new Chart(this.last7Days.nativeElement, this.config(last7Days, 'last7Days'));
             new Chart(this.last24Hours.nativeElement, this.config(last24Hours, 'last24Hours'));

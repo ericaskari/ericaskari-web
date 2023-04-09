@@ -34,12 +34,20 @@ export class AppController {
         const queries: { name: keyof GetWaterLevelResponse, query: string; }[] =
             [
                 {
+                    name: 'allTime',
+                    query: `SELECT DATE_TRUNC('hour', "wateredAt") time, AVG("adcValue") value
+                            FROM flower_watering_event_entity
+                            GROUP BY DATE_TRUNC('hour', "wateredAt")
+                            ORDER BY DATE_TRUNC('hour', "wateredAt") ASC
+                    `
+                },
+                {
                     name: 'last30Days',
-                    query: `SELECT DATE_TRUNC('day', "wateredAt") time, AVG("adcValue") value
+                    query: `SELECT DATE_TRUNC('hour', "wateredAt") time, AVG("adcValue") value
                             FROM flower_watering_event_entity
                             WHERE "wateredAt" >= NOW() - '30 day'::INTERVAL
-                            GROUP BY DATE_TRUNC('day', "wateredAt")
-                            ORDER BY DATE_TRUNC('day', "wateredAt") ASC
+                            GROUP BY DATE_TRUNC('hour', "wateredAt")
+                            ORDER BY DATE_TRUNC('hour', "wateredAt") ASC
                     `
                 },
                 {
@@ -66,14 +74,17 @@ export class AppController {
                 async ({ query, name }) => {
                     return {
                         name,
-                        result: await this.flowerWateringEventEntityRepositoryService.repository.query(query)
+                        result: await this.flowerWateringEventEntityRepositoryService.repository.query(query).catch(err => {
+                            console.log(err);
+                            return []
+                        })
                     }
                 }
             ))
 
         const output: Record<string, any> = queryResults.reduce((previousValue, currentValue) => {
             previousValue[currentValue.name] = currentValue.result.map((item) => {
-                item.value = Math.trunc(item.value);
+                item.value = Math.abs(Math.trunc(item.value) - 65535)
                 return item;
             });
             return previousValue;
