@@ -64,17 +64,15 @@ export class PlantsPageComponent implements OnInit {
             options: {
                 plugins: {
                     title: {
-                        text: 'Chart.js Time Scale',
+                        text: name,
                         display: true
                     }
                 },
                 scales: {
                     x: {
                         type: 'time',
-                        adapters: {
-                            date: {
-                                locale: enUS,
-                            },
+                        time: {
+                            unit: 'day'
                         },
                         title: {
                             display: true,
