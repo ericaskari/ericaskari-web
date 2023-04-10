@@ -32,20 +32,23 @@ export const CHART_COLORS = {
 })
 export class PlantsPageComponent implements OnInit {
 
-    @ViewChild('chart', { static: true }) chart!: ElementRef<HTMLCanvasElement>;
+    @ViewChild('allTime', { static: true }) allTime!: ElementRef<HTMLCanvasElement>;
+    @ViewChild('last30Days', { static: true }) last30Days!: ElementRef<HTMLCanvasElement>;
+    @ViewChild('last7Days', { static: true }) last7Days!: ElementRef<HTMLCanvasElement>;
+    @ViewChild('last24Hours', { static: true }) last24Hours!: ElementRef<HTMLCanvasElement>;
 
 
     constructor(private httpClient: HttpClient) {
     }
 
-    private config(waterEvents: WaterEvent[] = []): ChartConfiguration<any, any, any> {
+    private config(waterEvents: WaterEvent[] = [], name: string): ChartConfiguration<any, any, any> {
         const data = {
             labels: [
                 ...waterEvents.map(({ time }) => new Date(time).toISOString())
             ],
             datasets: [
                 {
-                    label: 'Plant watering data',
+                    label: name,
                     borderColor: CHART_COLORS.green,
                     fill: false,
                     data: waterEvents.map(({ value, time }) => ({
@@ -61,17 +64,15 @@ export class PlantsPageComponent implements OnInit {
             options: {
                 plugins: {
                     title: {
-                        text: 'Chart.js Time Scale',
+                        text: name,
                         display: true
                     }
                 },
                 scales: {
                     x: {
                         type: 'time',
-                        adapters: {
-                            date: {
-                                locale: enUS,
-                            },
+                        time: {
+                            unit: 'day'
                         },
                         title: {
                             display: true,
@@ -83,7 +84,7 @@ export class PlantsPageComponent implements OnInit {
                             display: true,
                             text: 'value'
                         },
-                        reverse: true
+                        reverse: false
                     }
                 }
             }
@@ -92,9 +93,11 @@ export class PlantsPageComponent implements OnInit {
 
     ngOnInit(): void {
         this.httpClient.get<GetWaterLevelResponse>('/api/water-events').subscribe(response => {
-            const { items } = response;
-            console.log(items)
-            const myChart = new Chart(this.chart.nativeElement, this.config(items));
+            const { last24Hours, last30Days, last7Days, allTime } = response;
+            new Chart(this.allTime.nativeElement, this.config(allTime, 'allTime'));
+            new Chart(this.last30Days.nativeElement, this.config(last30Days, 'last30Days'));
+            new Chart(this.last7Days.nativeElement, this.config(last7Days, 'last7Days'));
+            new Chart(this.last24Hours.nativeElement, this.config(last24Hours, 'last24Hours'));
         });
 
 

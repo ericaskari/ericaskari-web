@@ -23,9 +23,12 @@ services:
       - ericaskari-network
     extra_hosts:
       - 'host.docker.internal:host-gateway'
+    ports:
+      - '9000:9000'
+      - '9001:9001'
     volumes:
       - ericaskari-minio:/data
-    command: 'server --address 0.0.0.0:9000 /data'
+    command: "server --address 0.0.0.0:9000 --console-address :9001 /data"
     env_file:
       - .docker.env
   ericaskari-mailhog:
